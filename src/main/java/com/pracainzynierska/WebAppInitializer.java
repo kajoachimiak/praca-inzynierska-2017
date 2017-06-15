@@ -10,7 +10,7 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRegistration;
 
 public class WebAppInitializer implements WebApplicationInitializer{
-    private Logger log = Logger.getLogger(WebAppInitializer.class);
+    private static final Logger log = Logger.getLogger(WebAppInitializer.class);
     private static final String CONFIG_LOCATION = "com.pracainzynierska.config";
 
     @Override
