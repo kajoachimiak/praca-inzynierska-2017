@@ -1,0 +1,15 @@
+<div class="row" ng-controller="markdownController">
+    <div class="col s4">
+        <form class="col s12">
+            <div class="row">
+                <div class="input-field col s12">
+                    <textarea id="textarea1" ng-model="source" class="materialize-textarea"></textarea>
+                    <label for="textarea1">Source</label>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="col s4 flow-text" > {{result}} </div>
+    <div class="col s4 flow-text" ng-bind-html="result" >  </div>
+</div>
+<script>src="bower_components/marked/marked.min.js"</script>
