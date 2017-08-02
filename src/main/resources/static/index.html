@@ -9,7 +9,19 @@
     <title>Praca Inżynierska</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- CSS Stylesheet -->
     <link rel="stylesheet" href="/css/app.css">
+    <link rel="stylesheet" href="/webjars/bootstrap/3.3.6/css/bootstrap.css">
+
+    <!-- Scripts -->
+    <script src="/webjars/angularjs/1.4.9/angular.js"></script>
+    <script src="/webjars/angularjs/1.4.9/angular-resource.js"></script>
+    <script src="/webjars/angularjs/1.4.9/angular-route.js"></script>
+    <script src="/js/app.js"></script>
+    <script type="text/javascript" src="../node_modules/marked/lib/marked.js"></script>
+    <script type="text/javascript" src="../node_modules/angular-marked/dist/angular-marked.min.js"></script>
+    <script type="text/javascript" src="../node_modules/bootstrap-markdown/js/bootstrap-markdown.js"></script>
 </head>
 <body>
 <div ng-app="markdownApp" ng-controller="markdownController">
@@ -27,14 +39,5 @@
     </div>
 </div>
 
-<div ng-view></div>
-<script src="/webjars/angularjs/1.4.9/angular.js"></script>
-<script src="/webjars/angularjs/1.4.9/angular-resource.js"></script>
-<script src="/webjars/angularjs/1.4.9/angular-route.js"></script>
-<script src="/js/app.js"></script>
-<script type="text/javascript" src="../node_modules/marked/lib/marked.js"></script>
-<script type="text/javascript" src="../node_modules/angular-marked/dist/angular-marked.min.js"></script>
-<script type="text/javascript" src="../node_modules/bootstrap-markdown/js/bootstrap-markdown.js"></script>
-<link rel="stylesheet" href="/webjars/bootstrap/3.3.6/css/bootstrap.css">
 </body>
 </html>

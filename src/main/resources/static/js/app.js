@@ -11,6 +11,6 @@ angular.module('markdownApp', ['ngSanitize'])
     })
 
     .filter('markdown', function() {
-        var converter = new Showdown.converter();
+        var converter = new showdown.converter();
         return converter.makeHtml;
     });
