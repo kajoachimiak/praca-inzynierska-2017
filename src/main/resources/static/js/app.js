@@ -1,16 +1,16 @@
-var app = angular.module('app', ['ngRoute','ngResource', 'ngSanitize']);
-app.config(function($routeProvider){
-    $routeProvider
-        .when('/users',{
-            templateUrl: '/views/users.html',
-            controller: 'usersController'
-        })
-        .when('/markdown',{
-            templateUrl: '/views/markdown.html',
-            controller: 'markdownController'
-        })
-        .otherwise(
-            { redirectTo: '/'}
-        );
-});
+angular.module('markdownApp', ['ngSanitize'])
 
+    .controller('markdownController', function($scope) {
+        $scope.input = 'Enter your [Markdown][1] here.' +
+            '\n' +
+            '\n- *first*' +
+            '\n- **second**' +
+            '\n- third' +
+            '\n' +
+            '\n[1]: http://daringfireball.net/projects/markdown/syntax';
+    })
+
+    .filter('markdown', function() {
+        var converter = new Showdown.converter();
+        return converter.makeHtml;
+    });
