@@ -6,10 +6,12 @@ app.config(function($routeProvider){
             controller: 'usersController'
         })
         .when('/roles',{
-            templateUrl: '/views/roles.html',
-            controller: 'rolesController'
+            templateUrl: '/views/editor.html',
+            controller: 'editorController'
         })
         .otherwise(
             { redirectTo: '/'}
         );
 });
+
+var simpleMde = angular.module('myApp', ['uiSimplemde']);
