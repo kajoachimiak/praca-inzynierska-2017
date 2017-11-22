@@ -5,7 +5,7 @@ app.config(function($routeProvider){
             templateUrl: '/views/users.html',
             controller: 'usersController'
         })
-        .when('/roles',{
+        .when('/editor',{
             templateUrl: '/views/editor.html',
             controller: 'editorController'
         })
@@ -15,3 +15,5 @@ app.config(function($routeProvider){
 });
 
 var simpleMde = angular.module('myApp', ['uiSimplemde']);
+
+

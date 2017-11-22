@@ -1,11 +1,10 @@
 <div class="section">
     <h3>{{headingTitle}}</h3>
     <div>
-        <ul type="square">
-            <li>Administrator</li>
-            <li>Super Admin</li>
-            <li>User</li>
-            <li>View-Only</li>
-        </ul>
+        <!--create tinymce instance, bind it to the textarea,
+        configuration is supposed to be an configuration object defined on current $scope-->
+        <textarea ui-simplemde="configuration">Test</textarea>
+        <!-- or sometimes, with an inline configuration object-->
+        <!--<textarea ui-simplemde="{autofocus: true}"></textarea>-->
     </div>
 </div>
