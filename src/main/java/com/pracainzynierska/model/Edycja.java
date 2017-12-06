@@ -1,0 +1,67 @@
+package com.pracainzynierska.model;
+
+import javax.persistence.*;
+import java.util.List;
+
+/**
+ * Created by karol on 06.12.17.
+ */
+@Entity
+@Table(name = "EDYCJA")
+public class Edycja {
+    private Integer id;
+    private String nazwa;
+    private String opis;
+    private Przedmiot przedmiot;
+    private List<Grupa> grupaList;
+
+    @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @Column(name = "ID")
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    @Basic
+    @Column(name = "NAZWA")
+    public String getNazwa() {
+        return nazwa;
+    }
+
+    public void setNazwa(String nazwa) {
+        this.nazwa = nazwa;
+    }
+
+    @Basic
+    @Column(name = "OPIS")
+    public String getOpis() {
+        return opis;
+    }
+
+    public void setOpis(String opis) {
+        this.opis = opis;
+    }
+
+    @JoinColumn(name = "PRZEDMIOT_ID", referencedColumnName = "ID")
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    public Przedmiot getPrzedmiot() {
+        return przedmiot;
+    }
+
+    public void setPrzedmiot(Przedmiot przedmiot) {
+        this.przedmiot = przedmiot;
+    }
+
+    @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, mappedBy = "edycja", fetch = FetchType.LAZY)
+    public List<Grupa> getGrupaList() {
+        return grupaList;
+    }
+
+    public void setGrupaList(List<Grupa> grupaList) {
+        this.grupaList = grupaList;
+    }
+}
