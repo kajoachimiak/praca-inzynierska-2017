@@ -1,5 +1,5 @@
-app.controller('usersController', function($scope) {
-    $scope.headingTitle = "User List";
+app.controller('scriptTestController', function($scope) {
+    $scope.headingTitle = "Script Test";
 });
 
 app.controller('editorController', function($scope) {

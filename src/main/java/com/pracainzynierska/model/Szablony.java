@@ -1,13 +1,18 @@
 package com.pracainzynierska.model;
 
+import com.pracainzynierska.dict.Queries;
+
 import javax.persistence.*;
 
 /**
  * Created by karol on 06.12.17.
  */
 @Entity
+@NamedQueries(value = {
+        @NamedQuery(name = Queries.Szablony.getById, query = "select s from Szablony s where s.id = ?1")
+})
 @Table(name = "SZABLONY")
-public class Szablony {
+public class Szablony{
     private Integer id;
     private Integer uczestnikId;
     private Integer grupaId;
