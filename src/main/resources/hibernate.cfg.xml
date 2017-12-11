@@ -6,11 +6,16 @@
     <session-factory>
         <!-- Database connection properties - Driver, URL, user, password -->
         <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
-        <property name="hibernate.connection.url">jdbc:mysql://localhost/GLASSFISH_MANAGER</property>
+        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/GLASSFISH_MANAGER</property>
         <property name="hibernate.connection.username">root</property>
         <property name="hibernate.connection.password">glassfish</property>
 
         <!-- org.hibernate.HibernateException: No CurrentSessionContext configured! -->
         <property name="hibernate.current_session_context_class">thread</property>
+        <mapping class="com.pracainzynierska.model.Edycja"/>
+        <mapping class="com.pracainzynierska.model.Grupa"/>
+        <mapping class="com.pracainzynierska.model.Przedmiot"/>
+        <mapping class="com.pracainzynierska.model.Szablony"/>
+        <mapping class="com.pracainzynierska.model.Uczestnik"/>
     </session-factory>
 </hibernate-configuration>

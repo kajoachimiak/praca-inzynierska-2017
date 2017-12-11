@@ -53,4 +53,35 @@ public class Przedmiot {
     public void setEdycjaList(List<Edycja> edycjaList) {
         this.edycjaList = edycjaList;
     }
+
+    public Przedmiot() {
+    }
+
+    public Przedmiot(Integer id, String nazwa, String opis) {
+        this.id = id;
+        this.nazwa = nazwa;
+        this.opis = opis;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Przedmiot przedmiot = (Przedmiot) o;
+
+        if (!id.equals(przedmiot.id)) return false;
+        if (nazwa != null ? !nazwa.equals(przedmiot.nazwa) : przedmiot.nazwa != null) return false;
+        if (opis != null ? !opis.equals(przedmiot.opis) : przedmiot.opis != null) return false;
+        return edycjaList != null ? edycjaList.equals(przedmiot.edycjaList) : przedmiot.edycjaList == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id.hashCode();
+        result = 31 * result + (nazwa != null ? nazwa.hashCode() : 0);
+        result = 31 * result + (opis != null ? opis.hashCode() : 0);
+        result = 31 * result + (edycjaList != null ? edycjaList.hashCode() : 0);
+        return result;
+    }
 }

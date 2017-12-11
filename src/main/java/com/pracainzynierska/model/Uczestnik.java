@@ -54,5 +54,35 @@ public class Uczestnik {
         this.grupa = grupa;
     }
 
+    public Uczestnik() {
+    }
 
+    public Uczestnik(Integer id, String opis, String login, Grupa grupa) {
+        this.id = id;
+        this.opis = opis;
+        this.login = login;
+        this.grupa = grupa;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Uczestnik uczestnik = (Uczestnik) o;
+
+        if (!id.equals(uczestnik.id)) return false;
+        if (opis != null ? !opis.equals(uczestnik.opis) : uczestnik.opis != null) return false;
+        if (login != null ? !login.equals(uczestnik.login) : uczestnik.login != null) return false;
+        return grupa != null ? grupa.equals(uczestnik.grupa) : uczestnik.grupa == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id.hashCode();
+        result = 31 * result + (opis != null ? opis.hashCode() : 0);
+        result = 31 * result + (login != null ? login.hashCode() : 0);
+        result = 31 * result + (grupa != null ? grupa.hashCode() : 0);
+        return result;
+    }
 }

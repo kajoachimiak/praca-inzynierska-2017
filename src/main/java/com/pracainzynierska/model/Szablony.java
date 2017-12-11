@@ -8,9 +8,6 @@ import javax.persistence.*;
  * Created by karol on 06.12.17.
  */
 @Entity
-@NamedQueries(value = {
-        @NamedQuery(name = Queries.Szablony.getById, query = "select s from Szablony s where s.id = ?1")
-})
 @Table(name = "SZABLONY")
 public class Szablony{
     private Integer id;
@@ -89,6 +86,18 @@ public class Szablony{
     }
 
     public void setOpis(String opis) {
+        this.opis = opis;
+    }
+
+    public Szablony() {
+    }
+
+    public Szablony(Integer uczestnikId, Integer grupaId, Integer edycjaId, String nazwa, String tresc, String opis) {
+        this.uczestnikId = uczestnikId;
+        this.grupaId = grupaId;
+        this.edycjaId = edycjaId;
+        this.nazwa = nazwa;
+        this.tresc = tresc;
         this.opis = opis;
     }
 
