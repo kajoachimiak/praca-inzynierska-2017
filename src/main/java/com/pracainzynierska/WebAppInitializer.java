@@ -16,7 +16,7 @@ import javax.servlet.ServletRegistration;
 @EnableAutoConfiguration
 @ComponentScan("com.pracainzynierska")
 public class WebAppInitializer {
-    private static final Logger log = Logger.getLogger(WebAppInitializer.class);
+    private static final Logger LOG = Logger.getLogger(WebAppInitializer.class);
     public static void main(String[] args) throws Exception{
         SpringApplication.run(WebAppInitializer.class,args);
     }

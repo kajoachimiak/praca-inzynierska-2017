@@ -10,7 +10,7 @@ import org.hibernate.service.ServiceRegistry;
  * Created by karol on 09.12.17.
  */
 public class HibernateUtil {
-    private static final Logger log = Logger.getLogger(HibernateUtil.class);
+    private static final Logger LOG = Logger.getLogger(HibernateUtil.class);
 
     private static SessionFactory sessionFactory;
 
@@ -18,14 +18,14 @@ public class HibernateUtil {
         try {
             Configuration config = new Configuration();
             config.configure("hibernate.cfg.xml");
-            log.info("Hibernate Configuration loaded");
+            LOG.info("Hibernate Configuration loaded");
             ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
                     .applySettings(config.getProperties()).build();
-            log.info("Hibernate serviceRegistry created");
+            LOG.info("Hibernate serviceRegistry created");
 
             return  config.buildSessionFactory(serviceRegistry);
         }catch (Throwable ex){
-            log.error("Initial SessionFactory creation failed." + ex);
+            LOG.error("Initial SessionFactory creation failed." + ex);
             throw new ExceptionInInitializerError(ex);
         }
     }

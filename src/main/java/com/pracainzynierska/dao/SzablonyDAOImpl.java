@@ -9,7 +9,7 @@ import org.hibernate.SessionFactory;
  * Created by karol on 09.12.17.
  */
 public class SzablonyDAOImpl implements SzablonyDAO {
-    private static final Logger log = Logger.getLogger(SzablonyDAOImpl.class);
+    private static final Logger LOG = Logger.getLogger(SzablonyDAOImpl.class);
     private SessionFactory sessionFactory;
 
     public SzablonyDAOImpl(SessionFactory sessionFactory) {
@@ -24,7 +24,7 @@ public class SzablonyDAOImpl implements SzablonyDAO {
             session.beginTransaction();
             szablony = (Szablony) session.get(Szablony.class, szablonyId);
         }catch (Exception e){
-            log.error("Error accessing database",e);
+            LOG.error("Error accessing database",e);
         }
         return szablony;
     }
