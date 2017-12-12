@@ -1,6 +1,6 @@
-package com.pracainzynierska.dao;
+package com.pracainzynierska.model.dao;
 
-import com.pracainzynierska.model.Szablony;
+import com.pracainzynierska.model.entities.Szablony;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;

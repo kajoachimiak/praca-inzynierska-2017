@@ -1,8 +1,10 @@
 package com.pracainzynierska.controller;
 
-import com.pracainzynierska.model.Szablony;
-import com.pracainzynierska.service.SzablonyService;
+import com.pracainzynierska.controller.service.ShellRunnerService;
+import com.pracainzynierska.model.entities.Szablony;
+import com.pracainzynierska.model.daoservice.SzablonyService;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -16,31 +18,20 @@ import java.io.InputStreamReader;
 @Controller
 public class MainController {
     private static final Logger LOG = Logger.getLogger(MainController.class);
+    private final ShellRunnerService shellRunnerService;
     private SzablonyService szablonyService;
+
+    @Autowired
+    public MainController(ShellRunnerService shellRunnerService) {
+        this.shellRunnerService = shellRunnerService;
+    }
+
     @RequestMapping(value = "/scriptTest", method = RequestMethod.GET)
     public String homepage(){
         szablonyService = new SzablonyService();
         Szablony szablon = szablonyService.getSzablonBySzablonId(3);
         String command = szablon.getTresc();
-        System.out.println(runShellScript(command));
+        System.out.println(shellRunnerService.runScript(command));
         return "index";
-    }
-    private StringBuffer runShellScript(String command){
-       StringBuffer output = new StringBuffer();
-       Process p;
-       try {
-           p = Runtime.getRuntime().exec(command);
-           p.waitFor();
-           BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
-           String line = "";
-           while ((line = reader.readLine())!=null){
-               output.append(line).append("\n");
-           }
-       } catch (IOException e) {
-           LOG.error("Command: " + command + " execution failed!", e);
-       } catch (InterruptedException e) {
-           LOG.error("Intterupted exception while execution command: "+ command,e);
-       }
-       return output;
     }
 }

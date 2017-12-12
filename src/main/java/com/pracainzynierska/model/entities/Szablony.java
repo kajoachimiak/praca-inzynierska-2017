@@ -1,6 +1,4 @@
-package com.pracainzynierska.model;
-
-import com.pracainzynierska.dict.Queries;
+package com.pracainzynierska.model.entities;
 
 import javax.persistence.*;
 

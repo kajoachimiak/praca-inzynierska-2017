@@ -12,10 +12,10 @@
 
         <!-- org.hibernate.HibernateException: No CurrentSessionContext configured! -->
         <property name="hibernate.current_session_context_class">thread</property>
-        <mapping class="com.pracainzynierska.model.Edycja"/>
-        <mapping class="com.pracainzynierska.model.Grupa"/>
-        <mapping class="com.pracainzynierska.model.Przedmiot"/>
-        <mapping class="com.pracainzynierska.model.Szablony"/>
-        <mapping class="com.pracainzynierska.model.Uczestnik"/>
+        <mapping class="com.pracainzynierska.model.entities.Edycja"/>
+        <mapping class="com.pracainzynierska.model.entities.Grupa"/>
+        <mapping class="com.pracainzynierska.model.entities.Przedmiot"/>
+        <mapping class="com.pracainzynierska.model.entities.Szablony"/>
+        <mapping class="com.pracainzynierska.model.entities.Uczestnik"/>
     </session-factory>
 </hibernate-configuration>

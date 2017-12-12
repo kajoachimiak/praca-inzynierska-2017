@@ -1,4 +1,4 @@
-package com.pracainzynierska.model;
+package com.pracainzynierska.model.entities;
 
 import javax.persistence.*;
 

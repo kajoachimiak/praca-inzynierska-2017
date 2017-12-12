@@ -1,8 +1,8 @@
-package com.pracainzynierska.service;
+package com.pracainzynierska.model.daoservice;
 
-import com.pracainzynierska.dao.SzablonyDAO;
-import com.pracainzynierska.dao.SzablonyDAOImpl;
-import com.pracainzynierska.model.Szablony;
+import com.pracainzynierska.model.dao.SzablonyDAO;
+import com.pracainzynierska.model.dao.SzablonyDAOImpl;
+import com.pracainzynierska.model.entities.Szablony;
 import com.pracainzynierska.util.HibernateUtil;
 
 /**
