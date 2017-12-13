@@ -3,6 +3,7 @@ package com.pracainzynierska.controller.service;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -10,7 +11,7 @@ import java.io.InputStreamReader;
 /**
  * Created by karol on 12.12.17.
  */
-@Service
+@Service("shellRunnerService")
 public class ShellRunnerServiceImpl implements ShellRunnerService {
     private static final Logger LOG = Logger.getLogger(ShellRunnerServiceImpl.class);
 
