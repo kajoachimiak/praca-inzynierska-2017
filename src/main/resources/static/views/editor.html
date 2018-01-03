@@ -1,10 +1,6 @@
-<div class="section">
+<div class="section" ng-controller="editorController">
     <h3>{{headingTitle}}</h3>
-    <div>
-        <!--create tinymce instance, bind it to the textarea,
-        configuration is supposed to be an configuration object defined on current $scope-->
-        <textarea ui-simplemde="configuration">Test</textarea>
-        <!-- or sometimes, with an inline configuration object-->
-        <!--<textarea ui-simplemde="{autofocus: true}"></textarea>-->
+    <div ng-init="getLogFile()">
+        File Content:<br> <textarea ng-keyup="autoExpand($event)"  ng-model = "fileContent"></textarea>
     </div>
 </div>

@@ -1,1 +1,24 @@
+textarea {
+    height:100%;
+    min-height: 500px;
+    max-width:750px;
+    color:#000;
+    font-weight:400;
+    font-size:15px;
+    font-family:'Ubuntu', Helvetica, Arial, sans-serif;
+    width:100%;
+    background:#fff;
+    border-radius:3px;
+    line-height:2em;
+    border:none;
+    padding:30px;
+    -webkit-transition: height ease;
+    -moz-transition: height ease;
+    -o-transition: height ease;
+    transition: height ease;
+}
+
+* {
+    -webkit-font-smoothing:antialiased !important;
+}
 

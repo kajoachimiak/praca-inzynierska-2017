@@ -14,33 +14,30 @@ app.controller('scriptTestController', function($scope,$http) {
     }
 });
 
-app.controller('editorController', function($scope) {
+app.controller('editorController', function($scope, $http) {
     $scope.headingTitle = "Editor";
-    function uiSimplemdeDirective($timeout, $window, simpleMdeConfig){
-        return {
-            require: '?ngModel',
-            restrict: 'A',
-            priority: 599,
-            link: function(scope, element, attrs, ngModel){
-                if(angular.isUndefined($window.SimpleMDE)){
-                    throw new Error("SimpleMDE is not defined! Is simplemde.js included?");
-                }
-                //create editor instance
-                var default_options = simpleMdeConfig || {};
-                var current_options = scope.$eval(attrs.uiSimplemde);
-                var options = angular.extend({}, default_options, current_options);
-                var editor = createEditorInstance(options, element[0]);
-                scope.$mde = editor;
-                //setup value synchronization
-                syncWithNgModel(editor, ngModel, scope);
-                //watch configuration changes
-                watchConfigurations(scope, attrs, editor);
-                //cleanup
-                scope.$on('$destroy', function(){
-                    //destroy editor instance
-                    scope.$mde.toTextArea();
-                });
-            }
-        };
+    $scope.fileContent = '';
+    $scope.getLogFile = function () {
+        $http({
+            method: 'GET',
+            url: '/getLog',
+            responseType: 'text'
+        }).then(function successCallback(response) {
+            console.log(response);
+            $scope.fileContent = response.data.log;
+            console.log($scope.fileContent);
+        }, function errorCallback(response) {
+            // called asynchronously if an error occurs
+            // or server returns response with an error status.
+        });
+    };
+    $scope.autoExpand = function(e) {
+        var element = typeof e === 'object' ? e.target : document.getElementById(e);
+        var scrollHeight = element.scrollHeight -60; // replace 60 by the sum of padding-top and padding-bottom
+        element.style.height =  scrollHeight + "px";
+    };
+
+    function expand() {
+        $scope.autoExpand('TextArea');
     }
 });

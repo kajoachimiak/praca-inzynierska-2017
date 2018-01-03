@@ -17,6 +17,5 @@
   },
   "homepage": "https://github.com/kajoachimiak/praca-inzynierska-2017#readme",
   "dependencies": {
-    "simplemde": "^1.11.2"
   }
 }

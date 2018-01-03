@@ -13,7 +13,3 @@ app.config(function($routeProvider){
             { redirectTo: '/'}
         );
 });
-
-var simpleMde = angular.module('myApp', ['uiSimplemde']);
-
-
