@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-configuration PUBLIC
         "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
-        "http://hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+        "src/main/resources/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
     <session-factory>
         <!-- Database connection properties - Driver, URL, user, password -->
         <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
         <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/GLASSFISH_MANAGER</property>
-        <property name="hibernate.connection.username">root</property>
-        <property name="hibernate.connection.password">glassfish</property>
+        <property name="hibernate.connection.username">admin</property>
+        <property name="hibernate.connection.password">password</property>
 
         <!-- org.hibernate.HibernateException: No CurrentSessionContext configured! -->
         <property name="hibernate.current_session_context_class">thread</property>
