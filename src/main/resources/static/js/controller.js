@@ -17,6 +17,7 @@ app.controller('scriptTestController', function($scope,$http) {
 app.controller('editorController', function($scope, $http) {
     $scope.headingTitle = "Editor";
     $scope.fileContent = '';
+    $scope.fileName = 'log';
     $scope.getLogFile = function () {
         $http({
             method: 'GET',
@@ -37,7 +38,22 @@ app.controller('editorController', function($scope, $http) {
         element.style.height =  scrollHeight + "px";
     };
 
-    function expand() {
-        $scope.autoExpand('TextArea');
-    }
+
+    var textFile = null;
+    var makeTextFile = function (text) {
+            var data = new Blob([text], {type: 'text/plain'});
+            if (textFile !== null) {
+                window.URL.revokeObjectURL(textFile);
+            }
+
+            textFile = window.URL.createObjectURL(data);
+
+            return textFile;
+        };
+    $scope.buttonClick = function () {
+        var link = document.getElementById('downloadlink');
+        link.href = makeTextFile($scope.fileContent);
+        link.style.display = 'block';
+    };
 });
+
