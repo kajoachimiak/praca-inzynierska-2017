@@ -22,17 +22,33 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.springframework.boot</groupId>-->
+            <!--<artifactId>spring-boot-starter-security</artifactId>-->
+        <!--</dependency>-->
+        <!-- https://mvnrepository.com/artifact/org.webjars/angularjs -->
         <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>angularjs</artifactId>
-            <version>1.4.9</version>
-            <scope>runtime</scope>
+            <version>1.6.1</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.webjars.bower/angular-animate -->
+        <dependency>
+            <groupId>org.webjars.bower</groupId>
+            <artifactId>angular-animate</artifactId>
+            <version>1.6.1</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.webjars.bower/angular-touch -->
+        <dependency>
+            <groupId>org.webjars.bower</groupId>
+            <artifactId>angular-touch</artifactId>
+            <version>1.6.1</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.webjars/bootstrap -->
         <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>bootstrap</artifactId>
-            <version>3.3.6</version>
-            <scope>runtime</scope>
+            <version>3.3.7</version>
         </dependency>
         <dependency>
             <groupId>log4j</groupId>

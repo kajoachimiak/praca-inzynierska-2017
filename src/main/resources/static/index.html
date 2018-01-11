@@ -10,25 +10,44 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Spring boot and Angularjs Tutorial</title>
     <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
     <link rel="stylesheet" href="/css/app.css">
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/trix/0.9.2/trix.css">
+    <!-- Bootstrap core CSS -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <link href="/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link rel="stylesheet" href="/css/signin.css">
 </head>
 <body>
-<h2>Administrator Panel</h2>
-<div class="home-section">
-    <ul class="menu-list">
-        <li><a href="#/scriptTest">Script Test</a></li>
-        <li><a href="#/editor">Editor</a></li>
-    </ul>
-</div>
-<div ng-view></div>
+<div class="container">
+
+    <form class="form-signin">
+        <h2 class="form-signin-heading">Proszę się zalogować</h2>
+        <label for="inputEmail" class="sr-only">Login</label>
+        <input type="text" id="inputEmail" class="form-control" placeholder="Login" required autofocus>
+        <label for="inputPassword" class="sr-only">Hasło</label>
+        <input type="password" id="inputPassword" class="form-control" placeholder="Hasło" required>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Zaloguj</button>
+    </form>
+
+</div> <!-- /container -->
+
+
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<script src="/js/ie10-viewport-bug-workaround.js"></script>
+
 <script src="/webjars/angularjs/1.4.9/angular.js"></script>
 <script src="/webjars/angularjs/1.4.9/angular-resource.js"></script>
 <script src="/webjars/angularjs/1.4.9/angular-route.js"></script>
 <script src="/js/app.js"></script>
+<script src="/js/bootstrap.js"></script>
 <script src="/js/controller.js"></script>
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 </body>
