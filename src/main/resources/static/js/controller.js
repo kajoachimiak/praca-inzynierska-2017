@@ -1,4 +1,4 @@
-app.controller('scriptTestController', function($scope,$http) {
+app.controller('scriptTestController', function ($scope, $http) {
     $scope.headingTitle = "Script Test";
     $scope.runScript = function () {
         $http({
@@ -13,8 +13,32 @@ app.controller('scriptTestController', function($scope,$http) {
         });
     }
 });
+app.controller('loginController', function ($scope, $http) {
+    console.log("Starting loginController");
+    $scope.loginData = '';
+    $scope.passwordData = '';
 
-app.controller('editorController', function($scope, $http) {
+    $scope.submitLoginForm = function () {
+        console.log("Starting submitLoginForm");
+        $scope.submitFormData = JSON.stringify({
+            login: $scope.loginData,
+            password: $scope.passwordData
+        });
+        $http({
+            method: 'POST',
+            url: '/authenticate',
+            headers: { 'Content-Type': 'application/json; charset=UTF-8' },
+            data: $scope.submitFormData
+        }).then(function successCallback(response) {
+            // this callback will be called asynchronously
+            // when the response is available
+        }, function errorCallback(response) {
+            // called asynchronously if an error occurs
+            // or server returns response with an error status.
+        });
+    };
+});
+app.controller('editorController', function ($scope, $http) {
     $scope.headingTitle = "Editor";
     $scope.fileContent = '';
     $scope.fileName = 'log';
@@ -32,24 +56,24 @@ app.controller('editorController', function($scope, $http) {
             // or server returns response with an error status.
         });
     };
-    $scope.autoExpand = function(e) {
+    $scope.autoExpand = function (e) {
         var element = typeof e === 'object' ? e.target : document.getElementById(e);
-        var scrollHeight = element.scrollHeight -60; // replace 60 by the sum of padding-top and padding-bottom
-        element.style.height =  scrollHeight + "px";
+        var scrollHeight = element.scrollHeight - 60; // replace 60 by the sum of padding-top and padding-bottom
+        element.style.height = scrollHeight + "px";
     };
 
 
     var textFile = null;
     var makeTextFile = function (text) {
-            var data = new Blob([text], {type: 'text/plain'});
-            if (textFile !== null) {
-                window.URL.revokeObjectURL(textFile);
-            }
+        var data = new Blob([text], {type: 'text/plain'});
+        if (textFile !== null) {
+            window.URL.revokeObjectURL(textFile);
+        }
 
-            textFile = window.URL.createObjectURL(data);
+        textFile = window.URL.createObjectURL(data);
 
-            return textFile;
-        };
+        return textFile;
+    };
     $scope.buttonClick = function () {
         var link = document.getElementById('downloadlink');
         link.href = makeTextFile($scope.fileContent);

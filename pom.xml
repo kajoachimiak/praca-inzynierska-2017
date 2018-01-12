@@ -10,6 +10,7 @@
     <properties>
         <springframework.version>4.3.1.RELEASE</springframework.version>
         <log4j.version>1.2.17</log4j.version>
+        <angular.version>1.4.9</angular.version>
     </properties>
 
     <parent>
@@ -22,27 +23,35 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-        <!--<dependency>-->
-            <!--<groupId>org.springframework.boot</groupId>-->
-            <!--<artifactId>spring-boot-starter-security</artifactId>-->
-        <!--</dependency>-->
+        <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-security -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+            <version>1.5.9.RELEASE</version>
+        </dependency>
         <!-- https://mvnrepository.com/artifact/org.webjars/angularjs -->
         <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>angularjs</artifactId>
-            <version>1.6.1</version>
+            <version>${angular.version}</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.webjars.bower/angular-animate -->
         <dependency>
             <groupId>org.webjars.bower</groupId>
             <artifactId>angular-animate</artifactId>
-            <version>1.6.1</version>
+            <version>${angular.version}</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.webjars.bower/angular-cookies -->
+        <dependency>
+            <groupId>org.webjars.bower</groupId>
+            <artifactId>angular-cookies</artifactId>
+            <version>${angular.version}</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.webjars.bower/angular-touch -->
         <dependency>
             <groupId>org.webjars.bower</groupId>
             <artifactId>angular-touch</artifactId>
-            <version>1.6.1</version>
+            <version>${angular.version}</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.webjars/bootstrap -->
         <dependency>

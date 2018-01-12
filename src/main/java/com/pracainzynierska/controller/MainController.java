@@ -4,11 +4,13 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.pracainzynierska.controller.service.ShellRunnerService;
 import com.pracainzynierska.model.daoservice.SzablonyService;
+import com.pracainzynierska.model.dto.UczestnikDTO;
 import com.pracainzynierska.model.entities.Szablony;
 import jdk.nashorn.internal.runtime.JSONFunctions;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -57,5 +59,11 @@ public class MainController {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("log", result.toString());
         return new Gson().toJson(jsonObject);
+    }
+    @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
+    public String authenticate(@RequestBody UczestnikDTO uczestnik){
+        System.out.println(uczestnik.getLogin());
+        System.out.println(uczestnik.getPassword());
+        return "index";
     }
 }
