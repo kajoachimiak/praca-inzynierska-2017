@@ -11,6 +11,7 @@ public class Uczestnik {
     private Integer id;
     private String opis;
     private String login;
+    private String haslo;
     private Grupa grupa;
 
     @Id
@@ -32,6 +33,16 @@ public class Uczestnik {
 
     public void setOpis(String opis) {
         this.opis = opis;
+    }
+
+    @Basic
+    @Column(name = "HASLO")
+    public String getHaslo() {
+        return haslo;
+    }
+
+    public void setHaslo(String haslo) {
+        this.haslo = haslo;
     }
 
     @Basic
