@@ -19,6 +19,9 @@ public class UczestnikDAOImpl implements UczestnikDAO {
     private static final Logger LOG = Logger.getLogger(UczestnikDAOImpl.class);
     private SessionFactory sessionFactory;
 
+    public UczestnikDAOImpl() {
+    }
+
     public UczestnikDAOImpl(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }

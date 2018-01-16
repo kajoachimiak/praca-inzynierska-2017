@@ -2,6 +2,7 @@ package com.pracainzynierska.model.daoservice;
 
 import com.pracainzynierska.model.dao.UczestnikDAO;
 import com.pracainzynierska.model.dao.impl.UczestnikDAOImpl;
+import com.pracainzynierska.model.entities.Rola;
 import com.pracainzynierska.model.entities.Uczestnik;
 import com.pracainzynierska.util.HibernateUtil;
 import org.springframework.security.core.GrantedAuthority;
@@ -31,7 +32,7 @@ public class UczestnikService {
     public UserDetails loadUserByLogin(final String login) throws UsernameNotFoundException {
         Uczestnik uczestnik = uczestnikDAO.findByLogin(login);
         List<GrantedAuthority> authorities =
-                buildUserAuthority(uczestnik.getUserRole());
+                buildUserAuthority(uczestnik.getRola());
         return  buildUserForAuthentication(uczestnik, authorities);
     }
 
@@ -40,13 +41,13 @@ public class UczestnikService {
         return new User(uczestnik.getLogin(), uczestnik.getHaslo(), true, true, true, true, authorities);
     }
 
-    private List<GrantedAuthority> buildUserAuthority(Set<UserRole> userRoles) {
+    private List<GrantedAuthority> buildUserAuthority(Set<Rola> userRoles) {
 
         Set<GrantedAuthority> setAuths = new HashSet<GrantedAuthority>();
 
         // Build user's authorities
-        for (UserRole userRole : userRoles) {
-            setAuths.add(new SimpleGrantedAuthority(userRole.getRole()));
+        for (Rola userRole : userRoles) {
+            setAuths.add(new SimpleGrantedAuthority(userRole.getNazwa()));
         }
 
         List<GrantedAuthority> Result = new ArrayList<GrantedAuthority>(setAuths);

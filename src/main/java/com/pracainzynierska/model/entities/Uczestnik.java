@@ -1,6 +1,8 @@
 package com.pracainzynierska.model.entities;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by karol on 06.12.17.
@@ -13,6 +15,7 @@ public class Uczestnik {
     private String login;
     private String haslo;
     private Grupa grupa;
+    private Set<Rola> rola = new HashSet<Rola>(0);;
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -65,14 +68,25 @@ public class Uczestnik {
         this.grupa = grupa;
     }
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "uczestnik", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    public Set<Rola> getRola() {
+        return this.rola;
+    }
+
+    public void setRola(Set<Rola> rola) {
+        this.rola = rola;
+    }
+
     public Uczestnik() {
     }
 
-    public Uczestnik(Integer id, String opis, String login, Grupa grupa) {
+    public Uczestnik(Integer id, String opis, String login, String haslo, Grupa grupa, Set<Rola> rola) {
         this.id = id;
         this.opis = opis;
         this.login = login;
+        this.haslo = haslo;
         this.grupa = grupa;
+        this.rola = rola;
     }
 
     @Override
@@ -82,18 +96,22 @@ public class Uczestnik {
 
         Uczestnik uczestnik = (Uczestnik) o;
 
-        if (!id.equals(uczestnik.id)) return false;
+        if (id != null ? !id.equals(uczestnik.id) : uczestnik.id != null) return false;
         if (opis != null ? !opis.equals(uczestnik.opis) : uczestnik.opis != null) return false;
         if (login != null ? !login.equals(uczestnik.login) : uczestnik.login != null) return false;
-        return grupa != null ? grupa.equals(uczestnik.grupa) : uczestnik.grupa == null;
+        if (haslo != null ? !haslo.equals(uczestnik.haslo) : uczestnik.haslo != null) return false;
+        if (grupa != null ? !grupa.equals(uczestnik.grupa) : uczestnik.grupa != null) return false;
+        return rola != null ? rola.equals(uczestnik.rola) : uczestnik.rola == null;
     }
 
     @Override
     public int hashCode() {
-        int result = id.hashCode();
+        int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (opis != null ? opis.hashCode() : 0);
         result = 31 * result + (login != null ? login.hashCode() : 0);
+        result = 31 * result + (haslo != null ? haslo.hashCode() : 0);
         result = 31 * result + (grupa != null ? grupa.hashCode() : 0);
+        result = 31 * result + (rola != null ? rola.hashCode() : 0);
         return result;
     }
 }

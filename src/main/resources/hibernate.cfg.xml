@@ -17,5 +17,6 @@
         <mapping class="com.pracainzynierska.model.entities.Przedmiot"/>
         <mapping class="com.pracainzynierska.model.entities.Szablony"/>
         <mapping class="com.pracainzynierska.model.entities.Uczestnik"/>
+        <mapping class="com.pracainzynierska.model.entities.Rola"/>
     </session-factory>
 </hibernate-configuration>
