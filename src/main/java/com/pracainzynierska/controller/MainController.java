@@ -55,10 +55,4 @@ public class MainController {
         jsonObject.addProperty("log", result.toString());
         return new Gson().toJson(jsonObject);
     }
-    @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
-    public String authenticate(@RequestBody UczestnikDTO uczestnik){
-        System.out.println(uczestnik.getLogin());
-        System.out.println(uczestnik.getPassword());
-        return "editor";
-    }
 }

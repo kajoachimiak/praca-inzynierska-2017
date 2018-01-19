@@ -13,32 +13,55 @@ app.controller('scriptTestController', function ($scope, $http) {
         });
     }
 });
-app.controller('loginController', function ($scope, $http) {
+app.controller('loginController', function ($scope, $http, $location) {
     console.log("Starting loginController");
-    $scope.loginData = '';
-    $scope.passwordData = '';
 
+    $scope.showError = false;
+
+    $scope.vm = {
+        submitted: false,
+        errorMessages: []
+    };
+    $scope.credentials = {};
     $scope.submitLoginForm = function () {
+
         console.log("Starting submitLoginForm");
-        $scope.submitFormData = JSON.stringify({
-            login: $scope.loginData,
-            password: $scope.passwordData
-        });
+        $scope.vm.submitted = true;
+
+        // if ($scope.form.$invalid) {
+        //     return;
+        // }
+        console.log($scope.credentials);
+        $scope.preparePostData = function () {
+            return 'username=' + $scope.credentials.username + '&password=' + $scope.credentials.password;
+        };
+        var postData = $scope.preparePostData();
         $http({
             method: 'POST',
             url: '/authenticate',
-            headers: { 'Content-Type': 'application/json; charset=UTF-8' },
-            data: $scope.submitFormData
-        }).then(function successCallback(response) {
-            // this callback will be called asynchronously
-            // when the response is available
-        }, function errorCallback(response) {
-            // called asynchronously if an error occurs
-            // or server returns response with an error status.
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+                "X-Login-Ajax-call": 'true'
+            },
+            data: postData
+                // $.param($scope.credentials)
+        }).then(function(response) {
+            console.log(response);
+            if (angular.equals(response.data, 'ok')) {
+                console.log('log in ok');
+                $scope.showError = false;
+                $location.path('/editor');
+            }else {
+                console.log('log in error');
+                $scope.showError = true;
+                $scope.vm.errorMessages = [];
+                $scope.vm.errorMessages.push({description: 'Nieprawidłowy login lub hasło!'});
+            }
         });
     };
 });
 app.controller('editorController', function ($scope, $http) {
+    console.log('Starting editorController');
     $scope.headingTitle = "Editor";
     $scope.fileContent = '';
     $scope.fileName = 'log';

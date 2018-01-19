@@ -1,0 +1,17 @@
+<div class="alert-danger" ng-show="showError" ng-cloak>
+    <!--<img class="error-icon" src="/resources/img/error-icon.png">-->
+    <div class="messages-group">
+        <div ng-repeat="error in vm.errorMessages">{{error.description}}</div>
+    </div>
+</div>
+<form class="form-signin" role="form" ng-submit="submitLoginForm()">
+
+    <h2 class="form-signin-heading">Proszę się zalogować</h2>
+    <label for="username" class="sr-only">Login</label>
+    <input type="text" ng-model="credentials.username" id="username" name="username" class="form-control"
+           placeholder="Login" required autofocus>
+    <label for="password" class="sr-only">Hasło</label>
+    <input type="password" ng-model="credentials.password" id="password" name="password" class="form-control"
+           placeholder="Hasło" required>
+    <button class="btn btn-lg btn-primary btn-block" type="submit">Zaloguj</button>
+</form>

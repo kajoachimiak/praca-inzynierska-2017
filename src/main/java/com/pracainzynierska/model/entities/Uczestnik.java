@@ -9,7 +9,14 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "UCZESTNIK")
+@NamedQueries({
+        @NamedQuery(
+                name = Uczestnik.FIND_BY_LOGIN,
+                query = "select u from Uczestnik u where u.login = :login"
+        )
+})
 public class Uczestnik {
+    public static final String FIND_BY_LOGIN = "UCZESTNIK.findByLogin";
     private Integer id;
     private String opis;
     private String login;
