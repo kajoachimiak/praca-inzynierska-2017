@@ -1,4 +1,4 @@
-var app = angular.module('app', ['ngRoute', 'ngCookies', 'ngResource', 'ui.bootstrap']);
+var app = angular.module('app', ['ngRoute', 'ngCookies', 'ngResource', 'ui.bootstrap', 'ngStorage']);
 app.config(function ($routeProvider) {
     $routeProvider
         .when('/home', {
@@ -7,7 +7,14 @@ app.config(function ($routeProvider) {
         })
         .when('/editor', {
             templateUrl: '/views/editor.html'
-        }).otherwise(
+        })
+        .when('/scriptTest', {
+            templateUrl: '/views/scriptTest.html'
+        })
+        .when('/logout', {
+            redirectTo: '/home'
+        })
+        .otherwise(
         { redirectTo: '/home'}
     );
 

@@ -92,11 +92,11 @@
             <artifactId>jquery</artifactId>
             <version>3.2.1</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.webjars/angular-ui-router -->
+        <!-- https://mvnrepository.com/artifact/org.webjars/ngStorage -->
         <dependency>
             <groupId>org.webjars</groupId>
-            <artifactId>angular-ui-router</artifactId>
-            <version>1.0.3</version>
+            <artifactId>ngStorage</artifactId>
+            <version>0.3.11</version>
         </dependency>
     </dependencies>
 

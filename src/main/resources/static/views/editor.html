@@ -1,10 +1,13 @@
-<div class="section" ng-controller="editorController">
+<div class="section" ng-controller="editorController" >
     <h3>{{headingTitle}}</h3>
-    <div ng-init="getLogFile()">
+    <div>
         File Content:<br> <textarea class="big-textarea"  ng-keyup="autoExpand($event)"  ng-model = "fileContent"></textarea>
     </div>
     <!--<textarea id="fileName"></textarea>-->
     <input type="text" ng-model="fileName"/>
     <button ng-click="buttonClick()">Create file</button>
     <a download="{{fileName}}" id="downloadlink" style="display: none">Download</a>
+
+    <button ng-click="logout()">Wyloguj</button>
+
 </div>

@@ -21,11 +21,11 @@ import java.io.IOException;
  * to the existing behaviour for none-ajax login attempts.
  *
  */
-public class AjaxAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
-
+public class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
+    private static final String AJAX_HEADER_TRUE = "true";
     private AuthenticationSuccessHandler defaultHandler;
 
-    public AjaxAuthenticationSuccessHandler(AuthenticationSuccessHandler defaultHandler) {
+    public CustomAuthenticationSuccessHandler(AuthenticationSuccessHandler defaultHandler) {
         this.defaultHandler = defaultHandler;
     }
 
@@ -34,9 +34,8 @@ public class AjaxAuthenticationSuccessHandler implements AuthenticationSuccessHa
                                         HttpServletResponse response,
                                         Authentication authentication) throws IOException, ServletException {
 
-        if ("true".equals(request.getHeader("X-Login-Ajax-call"))) {
-            response.getWriter().print("ok");
-            response.getWriter().flush();
+        if (AJAX_HEADER_TRUE.equals(request.getHeader("X-Login-Ajax-call"))) {
+            response.setStatus(HttpServletResponse.SC_OK);
         }
         else {
             defaultHandler.onAuthenticationSuccess(request, response, authentication);

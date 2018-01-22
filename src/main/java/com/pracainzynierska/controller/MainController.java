@@ -8,6 +8,8 @@ import com.pracainzynierska.model.dto.UczestnikDTO;
 import com.pracainzynierska.model.entities.Szablony;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +20,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.security.Principal;
 import java.util.stream.Collectors;
 
 
@@ -53,6 +56,14 @@ public class MainController {
 
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("log", result.toString());
+        return new Gson().toJson(jsonObject);
+    }
+
+    @RequestMapping(value = "/userDetails", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public String getCurrentUserDetails(Principal principal){
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("username", principal.getName());
         return new Gson().toJson(jsonObject);
     }
 }
