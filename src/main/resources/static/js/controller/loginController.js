@@ -1,22 +1,23 @@
-app.controller('loginController', function ($scope, $http, $location,$localStorage) {
+app.controller('loginController', function ($scope, $http, $location, $localStorage) {
     console.log("Starting loginController");
 
-    $scope.showLogInError = false;
-    // var showNotLoggedInError = $localStorage.showNotLoggedInError;
-
-    $scope.vm = {
-        submitted: false,
-        errorMessages: []
-    };
     $scope.credentials = {};
+
+    $scope.errorMessages = [];
+    $scope.showLogInError = false;
+
+    if(angular.isDefined($localStorage.notLoggedInDesc)){
+        $scope.showNotLoggedInError = $localStorage.showNotLoggedInError;
+    }else {
+        $scope.showNotLoggedInError = false;
+    }
+    console.log("showNotLoggedInError " + $localStorage.showNotLoggedInError);
+    console.log("errorMessages " + $localStorage.notLoggedInDesc);
+
+    $scope.errorMessages.push({notLoggedInDesc: $localStorage.notLoggedInDesc})
     $scope.submitLoginForm = function () {
 
         console.log("Starting submitLoginForm");
-        $scope.vm.submitted = true;
-
-        // if ($scope.form.$invalid) {
-        //     return;
-        // }
         console.log($scope.credentials);
         $scope.preparePostData = function () {
             return 'username=' + $scope.credentials.username + '&password=' + $scope.credentials.password;
@@ -40,8 +41,7 @@ app.controller('loginController', function ($scope, $http, $location,$localStora
             console.log(response);
             console.log('log in error');
             $scope.showLogInError = true;
-            $scope.vm.errorMessages = [];
-            $scope.vm.errorMessages.push({description: 'Nieprawidłowy login lub hasło!'});
+            $scope.errorMessages.push({logInErrorDesc: 'Nieprawidłowy login lub hasło!'});
         });
     };
 });

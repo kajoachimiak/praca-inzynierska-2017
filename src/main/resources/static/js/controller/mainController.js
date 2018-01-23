@@ -24,6 +24,7 @@ app.controller('mainController', function ($scope, $location, sessionService, $h
         }, function () {
             console.log('callback error');
             $localStorage.showNotLoggedInError = true;
+            $localStorage.notLoggedInDesc=  'Nie jesteś zalogowany!';
             $location.path('/home');
         }
     )

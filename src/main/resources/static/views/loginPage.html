@@ -1,11 +1,11 @@
-<div class="alert-danger" ng-show="showLogInError" ng-cloak>
+<div class="alert alert-danger" ng-show="showLogInError" ng-cloak>
     <div class="messages-group">
-        <div ng-repeat="error in vm.errorMessages">{{error.description}}</div>
+        <div ng-repeat="error in errorMessages">{{error.logInErrorDesc}}</div>
     </div>
 </div>
-<div class="alert-danger" ng-show="showNotLoggedInError" ng-cloak>
+<div class="alert alert-danger" ng-show="showNotLoggedInError" ng-cloak>
     <div class="messages-group">
-        <div >Nie jesteś zalogowany!</div>
+        <div ng-repeat="error in errorMessages">{{error.notLoggedInDesc}}</div>
     </div>
 </div>
 <form class="form-signin" role="form" ng-submit="submitLoginForm()">
