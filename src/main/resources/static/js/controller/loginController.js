@@ -1,8 +1,8 @@
-app.controller('loginController', function ($scope, $http, $location,sessionService) {
+app.controller('loginController', function ($scope, $http, $location,$localStorage) {
     console.log("Starting loginController");
 
     $scope.showLogInError = false;
-    $scope.showNotLoggedInError = false;
+    // var showNotLoggedInError = $localStorage.showNotLoggedInError;
 
     $scope.vm = {
         submitted: false,
@@ -35,7 +35,7 @@ app.controller('loginController', function ($scope, $http, $location,sessionServ
             console.log(response);
             console.log('log in ok');
             $scope.showLogInError = false;
-            $location.path('/editor');
+            $location.path('/mainPage');
         }, function errorCallback(response) {
             console.log(response);
             console.log('log in error');

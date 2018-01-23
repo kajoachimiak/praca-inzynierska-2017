@@ -63,7 +63,14 @@ public class MainController {
     @ResponseBody
     public String getCurrentUserDetails(Principal principal){
         JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("username", principal.getName());
+        String username;
+        try {
+            username = principal.getName();
+        }catch (NullPointerException e){
+            username = null;
+            LOG.error("Requested principal does not exist. User not authorized.", e);
+        }
+        jsonObject.addProperty("username", username);
         return new Gson().toJson(jsonObject);
     }
 }

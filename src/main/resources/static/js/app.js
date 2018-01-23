@@ -14,6 +14,9 @@ app.config(function ($routeProvider) {
         .when('/logout', {
             redirectTo: '/home'
         })
+        .when('/mainPage', {
+            templateUrl: '/views/mainPage.html'
+        })
         .otherwise(
         { redirectTo: '/home'}
     );
