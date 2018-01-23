@@ -3,6 +3,7 @@ app.controller('mainController', function ($scope, $location, sessionService, $h
     sessionService.isUserAuthorized().then(
         function () {
             console.log('callback success');
+            $localStorage.notLoggedIn = false;
 
             $scope.logout = function () {
                 $http({
@@ -23,8 +24,7 @@ app.controller('mainController', function ($scope, $location, sessionService, $h
             };
         }, function () {
             console.log('callback error');
-            $localStorage.showNotLoggedInError = true;
-            $localStorage.notLoggedInDesc=  'Nie jesteś zalogowany!';
+            $localStorage.notLoggedIn = true;
             $location.path('/home');
         }
     )

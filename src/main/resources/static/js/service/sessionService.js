@@ -37,22 +37,18 @@ app.service('sessionService', function ($localStorage, $http, $q) {
                         && response.data.username && !angular.equals(response.data.username, '')) {
                         sessionService.saveUserDetails(response.data.username);
                         console.log('User details saved in local storage');
-                        $localStorage.showNotLoggedInError = false;
                         deferred.resolve();
                     }else {
                         console.log("User loaded form server is empty or undefined. Result is: " + response);
-                        $localStorage.showNotLoggedInError = true;
                         deferred.reject();
                     }
                 },
                 function (response) {
                     console.log("Failed to load user from server. Result is: " + response);
-                    $localStorage.showNotLoggedInError = true;
                     deferred.reject();
                 }
             );
         } else {
-            $localStorage.showNotLoggedInError = false;
             console.log('User is authorized');
             deferred.resolve();
         }

@@ -2,21 +2,12 @@ app.controller('loginController', function ($scope, $http, $location, $localStor
     console.log("Starting loginController");
 
     $scope.credentials = {};
-
     $scope.errorMessages = [];
+    $scope.showNotLoggedInError = $localStorage.notLoggedIn;
+    $scope.notLoggedInDesc = 'Nie jesteś zalogowany!';
     $scope.showLogInError = false;
 
-    if(angular.isDefined($localStorage.notLoggedInDesc)){
-        $scope.showNotLoggedInError = $localStorage.showNotLoggedInError;
-    }else {
-        $scope.showNotLoggedInError = false;
-    }
-    console.log("showNotLoggedInError " + $localStorage.showNotLoggedInError);
-    console.log("errorMessages " + $localStorage.notLoggedInDesc);
-
-    $scope.errorMessages.push({notLoggedInDesc: $localStorage.notLoggedInDesc})
     $scope.submitLoginForm = function () {
-
         console.log("Starting submitLoginForm");
         console.log($scope.credentials);
         $scope.preparePostData = function () {
@@ -31,11 +22,11 @@ app.controller('loginController', function ($scope, $http, $location, $localStor
                 'X-Login-Ajax-call': 'true'
             },
             data: postData
-            // $.param($scope.credentials)
         }).then(function successCallback(response) {
             console.log(response);
             console.log('log in ok');
             $scope.showLogInError = false;
+            $scope.showNotLoggedInError = false;
             $location.path('/mainPage');
         }, function errorCallback(response) {
             console.log(response);
