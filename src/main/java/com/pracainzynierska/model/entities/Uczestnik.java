@@ -2,6 +2,7 @@ package com.pracainzynierska.model.entities;
 
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -23,6 +24,7 @@ public class Uczestnik {
     private String haslo;
     private Grupa grupa;
     private Rola rola;
+    private List<Szablony> szablonyList;
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -83,6 +85,16 @@ public class Uczestnik {
 
     public void setRola(Rola rola) {
         this.rola = rola;
+    }
+
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "uczestnik", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    public List<Szablony> getSzablonyList() {
+        return szablonyList;
+    }
+
+    public void setSzablonyList(List<Szablony> szablonyList) {
+        this.szablonyList = szablonyList;
     }
 
     public Uczestnik() {

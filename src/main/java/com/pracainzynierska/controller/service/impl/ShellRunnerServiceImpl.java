@@ -1,9 +1,9 @@
-package com.pracainzynierska.controller.service;
+package com.pracainzynierska.controller.service.impl;
 
+import com.pracainzynierska.controller.service.ShellRunnerService;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;

@@ -19,14 +19,14 @@ public class SzablonyDAOImpl implements SzablonyDAO {
 
     @Override
     public Szablony getById(Integer szablonyId) {
-        Szablony szablony = new Szablony();
+        Szablony template = new Szablony();
         try {
             Session session = this.sessionFactory.openSession();
             session.beginTransaction();
-            szablony = (Szablony) session.get(Szablony.class, szablonyId);
+            template = (Szablony) session.get(Szablony.class, szablonyId);
         }catch (Exception e){
             LOG.error("Error accessing database",e);
         }
-        return szablony;
+        return template;
     }
 }

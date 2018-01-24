@@ -14,6 +14,7 @@ public class Edycja {
     private String opis;
     private Przedmiot przedmiot;
     private List<Grupa> grupaList;
+    private List<Szablony> szablonyList;
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -63,6 +64,16 @@ public class Edycja {
 
     public void setGrupaList(List<Grupa> grupaList) {
         this.grupaList = grupaList;
+    }
+
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "edycja", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    public List<Szablony> getSzablonyList() {
+        return szablonyList;
+    }
+
+    public void setSzablonyList(List<Szablony> szablonyList) {
+        this.szablonyList = szablonyList;
     }
 
     public Edycja() {

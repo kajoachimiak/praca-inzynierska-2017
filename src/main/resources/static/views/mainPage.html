@@ -1,19 +1,22 @@
 <div ng-controller="mainController">
-    <!--<script type="text/ng-template" id="nodes_renderer.html">-->
-        <!--<div ui-tree-handle class="tree-node tree-node-content">-->
-            <!--<a class="btn btn-success btn-xs" ng-if="course && course.nodes.length > 0" data-nodrag ng-click="toggle(this)"><span-->
-                    <!--class="glyphicon"-->
-                    <!--ng-class="{-->
-          <!--'glyphicon-chevron-right': collapsed,-->
-          <!--'glyphicon-chevron-down': !collapsed-->
-        <!--}"></span></a>-->
-            <!--{{node.title}}-->
-        <!--</div>-->
-        <!--<ol ui-tree-nodes="" ng-model="node.nodes" ng-class="{hidden: collapsed}">-->
-            <!--<li ng-repeat="node in node.nodes" ui-tree-node ng-include="'nodes_renderer.html'">-->
-            <!--</li>-->
-        <!--</ol>-->
-    <!--</script>-->
+    <script type="text/ng-template" id="nodes_renderer.html">
+        <div ui-tree-handle class="tree-node tree-node-content">
+            <a class="btn btn-success btn-xs" ng-if="list.list && list.list.length > 0" data-nodrag
+               ng-click="toggle(this)"><span
+                    class="glyphicon"
+                    ng-class="{
+          'glyphicon-chevron-right': collapsed,
+          'glyphicon-chevron-down': !collapsed
+        }"></span></a>
+            <a class="btn btn-success btn-xs" data-nodrag ng-click="loadTemplatesForNode(list.type)">
+                {{list.name}}
+            </a>
+        </div>
+        <ol ui-tree-nodes="" ng-model="list.list" ng-class="{hidden: collapsed}">
+            <li ng-repeat="list in list.list" ui-tree-node ng-include="'nodes_renderer.html'">
+            </li>
+        </ol>
+    </script>
 
     <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container-fluid">
@@ -25,11 +28,13 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#">Project name</a>
+                <a class="navbar-brand">Project name</a>
             </div>
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav navbar-right">
-                    <li><button class="btn btn-primary" ng-click="logout()">Wyloguj</button> </li>
+                    <li>
+                        <button class="btn btn-primary" ng-click="logout()">Wyloguj</button>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -37,11 +42,11 @@
 
     <div class="container-fluid">
         <div class="row">
-            <div class="col-sm-3 col-md-2 sidebar" ui-tree id="tree-root">
-                <button ng-click="expandAll()">Expand all</button>
-                <button ng-click="collapseAll()">Collapse all</button>
-                <ol  ui-tree-nodes ng-model="courseList">
-                    <!--<li ng-repeat="course in courseList" ui-tree-node ng-include="'nodes_renderer.html'"></li>-->
+            <div class="col-sm-3 col-md-2 sidebar" ui-tree data-drag-enabled="false" id="tree-root">
+                <button class="btn btn-info btn-md" ng-click="expandAll()">Rozwiń</button>
+                <button class="btn btn-info btn-md" ng-click="collapseAll()">Zwiń</button>
+                <ol ui-tree-nodes ng-model="treeData">
+                    <li ng-repeat="list in treeData" ui-tree-node ng-include="'nodes_renderer.html'"></li>
                 </ol>
             </div>
             <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">

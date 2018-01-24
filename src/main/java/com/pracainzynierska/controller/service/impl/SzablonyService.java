@@ -1,4 +1,4 @@
-package com.pracainzynierska.controller.service;
+package com.pracainzynierska.controller.service.impl;
 
 import com.pracainzynierska.model.dao.SzablonyDAO;
 import com.pracainzynierska.model.entities.Szablony;

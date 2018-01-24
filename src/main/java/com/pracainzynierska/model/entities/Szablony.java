@@ -9,9 +9,10 @@ import javax.persistence.*;
 @Table(name = "SZABLONY")
 public class Szablony{
     private Integer id;
-    private Integer uczestnikId;
-    private Integer grupaId;
-    private Integer edycjaId;
+    private Przedmiot przedmiot;
+    private Uczestnik uczestnik;
+    private Grupa grupa;
+    private Edycja edycja;
     private String nazwa;
     private String tresc;
     private String opis;
@@ -27,34 +28,44 @@ public class Szablony{
         this.id = id;
     }
 
-    @Basic
-    @Column(name = "UCZESTNIK_ID")
-    public Integer getUczestnikId() {
-        return uczestnikId;
+    @JoinColumn(name = "PRZEDMIOT_ID", referencedColumnName = "ID")
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    public Przedmiot getPrzedmiot() {
+        return przedmiot;
     }
 
-    public void setUczestnikId(Integer uczestnikId) {
-        this.uczestnikId = uczestnikId;
+    public void setPrzedmiot(Przedmiot przedmiot) {
+        this.przedmiot = przedmiot;
     }
 
-    @Basic
-    @Column(name = "GRUPA_ID")
-    public Integer getGrupaId() {
-        return grupaId;
+    @JoinColumn(name = "UCZESTNIK_ID", referencedColumnName = "ID")
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    public Uczestnik getUczestnik() {
+        return uczestnik;
     }
 
-    public void setGrupaId(Integer grupaId) {
-        this.grupaId = grupaId;
+    public void setUczestnik(Uczestnik uczestnikId) {
+        this.uczestnik = uczestnikId;
     }
 
-    @Basic
-    @Column(name = "EDYCJA_ID")
-    public Integer getEdycjaId() {
-        return edycjaId;
+    @JoinColumn(name = "GRUPA_ID", referencedColumnName = "ID")
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    public Grupa getGrupa() {
+        return grupa;
     }
 
-    public void setEdycjaId(Integer edycjaId) {
-        this.edycjaId = edycjaId;
+    public void setGrupa(Grupa grupaId) {
+        this.grupa = grupaId;
+    }
+
+    @JoinColumn(name = "EDYCJA_ID", referencedColumnName = "ID")
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    public Edycja getEdycja() {
+        return edycja;
+    }
+
+    public void setEdycja(Edycja edycjaId) {
+        this.edycja = edycjaId;
     }
 
     @Basic
@@ -90,10 +101,13 @@ public class Szablony{
     public Szablony() {
     }
 
-    public Szablony(Integer uczestnikId, Integer grupaId, Integer edycjaId, String nazwa, String tresc, String opis) {
-        this.uczestnikId = uczestnikId;
-        this.grupaId = grupaId;
-        this.edycjaId = edycjaId;
+    public Szablony(Integer id, Przedmiot przedmiot, Uczestnik uczestnik,
+                    Grupa grupa, Edycja edycja, String nazwa, String tresc, String opis) {
+        this.id = id;
+        this.przedmiot = przedmiot;
+        this.uczestnik = uczestnik;
+        this.grupa = grupa;
+        this.edycja = edycja;
         this.nazwa = nazwa;
         this.tresc = tresc;
         this.opis = opis;
@@ -107,10 +121,10 @@ public class Szablony{
         Szablony szablony = (Szablony) o;
 
         if (id != null ? !id.equals(szablony.id) : szablony.id != null) return false;
-        if (uczestnikId != null ? !uczestnikId.equals(szablony.uczestnikId) : szablony.uczestnikId != null)
+        if (uczestnik != null ? !uczestnik.equals(szablony.uczestnik) : szablony.uczestnik != null)
             return false;
-        if (grupaId != null ? !grupaId.equals(szablony.grupaId) : szablony.grupaId != null) return false;
-        if (edycjaId != null ? !edycjaId.equals(szablony.edycjaId) : szablony.edycjaId != null) return false;
+        if (grupa != null ? !grupa.equals(szablony.grupa) : szablony.grupa != null) return false;
+        if (edycja != null ? !edycja.equals(szablony.edycja) : szablony.edycja != null) return false;
         if (nazwa != null ? !nazwa.equals(szablony.nazwa) : szablony.nazwa != null) return false;
         if (tresc != null ? !tresc.equals(szablony.tresc) : szablony.tresc != null) return false;
         if (opis != null ? !opis.equals(szablony.opis) : szablony.opis != null) return false;
@@ -121,9 +135,9 @@ public class Szablony{
     @Override
     public int hashCode() {
         int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (uczestnikId != null ? uczestnikId.hashCode() : 0);
-        result = 31 * result + (grupaId != null ? grupaId.hashCode() : 0);
-        result = 31 * result + (edycjaId != null ? edycjaId.hashCode() : 0);
+        result = 31 * result + (uczestnik != null ? uczestnik.hashCode() : 0);
+        result = 31 * result + (grupa != null ? grupa.hashCode() : 0);
+        result = 31 * result + (edycja != null ? edycja.hashCode() : 0);
         result = 31 * result + (nazwa != null ? nazwa.hashCode() : 0);
         result = 31 * result + (tresc != null ? tresc.hashCode() : 0);
         result = 31 * result + (opis != null ? opis.hashCode() : 0);

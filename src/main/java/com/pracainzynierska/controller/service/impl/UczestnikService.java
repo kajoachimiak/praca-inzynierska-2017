@@ -1,17 +1,17 @@
-package com.pracainzynierska.controller.service;
+package com.pracainzynierska.controller.service.impl;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.pracainzynierska.controller.helper.JsonBuilderHelper;
-import com.pracainzynierska.controller.helper.jsonObjects.Course;
-import com.pracainzynierska.controller.helper.jsonObjects.Edition;
-import com.pracainzynierska.controller.helper.jsonObjects.Group;
-import com.pracainzynierska.controller.helper.jsonObjects.User;
+import com.pracainzynierska.controller.helper.jsonObjects.treeData.TreeData;
+import com.pracainzynierska.controller.helper.jsonObjects.treeData.Course;
+import com.pracainzynierska.controller.helper.jsonObjects.treeData.Edition;
+import com.pracainzynierska.controller.helper.jsonObjects.treeData.Group;
+import com.pracainzynierska.controller.helper.jsonObjects.treeData.User;
 import com.pracainzynierska.model.dao.UczestnikDAO;
 import com.pracainzynierska.model.entities.Edycja;
 import com.pracainzynierska.model.entities.Grupa;
 import com.pracainzynierska.model.entities.Przedmiot;
 import com.pracainzynierska.model.entities.Uczestnik;
+import com.pracainzynierska.model.enums.NodeType;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -47,26 +47,5 @@ public class UczestnikService {
             LOG.error("Requested principal does not exist. User not authorized.", e);
         }
         return username;
-    }
-
-    public String buildUserRelationsResponse(String username){
-        Uczestnik user = getUserByLogin(username);
-        Grupa grup = user.getGrupa();
-        Edycja edition = grup.getEdycja();
-        Przedmiot course = edition.getPrzedmiot();
-
-        List<Course> courses = new ArrayList<>();
-        List<Edition> editions = new ArrayList<>();
-        List<Group> groups = new ArrayList<>();
-        List<User> users = new ArrayList<>();
-
-        users.add(new User(user.getLogin()));
-        groups.add(new Group(grup.getNazwa(),users));
-        editions.add(new Edition(edition.getNazwa(), groups));
-        courses.add(new Course(course.getNazwa(), editions));
-
-        JsonBuilderHelper jsonBuilderHelper = new JsonBuilderHelper(courses);
-
-        return new Gson().toJson(jsonBuilderHelper);
     }
 }

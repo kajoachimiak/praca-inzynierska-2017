@@ -1,6 +1,6 @@
 package com.pracainzynierska.security;
 
-import com.pracainzynierska.controller.service.UczestnikService;
+import com.pracainzynierska.controller.service.impl.UczestnikService;
 import com.pracainzynierska.model.entities.Rola;
 import com.pracainzynierska.model.entities.Uczestnik;
 import org.apache.log4j.Logger;
@@ -40,7 +40,6 @@ public class SecurityUserDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException(message);
         }
         List<GrantedAuthority> authorities = new ArrayList<>();
-//        .add(new SimpleGrantedAuthority("ROLE_USER"));
         authorities.addAll(buildUserAuthority(user.getRola()));
 
         LOGGER.info("Found user in database: " + user);

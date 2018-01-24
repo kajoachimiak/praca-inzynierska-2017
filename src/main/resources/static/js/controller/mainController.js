@@ -3,7 +3,8 @@ app.controller('mainController', function ($scope, $location, sessionService, $h
     sessionService.isUserAuthorized().then(
         function () {
             console.log('callback success');
-            $scope.courseList = ['SSBD', 'SUD', 'Podstawy Informatyki', 'TSK', 'WDI'];
+            $scope.treeData = [];
+
 
             $scope.toggle = function (scope) {
                 scope.toggle();
@@ -24,6 +25,7 @@ app.controller('mainController', function ($scope, $location, sessionService, $h
                 }).then(function successCallback(response) {
                     console.log(response);
                     console.log('Tree data loading ok');
+                    $scope.treeData = response.data.list;
                 }, function errorCallback(response) {
                     console.log(response);
                     console.log('Tree data loading error');
@@ -31,6 +33,20 @@ app.controller('mainController', function ($scope, $location, sessionService, $h
             };
 
             $scope.loadTreeData();
+
+            $scope.loadTemplatesForNode = function (nodeType) {
+                $http({
+                    method: "GET",
+                    url: '/treeNodeTemplates',
+                    params: {nodeType: nodeType}
+                }).then(function successCallback(response) {
+                    console.log(response);
+                    console.log('Templates loading ok');
+                }, function errorCallback(response) {
+                    console.log(response);
+                    console.log('Templates loading error');
+                });
+            };
 
             $scope.logout = function () {
                 $http({

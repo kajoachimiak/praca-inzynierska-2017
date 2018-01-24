@@ -3,7 +3,6 @@ package com.pracainzynierska.model.dao.impl;
 import com.pracainzynierska.model.dao.UczestnikDAO;
 import com.pracainzynierska.model.entities.Uczestnik;
 import org.apache.log4j.Logger;
-import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
