@@ -1,6 +1,7 @@
 package com.pracainzynierska.model.entities;
 
 import javax.persistence.*;
+import java.util.List;
 
 /**
  * Created by karol on 16.01.18.
@@ -10,7 +11,7 @@ import javax.persistence.*;
 public class Rola {
     private Integer id;
     private String nazwa;
-    private Uczestnik uczestnik;
+    private List<Uczestnik> uczestnikList;
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -33,15 +34,15 @@ public class Rola {
         this.nazwa = nazwa;
     }
 
-    @JoinColumn(name = "UCZESTNIK_ID", referencedColumnName = "ID")
-    @ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-    public Uczestnik getUczestnik(){
-        return this.uczestnik;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "rola", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    public List<Uczestnik> getUczestnikList() {
+        return uczestnikList;
     }
 
-    public void setUczestnik(Uczestnik uczestnik) {
-        this.uczestnik = uczestnik;
+    public void setUczestnikList(List<Uczestnik> uczestnikList) {
+        this.uczestnikList = uczestnikList;
     }
+
 
     @Override
     public boolean equals(Object o) {

@@ -1,10 +1,9 @@
-app.controller('loginController', function ($scope, $http, $location, $localStorage) {
+app.controller('loginController', function ($scope, $http, $location) {
     console.log("Starting loginController");
 
     $scope.credentials = {};
     $scope.errorMessages = [];
-    $scope.showNotLoggedInError = $localStorage.notLoggedIn;
-    $scope.notLoggedInDesc = 'Nie jesteś zalogowany!';
+
     $scope.showLogInError = false;
 
     $scope.submitLoginForm = function () {
@@ -26,7 +25,6 @@ app.controller('loginController', function ($scope, $http, $location, $localStor
             console.log(response);
             console.log('log in ok');
             $scope.showLogInError = false;
-            $scope.showNotLoggedInError = false;
             $location.path('/mainPage');
         }, function errorCallback(response) {
             console.log(response);

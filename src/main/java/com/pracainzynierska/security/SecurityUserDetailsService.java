@@ -1,6 +1,6 @@
 package com.pracainzynierska.security;
 
-import com.pracainzynierska.model.daoservice.UczestnikService;
+import com.pracainzynierska.controller.service.UczestnikService;
 import com.pracainzynierska.model.entities.Rola;
 import com.pracainzynierska.model.entities.Uczestnik;
 import org.apache.log4j.Logger;
@@ -40,21 +40,20 @@ public class SecurityUserDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException(message);
         }
         List<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
-//                buildUserAuthority(user.getRola());
+//        .add(new SimpleGrantedAuthority("ROLE_USER"));
+        authorities.addAll(buildUserAuthority(user.getRola()));
 
         LOGGER.info("Found user in database: " + user);
 
         return new org.springframework.security.core.userdetails.User(username, user.getHaslo(), authorities);
     }
-    private List<GrantedAuthority> buildUserAuthority(Set<Rola> userRoles) {
+
+    private List<GrantedAuthority> buildUserAuthority(Rola userRole) {
 
         Set<GrantedAuthority> setAuths = new HashSet<GrantedAuthority>();
 
         // Build user's authorities
-        for (Rola userRole : userRoles) {
-            setAuths.add(new SimpleGrantedAuthority(userRole.getNazwa()));
-        }
+        setAuths.add(new SimpleGrantedAuthority(userRole.getNazwa()));
 
         List<GrantedAuthority> Result = new ArrayList<GrantedAuthority>(setAuths);
 

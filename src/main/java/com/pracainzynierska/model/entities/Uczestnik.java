@@ -22,7 +22,7 @@ public class Uczestnik {
     private String login;
     private String haslo;
     private Grupa grupa;
-    private Set<Rola> rola = new HashSet<Rola>(0);;
+    private Rola rola;
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -75,20 +75,20 @@ public class Uczestnik {
         this.grupa = grupa;
     }
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "uczestnik", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
-    public Set<Rola> getRola() {
+    @JoinColumn(name = "ROLA_ID", referencedColumnName = "ID")
+    @ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    public Rola getRola() {
         return this.rola;
     }
 
-    public void setRola(Set<Rola> rola) {
+    public void setRola(Rola rola) {
         this.rola = rola;
     }
 
     public Uczestnik() {
     }
 
-    public Uczestnik(Integer id, String opis, String login, String haslo, Grupa grupa, Set<Rola> rola) {
-        this.id = id;
+    public Uczestnik(String opis, String login, String haslo, Grupa grupa, Rola rola) {
         this.opis = opis;
         this.login = login;
         this.haslo = haslo;

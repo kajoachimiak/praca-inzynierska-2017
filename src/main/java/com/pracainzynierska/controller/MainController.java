@@ -3,15 +3,12 @@ package com.pracainzynierska.controller;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.pracainzynierska.controller.service.ShellRunnerService;
-import com.pracainzynierska.model.daoservice.SzablonyService;
-import com.pracainzynierska.model.dto.UczestnikDTO;
+import com.pracainzynierska.controller.service.SzablonyService;
+import com.pracainzynierska.controller.service.UczestnikService;
 import com.pracainzynierska.model.entities.Szablony;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -29,10 +26,12 @@ public class MainController {
     private static final Logger LOG = Logger.getLogger(MainController.class);
     private final ShellRunnerService shellRunnerService;
     private SzablonyService szablonyService;
+    private UczestnikService uczestnikService;
 
     @Autowired
-    public MainController(ShellRunnerService shellRunnerService) {
+    public MainController(ShellRunnerService shellRunnerService, UczestnikService uczestnikService) {
         this.shellRunnerService = shellRunnerService;
+        this.uczestnikService = uczestnikService;
     }
 
     @RequestMapping(value = "/scriptTest", method = RequestMethod.GET)
@@ -63,14 +62,15 @@ public class MainController {
     @ResponseBody
     public String getCurrentUserDetails(Principal principal){
         JsonObject jsonObject = new JsonObject();
-        String username;
-        try {
-            username = principal.getName();
-        }catch (NullPointerException e){
-            username = null;
-            LOG.error("Requested principal does not exist. User not authorized.", e);
-        }
+        String username = uczestnikService.getCurrentUserUsername(principal);
         jsonObject.addProperty("username", username);
         return new Gson().toJson(jsonObject);
+    }
+
+    @RequestMapping(value = "/userRelations", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public String getCurrentUserRelations(Principal principal){
+        String username = uczestnikService.getCurrentUserUsername(principal);
+        return uczestnikService.buildUserRelationsResponse(username);
     }
 }

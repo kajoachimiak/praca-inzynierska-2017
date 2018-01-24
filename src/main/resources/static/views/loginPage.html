@@ -3,11 +3,7 @@
         <div ng-repeat="error in errorMessages">{{error.logInErrorDesc}}</div>
     </div>
 </div>
-<div class="alert alert-danger" ng-show="showNotLoggedInError" ng-cloak>
-    <div class="messages-group">
-        <div >{{notLoggedInDesc}}</div>
-    </div>
-</div>
+
 <form class="form-signin" role="form" ng-submit="submitLoginForm()">
 
     <h2 class="form-signin-heading">Proszę się zalogować</h2>

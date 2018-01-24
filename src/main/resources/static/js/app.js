@@ -1,4 +1,4 @@
-var app = angular.module('app', ['ngRoute', 'ngCookies', 'ngResource', 'ui.bootstrap', 'ngStorage']);
+var app = angular.module('app', ['ngRoute', 'ngCookies', 'ngResource', 'ui.bootstrap', 'ngStorage', 'ui.tree']);
 app.config(function ($routeProvider) {
     $routeProvider
         .when('/home', {
