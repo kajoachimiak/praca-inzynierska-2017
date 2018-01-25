@@ -7,8 +7,8 @@ app.controller('mainController', function ($scope, $location, sessionService, $h
             $scope.treeData = [];
 
 
-            $scope.toggle = function (scope) {
-                scope.toggle();
+            $scope.toggleTreeNode = function (scope) {
+                scope.toggleTreeNode();
             };
 
             $scope.expandAll = function () {
@@ -35,6 +35,8 @@ app.controller('mainController', function ($scope, $location, sessionService, $h
 
             $scope.loadTreeData();
 
+            $scope.templateData = [];
+
             $scope.loadTemplatesForNode = function (nodeType) {
                 $http({
                     method: "GET",
@@ -42,11 +44,17 @@ app.controller('mainController', function ($scope, $location, sessionService, $h
                     params: {nodeType: nodeType}
                 }).then(function successCallback(response) {
                     console.log(response);
+                    $scope.templateData = response.data;
                     console.log('Templates loading ok');
+                    console.log('Template data: ' + $scope.templateData);
                 }, function errorCallback(response) {
                     console.log(response);
                     console.log('Templates loading error');
                 });
+            };
+
+            $scope.toggleAccordionPanel = function (scope) {
+                scope.toggleAccordionPanel();
             };
 
             $scope.logout = function () {
