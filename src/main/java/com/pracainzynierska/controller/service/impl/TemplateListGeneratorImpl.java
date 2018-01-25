@@ -16,13 +16,17 @@ import java.util.List;
 public class TemplateListGeneratorImpl implements TemplateListGenerator {
 
     @Override
-    public Pair<String,List<Szablony>> generateTemplateList(NodeType nodeType, Uczestnik user) {
+    public Pair<String, List<Szablony>> generateTemplateList(NodeType nodeType, Uczestnik user) {
         List<Szablony> templateList = new ArrayList<>();
         String templateOwner = "";
         Grupa grupa = user.getGrupa();
         Edycja edycja = grupa.getEdycja();
         Przedmiot przedmiot = edycja.getPrzedmiot();
-        switch (nodeType){
+        switch (nodeType) {
+            case USER:
+                templateList.addAll(user.getSzablonyList());
+                templateOwner = user.getLogin();
+                break;
             case GROUP:
                 templateList.addAll(grupa.getSzablonyList());
                 templateOwner = grupa.getNazwa();
