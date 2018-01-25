@@ -7,8 +7,8 @@ app.controller('mainController', function ($scope, $location, sessionService, $h
             $scope.treeData = [];
 
 
-            $scope.toggleTreeNode = function (scope) {
-                scope.toggleTreeNode();
+            $scope.toggle = function (scope) {
+                scope.toggle();
             };
 
             $scope.expandAll = function () {

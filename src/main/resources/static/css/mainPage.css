@@ -56,8 +56,7 @@ body {
 }
 .tree-node:hover,
 .tree-node:focus{
-  text-decoration: underline;
-  background-color: #5db656;
+  background-color: #aab6b0;
 }
 
 .tree-node-content {

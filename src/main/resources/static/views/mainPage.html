@@ -2,7 +2,7 @@
     <script type="text/ng-template" id="nodes_renderer.html">
         <div ui-tree-handle class="tree-node tree-node-content">
             <a class="btn btn-success btn-xs" ng-if="list.list && list.list.length > 0" data-nodrag
-               ng-click="toggleTreeNode(this)"><span
+               ng-click="toggle(this)"><span
                     class="glyphicon"
                     ng-class="{
           'glyphicon-chevron-right': collapsed,
@@ -20,33 +20,25 @@
     </script>
 
     <script type="text/ng-template" id="accordion-panel.html">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h4 class="panel-title">
-                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">
-                        <span class="glyphicon" ng-class="
-                        {'glyphicon-chevron-right': collapsed,'glyphicon-chevron-down': !collapsed}"></span>
-                        {{template.name}}
-                    </a>
-                </h4>
-            </div>
-            <div id="collapse1" class="panel-collapse collapse in">
-                <div class="panel-body">
-                    {{template.description}}
-                </div>
-            </div>
-        </div>
+        <uib-accordion-group is-open="status.open">
+            <uib-accordion-heading>
+               <span class="pull-right glyphicon" ng-class="
+                        {'glyphicon-chevron-right': status.open,'glyphicon-chevron-down': !status.open}"></span>
+                {{template.name}}
+            </uib-accordion-heading>
+            {{template.description}}
+        </uib-accordion-group>
 
 
         <!--<div class="">-->
-            <!--<a class="btn btn-success btn-xs" ng-if="template && list.list.length > 0" data-nodrag-->
-               <!--ng-click="toggleAccordionPanel(this)"><span-->
-                    <!--class="glyphicon"-->
-                    <!--ng-class="{-->
-          <!--'glyphicon-chevron-right': collapsed,-->
-          <!--'glyphicon-chevron-down': !collapsed-->
+        <!--<a class="btn btn-success btn-xs" ng-if="template && list.list.length > 0" data-nodrag-->
+        <!--ng-click="toggleAccordionPanel(this)"><span-->
+        <!--class="glyphicon"-->
+        <!--ng-class="{-->
+        <!--'glyphicon-chevron-right': collapsed,-->
+        <!--'glyphicon-chevron-down': !collapsed-->
         <!--}"></span></a>-->
-            <!--{{list.name}}-->
+        <!--{{list.name}}-->
         <!--</div>-->
     </script>
 
@@ -85,9 +77,9 @@
             </div>
             <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
                 <h1 align="center" class="page-header">Lista szablonów</h1>
-                <div class="panel-group" id="accordion" ng-model="templatesData">
-                    <div ng-repeat="template in templateData.templateList" ng-include="'accordion-panel.html'" class="panel panel-default"></div>
-                </div>
+                <uib-accordion ng-model="templatesData" close-others="false">
+                    <div ng-repeat="template in templateData.templateList" ng-include="'accordion-panel.html'"></div>
+                </uib-accordion>
             </div>
         </div>
     </div>
