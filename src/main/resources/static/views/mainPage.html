@@ -8,8 +8,9 @@
           'glyphicon-chevron-right': collapsed,
           'glyphicon-chevron-down': !collapsed
         }"></span></a>
-            <a class="btn btn-success btn-xs" data-nodrag ng-click="loadTemplatesForNode(list.type)">
-                {{list.name}}
+            {{list.name}}
+            <a class="pull-right btn btn-primary btn-xs" data-nodrag ng-click="loadTemplatesForNode(list.type)">
+                <span class="glyphicon glyphicon-chevron-right"></span>
             </a>
         </div>
         <ol ui-tree-nodes="" ng-model="list.list" ng-class="{hidden: collapsed}">
@@ -42,12 +43,14 @@
 
     <div class="container-fluid">
         <div class="row">
-            <div class="col-sm-3 col-md-2 sidebar" ui-tree data-drag-enabled="false" id="tree-root">
-                <button class="btn btn-info btn-md" ng-click="expandAll()">Rozwiń</button>
-                <button class="btn btn-info btn-md" ng-click="collapseAll()">Zwiń</button>
-                <ol ui-tree-nodes ng-model="treeData">
-                    <li ng-repeat="list in treeData" ui-tree-node ng-include="'nodes_renderer.html'"></li>
-                </ol>
+            <div class="col-sm-3 col-md-2 sidebar">
+                <div ui-tree id="tree-root" data-drag-enabled="false">
+                    <button class="btn btn-info btn-xs btn-block" ng-click="expandAll()">Rozwiń</button>
+                    <button class="btn btn-info btn-xs btn-block" ng-click="collapseAll()">Zwiń</button>
+                    <ol ui-tree-nodes ng-model="treeData">
+                        <li ng-repeat="list in treeData" ui-tree-node ng-include="'nodes_renderer.html'"></li>
+                    </ol>
+                </div>
             </div>
             <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
                 <h1 class="page-header">Dashboard</h1>

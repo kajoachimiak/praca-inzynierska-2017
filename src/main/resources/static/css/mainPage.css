@@ -48,6 +48,27 @@ body {
   }
 }
 
+/* --- Tree --- */
+.tree-node {
+  border: 1px solid #dae2ea;
+  background: #f8faff;
+  color: #7c9eb2;
+}
+
+.tree-node-content {
+  margin: 10px;
+}
+.tree-handle {
+  padding: 10px;
+  background: #428bca;
+  color: #FFF;
+  margin-right: 10px;
+}
+
+.angular-ui-tree-handle:hover {
+}
+
+
 /* Sidebar navigation */
 .nav-sidebar {
   margin-right: -21px; /* 20px padding + 1px border */

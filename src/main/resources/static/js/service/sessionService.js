@@ -27,31 +27,25 @@ app.service('sessionService', function ($localStorage, $http, $q) {
     this.isUserAuthorized = function () {
         var deferred = $q.defer();
         console.log('Checking if user is authorized');
-        if (!sessionService.isLocalUserDetailsPresent()) {
-            console.log("User details not saved in local storage");
-            sessionService.loadUserDetails().then(
-                function (response) {
-                    console.log("Response: " + response);
-                    console.log("Response username: " + response.data.username);
-                    if ( angular.isDefined(response.data.username)
-                        && response.data.username && !angular.equals(response.data.username, '')) {
-                        sessionService.saveUserDetails(response.data.username);
-                        console.log('User details saved in local storage');
-                        deferred.resolve();
-                    }else {
-                        console.log("User loaded form server is empty or undefined. Result is: " + response);
-                        deferred.reject();
-                    }
-                },
-                function (response) {
-                    console.log("Failed to load user from server. Result is: " + response);
+        sessionService.loadUserDetails().then(
+            function (response) {
+                console.log("Response: " + response);
+                console.log("Response username: " + response.data.username);
+                if (angular.isDefined(response.data.username)
+                    && response.data.username && !angular.equals(response.data.username, '')) {
+                    sessionService.saveUserDetails(response.data.username);
+                    console.log('User details saved in local storage');
+                    deferred.resolve();
+                } else {
+                    console.log("User loaded form server is empty or undefined. Result is: " + response);
                     deferred.reject();
                 }
-            );
-        } else {
-            console.log('User is authorized');
-            deferred.resolve();
-        }
+            },
+            function (response) {
+                console.log("Failed to load user from server. Result is: " + response);
+                deferred.reject();
+            }
+        );
         return deferred.promise;
     }
 });

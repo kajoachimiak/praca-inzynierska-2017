@@ -1,5 +1,6 @@
-app.controller('loginController', function ($scope, $http, $location) {
+app.controller('loginController', function ($scope, $http, $location, sessionService) {
     console.log("Starting loginController");
+    sessionService.deleteUserDetails();
 
     $scope.credentials = {};
     $scope.errorMessages = [];

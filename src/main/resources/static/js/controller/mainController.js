@@ -1,5 +1,6 @@
 app.controller('mainController', function ($scope, $location, sessionService, $http) {
     console.log('Starting mainController');
+    sessionService.deleteUserDetails();
     sessionService.isUserAuthorized().then(
         function () {
             console.log('callback success');
