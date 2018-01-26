@@ -7,6 +7,7 @@ import com.pracainzynierska.controller.service.impl.JsonBuilderService;
 import com.pracainzynierska.controller.service.impl.TemplateService;
 import com.pracainzynierska.controller.service.TemplateListGenerator;
 import com.pracainzynierska.controller.service.impl.UserService;
+import com.pracainzynierska.model.dto.RunScriptResponseDTO;
 import com.pracainzynierska.model.entities.Template;
 import com.pracainzynierska.model.entities.User;
 import com.pracainzynierska.model.enums.NodeType;
@@ -40,20 +41,34 @@ public class MainController {
 
     @Autowired
     public MainController(ShellRunnerService shellRunnerService, UserService userService,
-                          TemplateListGenerator templateListGenerator, JsonBuilderService jsonBuilderService) {
+                          TemplateListGenerator templateListGenerator, JsonBuilderService jsonBuilderService,
+                          TemplateService templateService) {
         this.shellRunnerService = shellRunnerService;
         this.userService = userService;
         this.templateListGenerator = templateListGenerator;
         this.jsonBuilderService = jsonBuilderService;
+        this.templateService = templateService;
     }
 
-    @RequestMapping(value = "/scriptTest", method = RequestMethod.GET)
-    public String homepage() {
-        templateService = new TemplateService();
-        Template template = templateService.getTemplateById(4);
+    @RequestMapping(value = "/runScript", method = RequestMethod.GET)
+    @ResponseBody
+    public RunScriptResponseDTO runScript(@RequestParam("templateId") Integer templateId,
+                                          @RequestParam("templateName") String templateName) {
+        Template template = templateService.getTemplateByIdAndName(templateId, templateName);
         String command = template.getContent();
-        System.out.println(shellRunnerService.runScript(command));
-        return "index";
+        RunScriptResponseDTO runScriptResponseDTO = new RunScriptResponseDTO();
+        try {
+            runScriptResponseDTO.setExecutionSuccess(true);
+            LOG.info("Executing command "+ command +". Result is: " +
+                    shellRunnerService.runScript(command));
+        } catch (IOException e) {
+            runScriptResponseDTO.setExecutionSuccess(false);
+            LOG.error("Command: " + command + " execution failed!", e);
+        } catch (InterruptedException e) {
+            runScriptResponseDTO.setExecutionSuccess(false);
+            LOG.error("Intterupted exception while execution command: "+ command,e);
+        }
+        return runScriptResponseDTO;
     }
 
     @RequestMapping(value = "/getLog", method = RequestMethod.GET, produces = "application/json")

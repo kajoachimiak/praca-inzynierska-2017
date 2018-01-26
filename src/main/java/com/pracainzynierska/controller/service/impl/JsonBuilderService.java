@@ -42,8 +42,8 @@ public class JsonBuilderService {
     public String buildTemplateListResponse(String ownerName, List<Template> templateList){
         List<TemplateJson> resultTemplateJsonList = new ArrayList<>();
         templateList.forEach(template -> {
-            resultTemplateJsonList.add(new TemplateJson(template.getName(), template.getContent(),
-                    template.getDescription(), template.getType().getCode()));
+            resultTemplateJsonList.add(new TemplateJson(template.getId(), template.getName(),
+                    template.getContent(), template.getDescription(), template.getType().getCode()));
         });
         TemplateJsonRoot templateJsonRoot = new TemplateJsonRoot(ownerName, resultTemplateJsonList);
         return new Gson().toJson(templateJsonRoot);

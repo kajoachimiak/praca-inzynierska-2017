@@ -74,6 +74,34 @@ app.controller('mainController', function ($scope, $location, sessionService, $h
                     console.log('logout error');
                 });
             };
+            $scope.resetAlertFlags = function () {
+                $scope.showScriptError = false;
+                $scope.showScriptSuccess = false;
+            };
+
+            $scope.runScript = function (templateId, templateName) {
+                $http({
+                    method: 'GET',
+                    url: '/runScript',
+                    params: {templateId: templateId, templateName:templateName}
+                }).then(function successCallback(response) {
+                    console.log("Run script success");
+                    console.log(response);
+                    $scope.scriptResult = response.data.executionSuccess;
+                    if($scope.scriptResult === true){
+                        $scope.showScriptSuccess = true;
+                        $scope.showScriptError = false;
+                    }else {
+                        $scope.showScriptSuccess = false;
+                        $scope.showScriptError = true;
+                    }
+                }, function errorCallback(response) {
+                    console.log("Run script error");
+                    console.log(response);
+                    $scope.showScriptSuccess = false;
+                    $scope.showScriptError = true;
+                });
+            }
         }, function () {
             console.log('callback error');
             $location.path('/home');

@@ -10,7 +10,19 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "template")
+@NamedQueries({
+        @NamedQuery(
+                name = Template.FIND_BY_ID,
+                query = "select u from Template u where u.id = :id"
+        ),
+        @NamedQuery(
+                name = Template.FIND_BY_ID_AND_NAME,
+                query = "select u from Template u where u.id = :id and u.name = :name"
+        )
+})
 public class Template {
+    public static final String FIND_BY_ID = "Template.findById";
+    public static final String FIND_BY_ID_AND_NAME = "Template.findByIdAndName";
     private Integer id;
     private Course course;
     private User user;

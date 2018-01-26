@@ -1,4 +1,5 @@
 <div ng-controller="mainController">
+    <!--Tree node template begin-->
     <script type="text/ng-template" id="nodes_renderer.html">
         <div ui-tree-handle class="tree-node tree-node-content">
             <a class="btn btn-success btn-xs" ng-if="list.list && list.list.length > 0" data-nodrag
@@ -18,17 +19,70 @@
             </li>
         </ol>
     </script>
+    <!--Tree node template end-->
 
+
+    <!--Script template begin-->
+    <script type="text/ng-template" id="accordion-content-script.html">
+        <div ng-if="status.open" ng-init="resetAlertFlags()">
+            <div class="alert alert-success" ng-show="showScriptSuccess" ng-cloak>
+                <div class="messages-group">
+                    <div>Polecenie wykonano pomyślnie!</div>
+                </div>
+            </div>
+            <div class="alert alert-danger" ng-show="showScriptError" ng-cloak>
+                <div class="messages-group">
+                    <div>Wykonanie polecenia nie powiodło się! Skontaktuj się z administratorem.</div>
+                </div>
+            </div>
+            {{template.description}}
+            <br/>
+            <button class="btn btn-info" ng-click="runScript(template.id, template.name)">Wykonaj</button>
+        </div>
+    </script>
+    <!--Script template end-->
+
+
+    <!--File template begin-->
+    <script type="text/ng-template" id="accordion-content-file.html">
+        <div>
+            FILE
+        </div>
+    </script>
+    <!--File template end-->
+
+    <!--Url template begin-->
+    <script type="text/ng-template" id="accordion-content-url.html">
+        <div>
+            URL
+        </div>
+    </script>
+    <!--Url template end-->
+
+
+    <!--Generic template begin-->
     <script type="text/ng-template" id="accordion-panel.html">
         <uib-accordion-group is-open="status.open">
             <uib-accordion-heading>
-               <span class="pull-right glyphicon" ng-class="
+               <span class="pull-left glyphicon" ng-class="
                         {'glyphicon-chevron-right': status.open,'glyphicon-chevron-down': !status.open}"></span>
                 {{template.name}}
             </uib-accordion-heading>
-            {{template.description}}
+            <div ng-switch="template.type">
+                <div ng-switch-when="SCRIPT">
+                    <div ng-include="'accordion-content-script.html'"></div>
+                </div>
+                <div ng-switch-when="FILE">
+                    <div ng-include="'accordion-content-file.html'"></div>
+                </div>
+                <div ng-switch-when="URL">
+                    <div ng-include="'accordion-content-url.html'"></div>
+                </div>
+            </div>
         </uib-accordion-group>
     </script>
+    <!--Generic template end-->
+
 
     <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container-fluid">
@@ -65,7 +119,7 @@
             </div>
             <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
                 <h1 align="center" class="page-header">Lista szablonów</h1>
-                <uib-accordion ng-model="templatesData" close-others="false">
+                <uib-accordion ng-model="templatesData" close-others="true">
                     <div ng-repeat="template in templateData.templateList" ng-include="'accordion-panel.html'"></div>
                 </uib-accordion>
             </div>

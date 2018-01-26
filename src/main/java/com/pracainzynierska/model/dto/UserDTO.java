@@ -3,7 +3,7 @@ package com.pracainzynierska.model.dto;
 /**
  * Created by karol on 12.01.18.
  */
-public class UczestnikDTO {
+public class UserDTO {
     private String login;
     private String password;
 
