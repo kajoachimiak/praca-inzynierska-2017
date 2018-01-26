@@ -5,11 +5,11 @@ import java.util.List;
 /**
  * Created by karol on 24.01.18.
  */
-public class TemplateRoot {
+public class TemplateJsonRoot {
     String ownerName;
-    List<Template> templateList;
+    List<TemplateJson> templateList;
 
-    public TemplateRoot(String ownerName, List<Template> templateList) {
+    public TemplateJsonRoot(String ownerName, List<TemplateJson> templateList) {
         this.ownerName = ownerName;
         this.templateList = templateList;
     }

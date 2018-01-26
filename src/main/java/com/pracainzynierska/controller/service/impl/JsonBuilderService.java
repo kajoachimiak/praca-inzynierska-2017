@@ -1,7 +1,8 @@
 package com.pracainzynierska.controller.service.impl;
 
 import com.google.gson.Gson;
-import com.pracainzynierska.controller.helper.jsonObjects.templateList.TemplateRoot;
+import com.pracainzynierska.controller.helper.jsonObjects.templateList.TemplateJson;
+import com.pracainzynierska.controller.helper.jsonObjects.templateList.TemplateJsonRoot;
 import com.pracainzynierska.controller.helper.jsonObjects.treeData.*;
 import com.pracainzynierska.model.entities.*;
 import com.pracainzynierska.model.entities.Course;
@@ -24,26 +25,27 @@ public class JsonBuilderService {
         Edition edition = group.getEdition();
         Course course = edition.getCourse();
 
-        List<com.pracainzynierska.controller.helper.jsonObjects.treeData.Course> courses = new ArrayList<>();
-        List<com.pracainzynierska.controller.helper.jsonObjects.treeData.Edition> editions = new ArrayList<>();
-        List<com.pracainzynierska.controller.helper.jsonObjects.treeData.Group> groups = new ArrayList<>();
-        List<com.pracainzynierska.controller.helper.jsonObjects.treeData.User> users = new ArrayList<>();
+        List<CourseJson> cours = new ArrayList<>();
+        List<EditionJson> editionJsons = new ArrayList<>();
+        List<GroupJson> groupJsons = new ArrayList<>();
+        List<UserJson> userJsons = new ArrayList<>();
 
-        users.add(new com.pracainzynierska.controller.helper.jsonObjects.treeData.User(NodeType.USER.toString(), user.getLogin(),new ArrayList<>()));
-        groups.add(new com.pracainzynierska.controller.helper.jsonObjects.treeData.Group(NodeType.GROUP.toString(), group.getName(),users));
-        editions.add(new com.pracainzynierska.controller.helper.jsonObjects.treeData.Edition(NodeType.EDITION.toString(), edition.getName(), groups));
-        courses.add(new com.pracainzynierska.controller.helper.jsonObjects.treeData.Course(NodeType.COURSE.toString(), course.getName(), editions));
+        userJsons.add(new UserJson(NodeType.USER.toString(), user.getLogin(),new ArrayList<>()));
+        groupJsons.add(new GroupJson(NodeType.GROUP.toString(), group.getName(), userJsons));
+        editionJsons.add(new EditionJson(NodeType.EDITION.toString(), edition.getName(), groupJsons));
+        cours.add(new CourseJson(NodeType.COURSE.toString(), course.getName(), editionJsons));
 
-        TreeData treeData = new TreeData(courses);
+        TreeData treeData = new TreeData(cours);
 
         return new Gson().toJson(treeData);
     }
     public String buildTemplateListResponse(String ownerName, List<Template> templateList){
-        List<com.pracainzynierska.controller.helper.jsonObjects.templateList.Template> resultTemplateList = new ArrayList<>();
+        List<TemplateJson> resultTemplateJsonList = new ArrayList<>();
         templateList.forEach(template -> {
-            resultTemplateList.add(new com.pracainzynierska.controller.helper.jsonObjects.templateList.Template(template.getName(), template.getContent(), template.getDescription()));
+            resultTemplateJsonList.add(new TemplateJson(template.getName(), template.getContent(),
+                    template.getDescription(), template.getType().getCode()));
         });
-        TemplateRoot templateRoot = new TemplateRoot(ownerName, resultTemplateList);
-        return new Gson().toJson(templateRoot);
+        TemplateJsonRoot templateJsonRoot = new TemplateJsonRoot(ownerName, resultTemplateJsonList);
+        return new Gson().toJson(templateJsonRoot);
     }
 }

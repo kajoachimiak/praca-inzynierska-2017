@@ -1,5 +1,8 @@
 package com.pracainzynierska.model.entities;
 
+import com.pracainzynierska.model.enums.TemplateType;
+import com.pracainzynierska.model.util.TemplateTypeConverter;
+
 import javax.persistence.*;
 
 /**
@@ -16,6 +19,7 @@ public class Template {
     private String name;
     private String content;
     private String description;
+    private TemplateType type;
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -74,8 +78,8 @@ public class Template {
         return name;
     }
 
-    public void setName(String nazwa) {
-        this.name = nazwa;
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Basic
@@ -84,8 +88,19 @@ public class Template {
         return content;
     }
 
-    public void setContent(String tresc) {
-        this.content = tresc;
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    @Basic
+    @Convert(converter = TemplateTypeConverter.class)
+    @Column(name = "type")
+    public TemplateType getType() {
+        return type;
+    }
+
+    public void setType(TemplateType type) {
+        this.type = type;
     }
 
     @Basic

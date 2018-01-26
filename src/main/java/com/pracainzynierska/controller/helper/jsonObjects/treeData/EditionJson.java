@@ -5,15 +5,15 @@ import java.util.List;
 /**
  * Created by karol on 24.01.18.
  */
-public class Edition {
+public class EditionJson {
     String type;
     String name;
-    List<Group> list;
+    List<GroupJson> list;
 
-    public Edition() {
+    public EditionJson() {
     }
 
-    public Edition(String type, String name, List<Group> list) {
+    public EditionJson(String type, String name, List<GroupJson> list) {
         this.type = type;
         this.name = name;
         this.list = list;

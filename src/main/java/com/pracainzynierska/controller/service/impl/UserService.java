@@ -32,7 +32,7 @@ public class UserService {
             username = principal.getName();
         }catch (NullPointerException e){
             username = null;
-            LOG.error("Requested principal does not exist. User not authorized.", e);
+            LOG.error("Requested principal does not exist. UserJson not authorized.", e);
         }
         return username;
     }

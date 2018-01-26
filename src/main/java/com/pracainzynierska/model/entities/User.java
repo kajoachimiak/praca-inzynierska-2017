@@ -15,7 +15,7 @@ import java.util.List;
         )
 })
 public class User {
-    public static final String FIND_BY_LOGIN = "User.findByLogin";
+    public static final String FIND_BY_LOGIN = "UserJson.findByLogin";
     private Integer id;
     private String description;
     private String login;
