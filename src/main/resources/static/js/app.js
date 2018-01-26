@@ -5,12 +5,6 @@ app.config(function ($routeProvider) {
             templateUrl: '/views/loginPage.html',
             controller: 'loginController'
         })
-        .when('/editor', {
-            templateUrl: '/views/editor.html'
-        })
-        .when('/scriptTest', {
-            templateUrl: '/views/scriptTest.html'
-        })
         .when('/logout', {
             redirectTo: '/home'
         })

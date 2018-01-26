@@ -3,14 +3,14 @@ package com.pracainzynierska.model.dto;
 /**
  * Created by karol on 26.01.18.
  */
-public class RunScriptResponseDTO {
+public class ScriptRunnerResponseDTO {
     private String message;
     private boolean executionSuccess;
 
-    public RunScriptResponseDTO() {
+    public ScriptRunnerResponseDTO() {
     }
 
-    public RunScriptResponseDTO(String message, boolean executionSuccess) {
+    public ScriptRunnerResponseDTO(String message, boolean executionSuccess) {
         this.message = message;
         this.executionSuccess = executionSuccess;
     }

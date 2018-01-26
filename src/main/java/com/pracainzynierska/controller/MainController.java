@@ -2,12 +2,13 @@ package com.pracainzynierska.controller;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.pracainzynierska.controller.service.FileService;
 import com.pracainzynierska.controller.service.ShellRunnerService;
+import com.pracainzynierska.controller.service.TemplateListGenerator;
 import com.pracainzynierska.controller.service.impl.JsonBuilderService;
 import com.pracainzynierska.controller.service.impl.TemplateService;
-import com.pracainzynierska.controller.service.TemplateListGenerator;
 import com.pracainzynierska.controller.service.impl.UserService;
-import com.pracainzynierska.model.dto.RunScriptResponseDTO;
+import com.pracainzynierska.model.dto.ScriptRunnerResponseDTO;
 import com.pracainzynierska.model.entities.Template;
 import com.pracainzynierska.model.entities.User;
 import com.pracainzynierska.model.enums.NodeType;
@@ -20,14 +21,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.security.Principal;
 import java.util.List;
 import java.util.Locale;
-import java.util.stream.Collectors;
 
 
 @Controller
@@ -38,52 +35,56 @@ public class MainController {
     private UserService userService;
     private TemplateListGenerator templateListGenerator;
     private JsonBuilderService jsonBuilderService;
+    private FileService fileService;
 
     @Autowired
     public MainController(ShellRunnerService shellRunnerService, UserService userService,
                           TemplateListGenerator templateListGenerator, JsonBuilderService jsonBuilderService,
-                          TemplateService templateService) {
+                          TemplateService templateService, FileService fileService) {
         this.shellRunnerService = shellRunnerService;
         this.userService = userService;
         this.templateListGenerator = templateListGenerator;
         this.jsonBuilderService = jsonBuilderService;
         this.templateService = templateService;
+        this.fileService = fileService;
     }
 
     @RequestMapping(value = "/runScript", method = RequestMethod.GET)
     @ResponseBody
-    public RunScriptResponseDTO runScript(@RequestParam("templateId") Integer templateId,
-                                          @RequestParam("templateName") String templateName) {
+    public ScriptRunnerResponseDTO runScript(@RequestParam("templateId") Integer templateId,
+                                             @RequestParam("templateName") String templateName) {
         Template template = templateService.getTemplateByIdAndName(templateId, templateName);
         String command = template.getContent();
-        RunScriptResponseDTO runScriptResponseDTO = new RunScriptResponseDTO();
+        ScriptRunnerResponseDTO scriptRunnerResponse = new ScriptRunnerResponseDTO();
         try {
-            runScriptResponseDTO.setExecutionSuccess(true);
+            scriptRunnerResponse.setExecutionSuccess(true);
             LOG.info("Executing command "+ command +". Result is: " +
                     shellRunnerService.runScript(command));
         } catch (IOException e) {
-            runScriptResponseDTO.setExecutionSuccess(false);
+            scriptRunnerResponse.setExecutionSuccess(false);
             LOG.error("Command: " + command + " execution failed!", e);
         } catch (InterruptedException e) {
-            runScriptResponseDTO.setExecutionSuccess(false);
+            scriptRunnerResponse.setExecutionSuccess(false);
             LOG.error("Intterupted exception while execution command: "+ command,e);
         }
-        return runScriptResponseDTO;
+        return scriptRunnerResponse;
     }
 
-    @RequestMapping(value = "/getLog", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/getFileContent", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public String getLog() {
-        StringBuilder result = new StringBuilder();
+    public String getFileContent(@RequestParam("templateId") Integer templateId,
+                                 @RequestParam("templateName") String templateName) {
+        String result = "";
         try {
-            BufferedReader br = Files.newBufferedReader(Paths.get("/home/karol/Pulpit/test-file"));
-            br.lines().collect(Collectors.toList()).forEach(result::append);
+            Template template = templateService.getTemplateByIdAndName(templateId, templateName);
+            result = fileService.getFileContent(template.getContent());
         } catch (IOException e) {
+            LOG.error("Error reading file from path: ");
             e.printStackTrace();
         }
 
         JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("log", result.toString());
+        jsonObject.addProperty("fileContent", result);
         return new Gson().toJson(jsonObject);
     }
 

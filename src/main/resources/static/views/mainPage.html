@@ -45,8 +45,21 @@
 
     <!--File template begin-->
     <script type="text/ng-template" id="accordion-content-file.html">
-        <div>
-            FILE
+        <div ng-if="status.open" ng-init="loadFileContent(template.id, template.name)">
+            <div>
+                <h4>Zawartość pliku:</h4>
+                <br/> <textarea class="big-textarea" ng-keyup="autoExpand($event)" ng-model="fileContent"></textarea>
+            </div>
+            <br/>
+            <input type="text" ng-model="fileName"/>
+            <br/>
+            <button class="btn btn-info" ng-click="saveFile()">
+                Generuj plik do pobrania
+            </button>
+            <br/>
+            <div class="panel-footer" ng-show="showDownloadLink">
+            <a download="{{fileName}}" id="downloadlink">Pobierz plik</a>
+            </div>
         </div>
     </script>
     <!--File template end-->
