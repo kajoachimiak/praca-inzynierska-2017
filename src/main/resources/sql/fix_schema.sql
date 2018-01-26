@@ -1,27 +1,27 @@
-alter table UCZESTNIK
+alter table "user"
 drop NAZWISKO
 
-alter table UCZESTNIK
+alter table "user"
 add LOGIN VARCHAR(255) 
 
-alter table UCZESTNIK
+alter table "user"
 drop IMIE
 
-alter table UCZESTNIK
+alter table "user"
 drop NUMER_ALBUMU
 
-alter table GRUPA
+alter table user_group
 add OPIS VARCHAR(255) 
 
-alter table PRZEDMIOT
+alter table course
 add OPIS VARCHAR(255) 
 
-alter table SZABLONY
+alter table template
 add OPIS VARCHAR(255) 
 
-alter table UCZESTNIK
+alter table "user"
 add OPIS VARCHAR(255) 
 
-alter table EDYCJA
+alter table edition
 drop ROCZNIK
 

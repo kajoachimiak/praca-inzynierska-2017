@@ -1,3 +1,3 @@
-update UCZESTNIK
-    SET HASLO = MD5('haslo')
-    WHERE ID = 2;
+update "user"
+    SET password = MD5('haslo')
+    WHERE id = 2;

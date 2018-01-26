@@ -4,11 +4,11 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.pracainzynierska.controller.service.ShellRunnerService;
 import com.pracainzynierska.controller.service.impl.JsonBuilderService;
-import com.pracainzynierska.controller.service.impl.SzablonyService;
+import com.pracainzynierska.controller.service.impl.TemplateService;
 import com.pracainzynierska.controller.service.TemplateListGenerator;
-import com.pracainzynierska.controller.service.impl.UczestnikService;
-import com.pracainzynierska.model.entities.Szablony;
-import com.pracainzynierska.model.entities.Uczestnik;
+import com.pracainzynierska.controller.service.impl.UserService;
+import com.pracainzynierska.model.entities.Template;
+import com.pracainzynierska.model.entities.User;
 import com.pracainzynierska.model.enums.NodeType;
 import javafx.util.Pair;
 import org.apache.log4j.Logger;
@@ -33,25 +33,25 @@ import java.util.stream.Collectors;
 public class MainController {
     private static final Logger LOG = Logger.getLogger(MainController.class);
     private final ShellRunnerService shellRunnerService;
-    private SzablonyService szablonyService;
-    private UczestnikService uczestnikService;
+    private TemplateService templateService;
+    private UserService userService;
     private TemplateListGenerator templateListGenerator;
     private JsonBuilderService jsonBuilderService;
 
     @Autowired
-    public MainController(ShellRunnerService shellRunnerService, UczestnikService uczestnikService,
+    public MainController(ShellRunnerService shellRunnerService, UserService userService,
                           TemplateListGenerator templateListGenerator, JsonBuilderService jsonBuilderService) {
         this.shellRunnerService = shellRunnerService;
-        this.uczestnikService = uczestnikService;
+        this.userService = userService;
         this.templateListGenerator = templateListGenerator;
         this.jsonBuilderService = jsonBuilderService;
     }
 
     @RequestMapping(value = "/scriptTest", method = RequestMethod.GET)
     public String homepage() {
-        szablonyService = new SzablonyService();
-        Szablony szablon = szablonyService.getSzablonBySzablonId(4);
-        String command = szablon.getTresc();
+        templateService = new TemplateService();
+        Template template = templateService.getTemplateById(4);
+        String command = template.getContent();
         System.out.println(shellRunnerService.runScript(command));
         return "index";
     }
@@ -76,7 +76,7 @@ public class MainController {
     @ResponseBody
     public String getCurrentUserDetails(Principal principal) {
         JsonObject jsonObject = new JsonObject();
-        String username = uczestnikService.getCurrentUserUsername(principal);
+        String username = userService.getCurrentUserUsername(principal);
         jsonObject.addProperty("username", username);
         return new Gson().toJson(jsonObject);
     }
@@ -84,18 +84,18 @@ public class MainController {
     @RequestMapping(value = "/userRelations", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public String getCurrentUserRelations(Principal principal) {
-        String username = uczestnikService.getCurrentUserUsername(principal);
-        Uczestnik user = uczestnikService.getUserByLogin(username);
+        String username = userService.getCurrentUserUsername(principal);
+        User user = userService.getUserByLogin(username);
         return jsonBuilderService.buildUserRelationsResponse(user);
     }
 
     @RequestMapping(value = "/treeNodeTemplates", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public String getTreeNodeTemplates(Principal principal, @RequestParam("nodeType") String nodeType) {
-        String username = uczestnikService.getCurrentUserUsername(principal);
-        Uczestnik user = uczestnikService.getUserByLogin(username);
+        String username = userService.getCurrentUserUsername(principal);
+        User user = userService.getUserByLogin(username);
 
-        Pair<String, List<Szablony>> templateGeneratorResult =
+        Pair<String, List<Template>> templateGeneratorResult =
                 templateListGenerator.generateTemplateList(NodeType.valueOf(nodeType.toUpperCase(Locale.ENGLISH)), user);
         String responsJson =
                 jsonBuilderService.buildTemplateListResponse(templateGeneratorResult.getKey(),

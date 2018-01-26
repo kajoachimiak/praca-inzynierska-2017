@@ -1,7 +1,7 @@
 package com.pracainzynierska.model.dao.impl;
 
-import com.pracainzynierska.model.dao.SzablonyDAO;
-import com.pracainzynierska.model.entities.Szablony;
+import com.pracainzynierska.model.dao.TemplateDAO;
+import com.pracainzynierska.model.entities.Template;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -9,21 +9,21 @@ import org.hibernate.SessionFactory;
 /**
  * Created by karol on 09.12.17.
  */
-public class SzablonyDAOImpl implements SzablonyDAO {
-    private static final Logger LOG = Logger.getLogger(SzablonyDAOImpl.class);
+public class TemplateDAOImpl implements TemplateDAO {
+    private static final Logger LOG = Logger.getLogger(TemplateDAOImpl.class);
     private SessionFactory sessionFactory;
 
-    public SzablonyDAOImpl(SessionFactory sessionFactory) {
+    public TemplateDAOImpl(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
 
     @Override
-    public Szablony getById(Integer szablonyId) {
-        Szablony template = new Szablony();
+    public Template getById(Integer templateId) {
+        Template template = new Template();
         try {
             Session session = this.sessionFactory.openSession();
             session.beginTransaction();
-            template = (Szablony) session.get(Szablony.class, szablonyId);
+            template = (Template) session.get(Template.class, templateId);
         }catch (Exception e){
             LOG.error("Error accessing database",e);
         }

@@ -1,7 +1,7 @@
 package com.pracainzynierska.model.dao.impl;
 
-import com.pracainzynierska.model.dao.UczestnikDAO;
-import com.pracainzynierska.model.entities.Uczestnik;
+import com.pracainzynierska.model.dao.UserDAO;
+import com.pracainzynierska.model.entities.User;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
@@ -15,17 +15,17 @@ import java.util.List;
  */
 @Transactional
 @Repository
-public class UczestnikDAOImpl implements UczestnikDAO {
-    private static final Logger LOG = Logger.getLogger(UczestnikDAOImpl.class);
+public class UserDAOImpl implements UserDAO {
+    private static final Logger LOG = Logger.getLogger(UserDAOImpl.class);
     @PersistenceContext
     private EntityManager em;
 
-    public UczestnikDAOImpl() {
+    public UserDAOImpl() {
     }
 
     @Override
-    public Uczestnik findByLogin(String login) {
-        List<Uczestnik> users = em.createNamedQuery(Uczestnik.FIND_BY_LOGIN, Uczestnik.class)
+    public User findByLogin(String login) {
+        List<User> users = em.createNamedQuery(User.FIND_BY_LOGIN, User.class)
                 .setParameter("login", login)
                 .getResultList();
 

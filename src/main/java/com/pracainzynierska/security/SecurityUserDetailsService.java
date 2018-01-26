@@ -1,8 +1,8 @@
 package com.pracainzynierska.security;
 
-import com.pracainzynierska.controller.service.impl.UczestnikService;
-import com.pracainzynierska.model.entities.Rola;
-import com.pracainzynierska.model.entities.Uczestnik;
+import com.pracainzynierska.controller.service.impl.UserService;
+import com.pracainzynierska.model.entities.Role;
+import com.pracainzynierska.model.entities.User;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -28,11 +28,11 @@ public class SecurityUserDetailsService implements UserDetailsService {
     private static final Logger LOGGER = Logger.getLogger(SecurityUserDetailsService.class);
 
     @Autowired
-    private UczestnikService uczestnikService;
+    private UserService userService;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Uczestnik user = uczestnikService.getUserByLogin(username);
+        User user = userService.getUserByLogin(username);
 
         if (user == null) {
             String message = "Username not found" + username;
@@ -40,19 +40,19 @@ public class SecurityUserDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException(message);
         }
         List<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.addAll(buildUserAuthority(user.getRola()));
+        authorities.addAll(buildUserAuthority(user.getRole()));
 
         LOGGER.info("Found user in database: " + user);
 
-        return new org.springframework.security.core.userdetails.User(username, user.getHaslo(), authorities);
+        return new org.springframework.security.core.userdetails.User(username, user.getPassword(), authorities);
     }
 
-    private List<GrantedAuthority> buildUserAuthority(Rola userRole) {
+    private List<GrantedAuthority> buildUserAuthority(Role userRole) {
 
         Set<GrantedAuthority> setAuths = new HashSet<GrantedAuthority>();
 
         // Build user's authorities
-        setAuths.add(new SimpleGrantedAuthority(userRole.getNazwa()));
+        setAuths.add(new SimpleGrantedAuthority(userRole.getName()));
 
         List<GrantedAuthority> Result = new ArrayList<GrantedAuthority>(setAuths);
 

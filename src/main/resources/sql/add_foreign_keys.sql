@@ -1,11 +1,13 @@
-alter table EDYCJA add PRZEDMIOT_ID INT;
-alter table EDYCJA add FOREIGN KEY (PRZEDMIOT_ID) REFERENCES PRZEDMIOT(ID);
+alter table edition add PRZEDMIOT_ID INT;
+alter table edition add FOREIGN KEY (course_id) REFERENCES course(id);
 
-alter table GRUPA add EDYCJA_ID INT;
-alter table GRUPA add FOREIGN KEY (EDYCJA_ID) REFERENCES EDYCJA(ID);
+alter table user_group add EDYCJA_ID INT;
+alter table user_group add FOREIGN KEY (edition_id) REFERENCES edition(id);
 
-alter table UCZESTNIK add GRUPA_ID INT;
-alter table UCZESTNIK add FOREIGN KEY (GRUPA_ID) REFERENCES GRUPA(ID);
+alter table "user" add group_id INT;
+alter table "user" add FOREIGN KEY (group_id) REFERENCES user_group(id);
 
-ALTER TABLE SZABLONY ADD PRZEDMIOT_ID INT;
-ALTER TABLE SZABLONY ADD FOREIGN KEY (PRZEDMIOT_ID) REFERENCES PRZEDMIOT(ID);
+alter table template add FOREIGN KEY (user_id) REFERENCES user(id);
+alter table template add FOREIGN KEY (group_id) REFERENCES user_group(id);
+alter table template add FOREIGN KEY (edition_id) REFERENCES edition(id);
+alter table template add FOREIGN KEY (course_id) REFERENCES course(id);
