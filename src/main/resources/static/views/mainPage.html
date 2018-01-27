@@ -61,21 +61,22 @@
                 <br/> <textarea class="big-textarea" ng-keyup="autoExpand($event)" ng-model="fileContent"></textarea>
             </div>
             <br/>
-            <div class="pull-left">
-                <input type="text" ng-model="fileName"/>
-                <br/>
-                <button class="btn btn-info" ng-click="downloadFile()">
-                    Generuj plik do pobrania
-                </button>
-                <br/>
-                <div class="panel-footer" ng-show="showDownloadLink">
-                    <a download="{{fileName}}" id="downloadlink">Pobierz plik</a>
+            <input type="text" ng-model="fileName"/>
+            <br/>
+            <div class="panel panel-default">
+                <div class="pull-left">
+                    <button class="btn btn-info" ng-click="downloadFile(fileContent)">
+                        Generuj plik do pobrania
+                    </button>
+                </div>
+                <div class="pull-right">
+                    <button class="btn btn-info" ng-click="saveFileOnServer(template.id, template.name, fileContent)">Zapisz zmiany</button>
                 </div>
             </div>
-            <div class="pull-right">
-                <br/>
-                <br/>
-                <button class="btn btn-info" ng-click="saveFileOnServer(template.id, template.name)">Zapisz zmiany</button>
+            <br/>
+            <br/>
+            <div class="panel panel-footer pull-left" ng-show="showDownloadLink">
+                <a download="{{fileName}}" id="downloadlink">Pobierz plik</a>
             </div>
         </div>
     </script>

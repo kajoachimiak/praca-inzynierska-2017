@@ -127,7 +127,7 @@ app.controller('mainController', function ($scope, $location, sessionService, $h
 
             var textFile = null;
             var makeTextFile = function (text) {
-                console.log("File content:" +$scope.fileContent );
+                console.log("File content:" +text );
                 var data = new Blob([text], {type: 'text/plain'});
                 if (textFile !== null) {
                     window.URL.revokeObjectURL(textFile);
@@ -138,18 +138,18 @@ app.controller('mainController', function ($scope, $location, sessionService, $h
                 return textFile;
             };
             $scope.showDownloadLink = false;
-            $scope.downloadFile = function () {
-                console.log("Starting save file");
+            $scope.downloadFile = function (fileContent) {
+                console.log("Starting download file");
                 var link = document.getElementById('downloadlink');
-                link.href = makeTextFile($scope.fileContent);
-                console.log("Link to save file content" + link.href);
+                link.href = makeTextFile(fileContent);
+                console.log("Link to download file content" + link.href);
                 $scope.showDownloadLink = true;
             };
 
-            $scope.saveFileOnServer = function (templateId, templateName) {
-                console.log("File content:" +$scope.fileContent );
+            $scope.saveFileOnServer = function (templateId, templateName, fileContent) {
+                console.log("File content:" + fileContent );
                 var postData = {
-                    fileContent: $scope.fileContent
+                    fileContent: fileContent
                 };
                 $http({
                     method: 'POST',

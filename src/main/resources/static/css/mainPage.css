@@ -108,6 +108,10 @@ body {
   margin-top: 0;
 }
 
+.panel {
+  border: 0;
+}
+
 
 /*
  * Placeholder dashboard ideas
