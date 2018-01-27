@@ -96,21 +96,26 @@ app.controller('mainController', function ($scope, $location, sessionService, $h
 
 
             //File template logic begin
-            $scope.fileContent = '';
-            $scope.fileName = 'log';
+
+
             $scope.loadFileContent = function (templateId, templateName) {
+                $scope.showFileSaveSuccess = false;
+                $scope.showFileSaveError = false;
+                $scope.fileContent = '';
+                $scope.fileName = 'log';
                 $http({
                     method: 'GET',
                     url: '/getFileContent',
                     params: {templateId: templateId, templateName:templateName},
                     responseType: 'text'
                 }).then(function successCallback(response) {
+                    console.log("Loading file content success");
                     console.log(response);
                     $scope.fileContent = response.data.fileContent;
                     console.log($scope.fileContent);
                 }, function errorCallback(response) {
-                    // called asynchronously if an error occurs
-                    // or server returns response with an error status.
+                    console.log("Loading file content error");
+                    console.log(response);
                 });
             };
             $scope.autoExpand = function (e) {
@@ -133,12 +138,44 @@ app.controller('mainController', function ($scope, $location, sessionService, $h
                 return textFile;
             };
             $scope.showDownloadLink = false;
-            $scope.saveFile = function () {
+            $scope.downloadFile = function () {
                 console.log("Starting save file");
                 var link = document.getElementById('downloadlink');
                 link.href = makeTextFile($scope.fileContent);
                 console.log("Link to save file content" + link.href);
                 $scope.showDownloadLink = true;
+            };
+
+            $scope.saveFileOnServer = function (templateId, templateName) {
+                console.log("File content:" +$scope.fileContent );
+                var postData = {
+                    fileContent: $scope.fileContent
+                };
+                $http({
+                    method: 'POST',
+                    url: '/saveFile',
+                    headers: {
+                        'Content-Type': 'application/json; charset=utf-8'
+                    },
+                    params: {templateId: templateId, templateName:templateName},
+                    data: postData
+                }).then(function successCallback(response) {
+                    console.log("Saving file content success");
+                    console.log(response);
+                    $scope.saveFileSuccess = response.data.writingSuccess;
+                    if($scope.saveFileSuccess === true) {
+                        $scope.showFileSaveSuccess = true;
+                        $scope.showFileSaveError = false;
+                    }else {
+                        $scope.showFileSaveSuccess = false;
+                        $scope.showFileSaveError = true;
+                    }
+                }, function errorCallback(response) {
+                    console.log("Saving file content error");
+                    console.log(response);
+                    $scope.showFileSaveSuccess = false;
+                    $scope.showFileSaveError = true;
+                });
             };
             //File template logic end
 

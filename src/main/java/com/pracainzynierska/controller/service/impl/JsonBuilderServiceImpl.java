@@ -1,14 +1,12 @@
 package com.pracainzynierska.controller.service.impl;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.pracainzynierska.controller.helper.jsonObjects.templateList.TemplateJson;
 import com.pracainzynierska.controller.helper.jsonObjects.templateList.TemplateJsonRoot;
 import com.pracainzynierska.controller.helper.jsonObjects.treeData.*;
+import com.pracainzynierska.controller.service.JsonBuilderService;
 import com.pracainzynierska.model.entities.*;
-import com.pracainzynierska.model.entities.Course;
-import com.pracainzynierska.model.entities.Edition;
-import com.pracainzynierska.model.entities.Group;
-import com.pracainzynierska.model.entities.User;
 import com.pracainzynierska.model.enums.NodeType;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +17,7 @@ import java.util.List;
  * Created by karol on 24.01.18.
  */
 @Service
-public class JsonBuilderService {
+public class JsonBuilderServiceImpl implements JsonBuilderService{
     public String buildUserRelationsResponse(User user){
         Group group = user.getGroup();
         Edition edition = group.getEdition();
@@ -48,4 +46,12 @@ public class JsonBuilderService {
         TemplateJsonRoot templateJsonRoot = new TemplateJsonRoot(ownerName, resultTemplateJsonList);
         return new Gson().toJson(templateJsonRoot);
     }
+
+    @Override
+    public String buildFileResponse(String fileContent) {
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("fileContent", fileContent);
+        return new Gson().toJson(jsonObject);
+    }
+
 }

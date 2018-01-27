@@ -7,4 +7,5 @@ import java.io.IOException;
  */
 public interface FileService {
     String getFileContent(String path) throws IOException;
+    void writeToFile(String path, String content) throws IOException;
 }

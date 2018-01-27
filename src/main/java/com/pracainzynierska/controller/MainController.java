@@ -3,11 +3,14 @@ package com.pracainzynierska.controller;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.pracainzynierska.controller.service.FileService;
+import com.pracainzynierska.controller.service.JsonBuilderService;
 import com.pracainzynierska.controller.service.ShellRunnerService;
 import com.pracainzynierska.controller.service.TemplateListGenerator;
-import com.pracainzynierska.controller.service.impl.JsonBuilderService;
+import com.pracainzynierska.controller.service.impl.JsonBuilderServiceImpl;
 import com.pracainzynierska.controller.service.impl.TemplateService;
 import com.pracainzynierska.controller.service.impl.UserService;
+import com.pracainzynierska.model.dto.FileDTO;
+import com.pracainzynierska.model.dto.SaveFileResponseDTO;
 import com.pracainzynierska.model.dto.ScriptRunnerResponseDTO;
 import com.pracainzynierska.model.entities.Template;
 import com.pracainzynierska.model.entities.User;
@@ -16,10 +19,7 @@ import javafx.util.Pair;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.security.Principal;
@@ -58,14 +58,14 @@ public class MainController {
         ScriptRunnerResponseDTO scriptRunnerResponse = new ScriptRunnerResponseDTO();
         try {
             scriptRunnerResponse.setExecutionSuccess(true);
-            LOG.info("Executing command "+ command +". Result is: " +
+            LOG.info("Executing command " + command + ". Result is: " +
                     shellRunnerService.runScript(command));
         } catch (IOException e) {
             scriptRunnerResponse.setExecutionSuccess(false);
             LOG.error("Command: " + command + " execution failed!", e);
         } catch (InterruptedException e) {
             scriptRunnerResponse.setExecutionSuccess(false);
-            LOG.error("Intterupted exception while execution command: "+ command,e);
+            LOG.error("Intterupted exception while execution command: " + command, e);
         }
         return scriptRunnerResponse;
     }
@@ -82,10 +82,23 @@ public class MainController {
             LOG.error("Error reading file from path: ");
             e.printStackTrace();
         }
+        return jsonBuilderService.buildFileResponse(result);
+    }
 
-        JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("fileContent", result);
-        return new Gson().toJson(jsonObject);
+    @RequestMapping(value = "/saveFile", method = RequestMethod.POST,produces = "application/json")
+    @ResponseBody
+    public SaveFileResponseDTO saveFile(@RequestParam("templateId") Integer templateId,
+                                        @RequestParam("templateName") String templateName,
+                                        @RequestBody FileDTO file){
+        SaveFileResponseDTO saveFileResponse = new SaveFileResponseDTO();
+        Template template = templateService.getTemplateByIdAndName(templateId, templateName);
+        try {
+            fileService.writeToFile(template.getContent(),file.getFileContent());
+            saveFileResponse.setWritingSuccess(true);
+        } catch (IOException e) {
+            saveFileResponse.setWritingSuccess(false);
+        }
+        return saveFileResponse;
     }
 
     @RequestMapping(value = "/userDetails", method = RequestMethod.GET, produces = "application/json")
@@ -113,10 +126,7 @@ public class MainController {
 
         Pair<String, List<Template>> templateGeneratorResult =
                 templateListGenerator.generateTemplateList(NodeType.valueOf(nodeType.toUpperCase(Locale.ENGLISH)), user);
-        String responsJson =
-                jsonBuilderService.buildTemplateListResponse(templateGeneratorResult.getKey(),
+        return jsonBuilderService.buildTemplateListResponse(templateGeneratorResult.getKey(),
                         templateGeneratorResult.getValue());
-
-        return responsJson;
     }
 }
