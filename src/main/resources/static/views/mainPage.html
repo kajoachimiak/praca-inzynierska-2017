@@ -35,7 +35,9 @@
                     <div>Wykonanie polecenia nie powiodło się! Skontaktuj się z administratorem.</div>
                 </div>
             </div>
-            {{template.description}}
+            <div class="panel panel-default">
+                {{template.description}}
+            </div>
             <br/>
             <button class="btn btn-info" ng-click="runScript(template.id, template.name)">Wykonaj</button>
         </div>
@@ -56,6 +58,9 @@
                     <div>Zapisanie zmian nie powiodło się! Skontaktuj się z administratorem.</div>
                 </div>
             </div>
+            <div class="panel panel-default">
+                {{template.description}}
+            </div>
             <div>
                 <h4>Zawartość pliku:</h4>
                 <br/> <textarea class="big-textarea" ng-keyup="autoExpand($event)" ng-model="fileContent"></textarea>
@@ -70,7 +75,9 @@
                     </button>
                 </div>
                 <div class="pull-right">
-                    <button class="btn btn-info" ng-click="saveFileOnServer(template.id, template.name, fileContent)">Zapisz zmiany</button>
+                    <button class="btn btn-info" ng-click="saveFileOnServer(template.id, template.name, fileContent)">
+                        Zapisz zmiany
+                    </button>
                 </div>
             </div>
             <br/>
@@ -84,8 +91,19 @@
 
     <!--Url template begin-->
     <script type="text/ng-template" id="accordion-content-url.html">
-        <div>
-            URL
+        <div ng-if="status.open" ng-init="loadUrl(template.id, template.name)">
+            <div class="alert alert-danger" ng-show="showLoadUrlError" ng-cloak>
+                <div class="messages-group">
+                    <div>Pobranie adresu strony nie powiodło się! Skontaktuj się z administratorem.</div>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                {{template.description}}
+            </div>
+            <button class="btn btn-info pull-left" ng-click="redirectToUrl(url)">
+                Otwórz
+            </button>
+
         </div>
     </script>
     <!--Url template end-->

@@ -12,4 +12,5 @@ public interface JsonBuilderService {
     String buildUserRelationsResponse(User user);
     String buildTemplateListResponse(String ownerName, List<Template> templateList);
     String buildFileResponse(String fileContent);
+    String buildUrlResponse(String url);
 }

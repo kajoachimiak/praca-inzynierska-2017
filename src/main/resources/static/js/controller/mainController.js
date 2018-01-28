@@ -1,4 +1,4 @@
-app.controller('mainController', function ($scope, $location, sessionService, $http) {
+app.controller('mainController', function ($scope, $location, sessionService, $http, $window) {
     console.log('Starting mainController');
     sessionService.deleteUserDetails();
     sessionService.isUserAuthorized().then(
@@ -178,6 +178,31 @@ app.controller('mainController', function ($scope, $location, sessionService, $h
                 });
             };
             //File template logic end
+
+            $scope.loadUrl = function (templateId, templateName) {
+                $scope.showLoadUrlError = false;
+                $http({
+                    method: 'GET',
+                    url: '/getUrl',
+                    params: {templateId: templateId, templateName:templateName}
+                }).then(function successCallback(response) {
+                    console.log("Loading url success");
+                    console.log(response);
+                    $scope.url = response.data.url;
+                    console.log("Loaded url: " + $scope.url);
+                }, function errorCallback(response) {
+                    console.log("Loading url error");
+                    console.log(response);
+                    $scope.showLoadUrlError = true;
+                });
+            };
+
+            //URL template logic begin
+            $scope.redirectToUrl = function(url){
+                console.log("Redirecting to url : " + url);
+                $window.open(url, '_blank');
+            };
+            //URL template logic end
 
 
 

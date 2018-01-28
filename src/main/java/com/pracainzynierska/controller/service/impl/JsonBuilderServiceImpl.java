@@ -40,8 +40,7 @@ public class JsonBuilderServiceImpl implements JsonBuilderService{
     public String buildTemplateListResponse(String ownerName, List<Template> templateList){
         List<TemplateJson> resultTemplateJsonList = new ArrayList<>();
         templateList.forEach(template -> {
-            resultTemplateJsonList.add(new TemplateJson(template.getId(), template.getName(),
-                    template.getContent(), template.getDescription(), template.getType().getCode()));
+            resultTemplateJsonList.add(new TemplateJson(template.getId(), template.getName(), template.getDescription(), template.getType().getCode()));
         });
         TemplateJsonRoot templateJsonRoot = new TemplateJsonRoot(ownerName, resultTemplateJsonList);
         return new Gson().toJson(templateJsonRoot);
@@ -51,6 +50,13 @@ public class JsonBuilderServiceImpl implements JsonBuilderService{
     public String buildFileResponse(String fileContent) {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("fileContent", fileContent);
+        return new Gson().toJson(jsonObject);
+    }
+
+    @Override
+    public String buildUrlResponse(String url) {
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("url", url);
         return new Gson().toJson(jsonObject);
     }
 

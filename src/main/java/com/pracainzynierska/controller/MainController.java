@@ -129,4 +129,12 @@ public class MainController {
         return jsonBuilderService.buildTemplateListResponse(templateGeneratorResult.getKey(),
                         templateGeneratorResult.getValue());
     }
+
+    @RequestMapping(value = "/getUrl", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public String getUrl(@RequestParam("templateId") Integer templateId,
+                         @RequestParam("templateName") String templateName){
+        Template template = templateService.getTemplateByIdAndName(templateId, templateName);
+        return jsonBuilderService.buildUrlResponse(template.getContent());
+    }
 }
