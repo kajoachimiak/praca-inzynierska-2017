@@ -2,7 +2,7 @@ package com.pracainzynierska.controller.service.impl;
 
 import com.pracainzynierska.controller.service.TemplateListGenerator;
 import com.pracainzynierska.model.entities.*;
-import com.pracainzynierska.model.enums.NodeType;
+import com.pracainzynierska.enums.NodeType;
 import javafx.util.Pair;
 import org.springframework.stereotype.Service;
 

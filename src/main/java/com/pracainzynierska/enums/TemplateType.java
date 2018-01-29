@@ -1,4 +1,4 @@
-package com.pracainzynierska.model.enums;
+package com.pracainzynierska.enums;
 
 /**
  * Created by karol on 26.01.18.

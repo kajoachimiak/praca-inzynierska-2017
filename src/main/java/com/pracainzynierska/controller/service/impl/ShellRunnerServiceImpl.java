@@ -16,7 +16,7 @@ public class ShellRunnerServiceImpl implements ShellRunnerService {
     private static final Logger LOG = Logger.getLogger(ShellRunnerServiceImpl.class);
 
     @Override
-    public StringBuffer runScript(String script) throws IOException, InterruptedException {
+    public String runScript(String script) throws IOException, InterruptedException {
         StringBuffer output = new StringBuffer();
         Process p;
 
@@ -28,6 +28,6 @@ public class ShellRunnerServiceImpl implements ShellRunnerService {
             output.append(line).append("\n");
         }
 
-        return output;
+        return output.toString();
     }
 }

@@ -1,6 +1,6 @@
 package com.pracainzynierska.model.util;
 
-import com.pracainzynierska.model.enums.TemplateType;
+import com.pracainzynierska.enums.TemplateType;
 
 import javax.persistence.AttributeConverter;
 

@@ -7,7 +7,7 @@ import com.pracainzynierska.controller.helper.jsonObjects.templateList.TemplateJ
 import com.pracainzynierska.controller.helper.jsonObjects.treeData.*;
 import com.pracainzynierska.controller.service.JsonBuilderService;
 import com.pracainzynierska.model.entities.*;
-import com.pracainzynierska.model.enums.NodeType;
+import com.pracainzynierska.enums.NodeType;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

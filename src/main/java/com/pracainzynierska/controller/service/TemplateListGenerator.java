@@ -2,7 +2,7 @@ package com.pracainzynierska.controller.service;
 
 import com.pracainzynierska.model.entities.Template;
 import com.pracainzynierska.model.entities.User;
-import com.pracainzynierska.model.enums.NodeType;
+import com.pracainzynierska.enums.NodeType;
 import javafx.util.Pair;
 
 import java.util.List;
