@@ -4,14 +4,6 @@ app.service('sessionService', function ($localStorage, $http, $q) {
         console.log('Saving user details to local storage. Saving username: ' + login);
         $localStorage.userDetails = login;
     };
-    this.isLocalUserDetailsPresent = function () {
-        var userDetails = $localStorage.userDetails;
-        console.log('Checking if user details are saved in local storage');
-        console.log("Username from local storage: " + userDetails);
-        return (angular.isDefined(userDetails)
-        && userDetails
-        && !angular.equals(userDetails, ''))
-    };
     this.deleteUserDetails = function () {
         delete $localStorage.userDetails;
     };
@@ -22,6 +14,9 @@ app.service('sessionService', function ($localStorage, $http, $q) {
             method: 'GET',
             url: '/userDetails'
         })
+    };
+    this.getCurrentUserLogin = function () {
+        return $localStorage.userDetails;
     };
 
     this.isUserAuthorized = function () {

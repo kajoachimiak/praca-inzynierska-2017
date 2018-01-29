@@ -4,6 +4,7 @@ app.controller('mainController', function ($scope, $location, sessionService, $h
     sessionService.isUserAuthorized().then(
         function () {
             console.log('callback success');
+            $scope.currentUserLogin = sessionService.getCurrentUserLogin();
 
             //Tree logic begin
             $scope.treeData = [];
