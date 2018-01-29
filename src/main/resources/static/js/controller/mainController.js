@@ -205,7 +205,7 @@ app.controller('mainController', function ($scope, $location, sessionService, $h
             //URL template logic end
 
 
-
+            $scope.showLogoutError = false;
             //Logout logic
             $scope.logout = function () {
                 $http({
@@ -222,6 +222,7 @@ app.controller('mainController', function ($scope, $location, sessionService, $h
                 }, function errorCallback(response) {
                     console.log(response);
                     console.log('logout error');
+                    $scope.showLogoutError = true;
                 });
             };
         }, function () {
