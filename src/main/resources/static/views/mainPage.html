@@ -27,19 +27,21 @@
         <div ng-if="status.open" ng-init="resetAlertFlags()">
             <div class="alert alert-success" ng-show="showScriptSuccess" ng-cloak>
                 <div class="messages-group">
-                    <div>Polecenie wykonano pomyślnie!</div>
+                    <div translate>EXECUTE_COMMAND_SUCCESS</div>
                 </div>
             </div>
             <div class="alert alert-danger" ng-show="showScriptError" ng-cloak>
                 <div class="messages-group">
-                    <div>Wykonanie polecenia nie powiodło się! Skontaktuj się z administratorem.</div>
+                    <div translate>EXECUTE_COMMAND_ERROR</div>
                 </div>
             </div>
             <div class="panel panel-default">
                 {{template.description}}
             </div>
             <br/>
-            <button class="btn btn-info" ng-click="runScript(template.id, template.name)">Wykonaj</button>
+            <button class="btn btn-info" ng-click="runScript(template.id, template.name)" translate>
+                TEMPLATE_LIST_RUN_COMMAND
+            </button>
         </div>
     </script>
     <!--Script template end-->
@@ -50,19 +52,19 @@
         <div ng-if="status.open" ng-init="loadFileContent(template.id, template.name)">
             <div class="alert alert-success" ng-show="showFileSaveSuccess" ng-cloak>
                 <div class="messages-group">
-                    <div>Pomyślnie zapisano zmiany!</div>
+                    <div translate>SAVE_CHANGES_SUCCESS</div>
                 </div>
             </div>
             <div class="alert alert-danger" ng-show="showFileSaveError" ng-cloak>
                 <div class="messages-group">
-                    <div>Zapisanie zmian nie powiodło się! Skontaktuj się z administratorem.</div>
+                    <div translate>SAVE_CHANGES_ERROR</div>
                 </div>
             </div>
             <div class="panel panel-default">
                 {{template.description}}
             </div>
             <div>
-                <h4>Zawartość pliku:</h4>
+                <h4 translate>TEMPLATE_LIST_FILE_CONTENT </h4>
                 <br/> <textarea class="big-textarea" ng-keyup="autoExpand($event)" ng-model="fileContent"></textarea>
             </div>
             <br/>
@@ -70,20 +72,21 @@
             <br/>
             <div class="panel panel-default">
                 <div class="pull-left">
-                    <button class="btn btn-info" ng-click="downloadFile(fileContent)">
-                        Generuj plik do pobrania
+                    <button class="btn btn-info" ng-click="downloadFile(fileContent)" translate>
+                        TEMPLATE_LIST_GENERATE_FILE
                     </button>
                 </div>
                 <div class="pull-right">
-                    <button class="btn btn-info" ng-click="saveFileOnServer(template.id, template.name, fileContent)">
-                        Zapisz zmiany
+                    <button class="btn btn-info"
+                            ng-click="saveFileOnServer(template.id, template.name, fileContent)" translate>
+                        TEMPLATE_LIST_SAVE_CHANGES
                     </button>
                 </div>
             </div>
             <br/>
             <br/>
             <div class="panel panel-footer pull-left" ng-show="showDownloadLink">
-                <a download="{{fileName}}" id="downloadlink">Pobierz plik</a>
+                <a download="{{fileName}}" id="downloadlink" translate>TEMPLATE_LIST_DOWNLOAD_FILE</a>
             </div>
         </div>
     </script>
@@ -94,16 +97,15 @@
         <div ng-if="status.open" ng-init="loadUrl(template.id, template.name)">
             <div class="alert alert-danger" ng-show="showLoadUrlError" ng-cloak>
                 <div class="messages-group">
-                    <div>Pobranie adresu strony nie powiodło się! Skontaktuj się z administratorem.</div>
+                    <div translate>LOAD_URL_ERROR</div>
                 </div>
             </div>
             <div class="panel panel-default">
                 {{template.description}}
             </div>
-            <button class="btn btn-info pull-left" ng-click="redirectToUrl(url)">
-                Otwórz
+            <button class="btn btn-info pull-left" ng-click="redirectToUrl(url)" translate>
+                TEMPLATE_LIST_OPEN_URL_BTN
             </button>
-
         </div>
     </script>
     <!--Url template end-->
@@ -138,26 +140,40 @@
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
                         aria-expanded="false" aria-controls="navbar">
-                    <span class="sr-only">Toggle navigation</span>
+                    <!--<span class="sr-only">Toggle navigation</span>-->
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand">Aplikacja do zarządzania serwerem aplikacyjnym </a>
+                <a class="navbar-brand" translate>MAIN_HEADER </a>
             </div>
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav navbar-right">
-
                     <li>
                         <div class="alert alert-danger" ng-show="showLogoutError" ng-cloak>
                             <div class="messages-group">
-                                <div>Wylogowanie nie powiodło się! Skontaktuj się z administratorem.</div>
+                                <div translate>LOG_OUT_ERROR</div>
                             </div>
                         </div>
-                        <span class="navbar-text navbar-inverse">
-                            Zalogowany użytkownik: {{currentUserLogin}}
+                    </li>
+                    <li>
+                        <span class="navbar-text navbar-inverse" translate>
+                            LOGGED_USER
                         </span>
-                        <button class="btn btn-info navbar-btn" ng-click="logout()">Wyloguj</button>
+                        <span class="navbar-text navbar-inverse" >
+                            {{currentUserLogin}}
+                        </span>
+                        <button class="btn btn-info navbar-btn" ng-click="logout()" translate>LOG_OUT_BUTTON</button>
+                    </li>
+                    <li>
+                        <button class="btn btn-default navbar-btn" ng-click="changeLanguage('pl')">
+                            <img src="/img/poland-flag-small.jpg" width="30"/>
+                        </button>
+                    </li>
+                    <li>
+                        <button class="btn btn-default navbar-btn" ng-click="changeLanguage('en')">
+                            <img src="/img/united-kingdom-flag-small.jpg" width="30"/>
+                        </button>
                     </li>
                 </ul>
             </div>
@@ -168,15 +184,18 @@
         <div class="row">
             <div class="col-sm-3 col-md-2 sidebar">
                 <div ui-tree id="tree-root" data-drag-enabled="false">
-                    <button class="btn btn-info btn-xs btn-block" ng-click="expandAll()">Rozwiń</button>
-                    <button class="btn btn-info btn-xs btn-block" ng-click="collapseAll()">Zwiń</button>
+                    <button class="btn btn-info btn-xs btn-block" ng-click="expandAll()" translate>EXPAND_TREE_BUTTON
+                    </button>
+                    <button class="btn btn-info btn-xs btn-block" ng-click="collapseAll()" translate>
+                        COLLAPSE_TREE_BUTTON
+                    </button>
                     <ol ui-tree-nodes ng-model="treeData">
                         <li ng-repeat="list in treeData" ui-tree-node ng-include="'nodes_renderer.html'"></li>
                     </ol>
                 </div>
             </div>
             <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-                <h1 align="center" class="page-header">Lista szablonów</h1>
+                <h1 align="center" class="page-header" translate>TEMPLATE_LIST_HEADER</h1>
                 <uib-accordion ng-model="templatesData" close-others="true">
                     <div ng-repeat="template in templateData.templateList" ng-include="'accordion-panel.html'"></div>
                 </uib-accordion>

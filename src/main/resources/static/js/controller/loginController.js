@@ -1,6 +1,10 @@
-app.controller('loginController', function ($scope, $http, $location, sessionService) {
+app.controller('loginController', function ($scope, $http, $location, sessionService, $translate) {
     console.log("Starting loginController");
     sessionService.deleteUserDetails();
+
+    $scope.changeLanguageLogin = function (langKey) {
+        $translate.use(langKey);
+    };
 
     $scope.credentials = {};
     $scope.errorMessages = [];

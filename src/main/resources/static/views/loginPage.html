@@ -3,15 +3,24 @@
         <div ng-repeat="error in errorMessages">{{error.logInErrorDesc}}</div>
     </div>
 </div>
-
+<div class="row">
+    <div class="span9">
+        <button class="btn btn-default" ng-click="changeLanguageLogin('pl')">
+            <img src="/img/poland-flag-small.jpg" width="30" />
+        </button>
+        <button class="btn btn-default" ng-click="changeLanguageLogin('en')">
+            <img src="/img/united-kingdom-flag-small.jpg"  width="30" />
+        </button>
+    </div>
+</div>
 <form class="form-signin" role="form" ng-submit="submitLoginForm()">
 
-    <h2 class="form-signin-heading">Proszę się zalogować</h2>
-    <label for="username" class="sr-only">Login</label>
+    <h2 class="form-signin-heading" translate>SIGNIN_FORM_HEADING</h2>
+    <label for="username" class="sr-only" translate>SIGNIN_FORM_LOGIN</label>
     <input type="text" ng-model="credentials.username" id="username" name="username" class="form-control"
-           placeholder="Login" required autofocus>
-    <label for="password" class="sr-only">Hasło</label>
+           placeholder="{{ 'SIGNIN_FORM_LOGIN' | translate }}" required autofocus>
+    <label for="password" class="sr-only" translate>SIGNIN_FORM_PASSWORD</label>
     <input type="password" ng-model="credentials.password" id="password" name="password" class="form-control"
-           placeholder="Hasło" required>
-    <button class="btn btn-lg btn-primary btn-block" type="submit">Zaloguj</button>
+           placeholder="{{ 'SIGNIN_FORM_PASSWORD' | translate }}" required>
+    <button class="btn btn-lg btn-primary btn-block" type="submit" translate>SIGNIN_FORM_SUBMIT</button>
 </form>

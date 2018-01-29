@@ -1,10 +1,14 @@
-app.controller('mainController', function ($scope, $location, sessionService, $http, $window) {
+app.controller('mainController', function ($scope, $location, sessionService, $http, $window, $translate) {
     console.log('Starting mainController');
     sessionService.deleteUserDetails();
     sessionService.isUserAuthorized().then(
         function () {
             console.log('callback success');
             $scope.currentUserLogin = sessionService.getCurrentUserLogin();
+
+            $scope.changeLanguage = function (langKey) {
+                $translate.use(langKey);
+            };
 
             //Tree logic begin
             $scope.treeData = [];
@@ -100,6 +104,7 @@ app.controller('mainController', function ($scope, $location, sessionService, $h
 
 
             $scope.loadFileContent = function (templateId, templateName) {
+                $scope.showDownloadLink = false;
                 $scope.showFileSaveSuccess = false;
                 $scope.showFileSaveError = false;
                 $scope.fileContent = '';
