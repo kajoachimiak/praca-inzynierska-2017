@@ -10,7 +10,6 @@ import com.pracainzynierska.model.dto.FileDTO;
 import com.pracainzynierska.model.dto.SaveFileResponseDTO;
 import com.pracainzynierska.model.dto.ScriptRunnerResponseDTO;
 import com.pracainzynierska.model.dto.EventHistoryResponseDTO;
-import com.pracainzynierska.model.entities.EventHistory;
 import com.pracainzynierska.model.entities.Template;
 import com.pracainzynierska.model.entities.User;
 import com.pracainzynierska.enums.NodeType;
@@ -55,17 +54,19 @@ public class MainController {
     @RequestMapping(value = "/runScript", method = RequestMethod.GET)
     @ResponseBody
     public ScriptRunnerResponseDTO runScript(@RequestParam("templateId") Integer templateId,
-                                             @RequestParam("templateName") String templateName) {
+                                             @RequestParam("templateName") String templateName,
+                                             Principal principal) {
         Template template = templateService.getTemplateByIdAndName(templateId, templateName);
         String command = "";
         ScriptRunnerResponseDTO scriptRunnerResponse = new ScriptRunnerResponseDTO();
+        User user = loadUser(principal);
 
         try {
             command = parserService.parseArguments(template.getContent(), template);
 
             String scriptResult = shellRunnerService.runScript(command);
             scriptRunnerResponse.setExecutionSuccess(true);
-            accountingService.logEvent(template, command);
+            accountingService.logEvent(user,template, command);
             LOG.info("Executing command " + command + ". Result is: " + scriptResult);
         } catch (IOException e) {
             scriptRunnerResponse.setExecutionSuccess(false);
@@ -82,13 +83,15 @@ public class MainController {
     @RequestMapping(value = "/getFileContent", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public String getFileContent(@RequestParam("templateId") Integer templateId,
-                                 @RequestParam("templateName") String templateName) {
+                                 @RequestParam("templateName") String templateName,
+                                 Principal principal) {
         String result = "";
+        User user = loadUser(principal);
         try {
             Template template = templateService.getTemplateByIdAndName(templateId, templateName);
             String parsedContent = parserService.parseArguments(template.getContent(), template);
             result = fileService.getFileContent(parsedContent);
-            accountingService.logEvent(template, parsedContent);
+            accountingService.logEvent(user, template, parsedContent);
         } catch (IOException e) {
             LOG.error("Error reading file from path: ");
             e.printStackTrace();
@@ -102,14 +105,16 @@ public class MainController {
     @ResponseBody
     public SaveFileResponseDTO saveFile(@RequestParam("templateId") Integer templateId,
                                         @RequestParam("templateName") String templateName,
-                                        @RequestBody FileDTO file) {
+                                        @RequestBody FileDTO file,
+                                        Principal principal) {
         SaveFileResponseDTO saveFileResponse = new SaveFileResponseDTO();
         Template template = templateService.getTemplateByIdAndName(templateId, templateName);
+        User user = loadUser(principal);
         try {
             String parsedContent = parserService.parseArguments(template.getContent(), template);
             fileService.writeToFile(parsedContent, file.getFileContent());
             saveFileResponse.setWritingSuccess(true);
-            accountingService.logEvent(template, parsedContent);
+            accountingService.logEvent(user, template, parsedContent);
         } catch (IOException e) {
             saveFileResponse.setWritingSuccess(false);
         } catch (EnvVariableExctractionException e) {
@@ -121,12 +126,15 @@ public class MainController {
     @RequestMapping(value = "/getUrl", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public String getUrl(@RequestParam("templateId") Integer templateId,
-                         @RequestParam("templateName") String templateName) {
+                         @RequestParam("templateName") String templateName,
+                         Principal principal) {
         Template template = templateService.getTemplateByIdAndName(templateId, templateName);
         String parsedContent = null;
+        User user = loadUser(principal);
+
         try {
             parsedContent = parserService.parseArguments(template.getContent(), template);
-            accountingService.logEvent(template, parsedContent);
+            accountingService.logEvent(user, template, parsedContent);
         } catch (EnvVariableExctractionException e) {
             e.printStackTrace();
         }
@@ -153,8 +161,7 @@ public class MainController {
     @RequestMapping(value = "/userRelations", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public String getCurrentUserRelations(Principal principal) {
-        String username = userService.getCurrentUserUsername(principal);
-        User user = userService.getUserByLogin(username);
+        User user = loadUser(principal);
         return responseBuilderService.buildUserRelationsResponse(user);
     }
 
@@ -168,6 +175,10 @@ public class MainController {
                 templateListGenerator.generateTemplateList(NodeType.valueOf(nodeType.toUpperCase(Locale.ENGLISH)), user);
         return responseBuilderService.buildTemplateListResponse(templateGeneratorResult.getKey(),
                 templateGeneratorResult.getValue());
+    }
+    private User loadUser(Principal principal){
+        String username = userService.getCurrentUserUsername(principal);
+        return userService.getUserByLogin(username);
     }
 
 
