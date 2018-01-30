@@ -7,13 +7,17 @@ import java.util.Date;
  * Created by karol on 30.01.18.
  */
 @Entity
-@Table(name = "event_history")
+@Table(name = "event_history", schema = "GLASSFISH_MANAGER", catalog = "")
 public class EventHistory {
     private Integer id;
     private Date executionTime;
     private Template template;
     private String content;
     private String result;
+    private String userContext;
+    private String groupContext;
+    private String editionContext;
+    private String courseContext;
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -66,6 +70,46 @@ public class EventHistory {
         this.result = result;
     }
 
+    @Basic
+    @Column(name = "user_context")
+    public String getUserContext() {
+        return userContext;
+    }
+
+    public void setUserContext(String userContext) {
+        this.userContext = userContext;
+    }
+
+    @Basic
+    @Column(name = "group_context")
+    public String getGroupContext() {
+        return groupContext;
+    }
+
+    public void setGroupContext(String groupContext) {
+        this.groupContext = groupContext;
+    }
+
+    @Basic
+    @Column(name = "edition_context")
+    public String getEditionContext() {
+        return editionContext;
+    }
+
+    public void setEditionContext(String editionContext) {
+        this.editionContext = editionContext;
+    }
+
+    @Basic
+    @Column(name = "course_context")
+    public String getCourseContext() {
+        return courseContext;
+    }
+
+    public void setCourseContext(String courseContext) {
+        this.courseContext = courseContext;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -75,14 +119,27 @@ public class EventHistory {
 
         if (!id.equals(that.id)) return false;
         if (!executionTime.equals(that.executionTime)) return false;
-        return template.equals(that.template);
+        if (!template.equals(that.template)) return false;
+        if (!content.equals(that.content)) return false;
+        if (result != null ? !result.equals(that.result) : that.result != null) return false;
+        if (userContext != null ? !userContext.equals(that.userContext) : that.userContext != null) return false;
+        if (groupContext != null ? !groupContext.equals(that.groupContext) : that.groupContext != null) return false;
+        if (editionContext != null ? !editionContext.equals(that.editionContext) : that.editionContext != null)
+            return false;
+        return courseContext != null ? courseContext.equals(that.courseContext) : that.courseContext == null;
     }
 
     @Override
     public int hashCode() {
-        int result = id.hashCode();
-        result = 31 * result + executionTime.hashCode();
-        result = 31 * result + template.hashCode();
-        return result;
+        int result1 = id.hashCode();
+        result1 = 31 * result1 + executionTime.hashCode();
+        result1 = 31 * result1 + template.hashCode();
+        result1 = 31 * result1 + content.hashCode();
+        result1 = 31 * result1 + (result != null ? result.hashCode() : 0);
+        result1 = 31 * result1 + (userContext != null ? userContext.hashCode() : 0);
+        result1 = 31 * result1 + (groupContext != null ? groupContext.hashCode() : 0);
+        result1 = 31 * result1 + (editionContext != null ? editionContext.hashCode() : 0);
+        result1 = 31 * result1 + (courseContext != null ? courseContext.hashCode() : 0);
+        return result1;
     }
 }

@@ -70,13 +70,15 @@ public class ResponseBuilderServiceImpl implements ResponseBuilderService {
         eventHistoryResponse.setTemplateId(template.getId());
         eventHistoryResponse.setTemplateName(template.getName());
         eventHistoryResponse.setTemplateHistory(new ArrayList<>());
-        String courseName = null != template.getCourse() ? template.getCourse().getName() : "";
-        String editionName = null != template.getEdition() ? template.getEdition().getName() : "";
-        String groupName = null != template.getGroup() ? template.getGroup().getName() : "";
-        String userName = null != template.getUser() ? template.getUser().getLogin() : "";
+
 
         SimpleDateFormat dateFormat = new SimpleDateFormat(HISTORY_DATE_FORMAT);
         eventHistories.forEach(eventHistory -> {
+            String courseName = null != eventHistory.getCourseContext() ? eventHistory.getCourseContext(): "";
+            String editionName = null != eventHistory.getEditionContext() ? eventHistory.getEditionContext() : "";
+            String groupName = null != eventHistory.getGroupContext() ? eventHistory.getGroupContext() : "";
+            String userName = null != eventHistory.getUserContext() ? eventHistory.getUserContext() : "";
+
             EventHistoryResponseElementDTO eventHistoryResponseElement = new EventHistoryResponseElementDTO();
             eventHistoryResponseElement.setExecutionTime(dateFormat.format(eventHistory.getExecutionTime()));
             eventHistoryResponseElement.setContent(eventHistory.getContent());
