@@ -31,6 +31,7 @@ body {
 
 /* Hide for mobile, show later */
 .sidebar {
+  min-width: fit-content;
 }
 @media (min-width: 715px) {
   .sidebar {
