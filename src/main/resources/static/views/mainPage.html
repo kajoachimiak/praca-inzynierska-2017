@@ -24,7 +24,7 @@
 
     <!--Script template begin-->
     <script type="text/ng-template" id="accordion-content-script.html">
-        <div ng-if="status.open" ng-init="resetAlertFlags()">
+        <div ng-if="status.open" ng-init="resetFlags()">
             <div class="alert alert-success" ng-show="showScriptSuccess" ng-cloak>
                 <div class="messages-group">
                     <div translate>EXECUTE_COMMAND_SUCCESS</div>
@@ -88,6 +88,8 @@
             <div class="panel panel-footer pull-left" ng-show="showDownloadLink">
                 <a download="{{fileName}}" id="downloadlink" translate>TEMPLATE_LIST_DOWNLOAD_FILE</a>
             </div>
+            <br/>
+            <br/>
         </div>
     </script>
     <!--File template end-->
@@ -130,6 +132,44 @@
                     <div ng-include="'accordion-content-url.html'"></div>
                 </div>
             </div>
+            <br/>
+            <div ng-if="status.open" ng-init="resetFlags()">
+                <div class="alert alert-danger" ng-show="showLoadHistoryError" ng-cloak>
+                    <div class="messages-group">
+                        <div translate>LOAD_HISTORY_ERROR</div>
+                    </div>
+                </div>
+                <button class="btn btn-info" ng-click="loadTemplateHistory(template.id, template.name)" translate>
+                    SHOW_TEMPLATE_HISTORY
+                </button>
+                <br/>
+                <br/>
+                <div ng-show="showHistoryTable">
+                    <h4 translate>TEMPLATE_HISTORY_HEADER</h4>
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th translate>TABLE_HEADER_TIME</th>
+                            <th translate>TABLE_HEADER_COURSE</th>
+                            <th translate>TABLE_HEADER_EDITION</th>
+                            <th translate>TABLE_HEADER_GROUP</th>
+                            <th translate>TABLE_HEADER_USER</th>
+                            <th translate>TABLE_HEADER_CONTENT</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="x in templateHistory">
+                            <td>{{ x.executionTime }}</td>
+                            <td>{{ x.course }}</td>
+                            <td>{{ x.edition }}</td>
+                            <td>{{ x.group }}</td>
+                            <td>{{ x.user }}</td>
+                            <td>{{ x.content }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </uib-accordion-group>
     </script>
     <!--Generic template end-->
@@ -160,7 +200,7 @@
                         <span class="navbar-text navbar-inverse" translate>
                             LOGGED_USER
                         </span>
-                        <span class="navbar-text navbar-inverse" >
+                        <span class="navbar-text navbar-inverse">
                             {{currentUserLogin}}
                         </span>
                         <button class="btn btn-info navbar-btn" ng-click="logout()" translate>LOG_OUT_BUTTON</button>

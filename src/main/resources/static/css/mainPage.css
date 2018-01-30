@@ -111,6 +111,9 @@ body {
 .panel {
   border: 0;
 }
+.panel-default{
+  min-width: fit-content;
+}
 
 
 /*

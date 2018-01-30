@@ -9,6 +9,8 @@ import com.pracainzynierska.exceptions.EnvVariableExctractionException;
 import com.pracainzynierska.model.dto.FileDTO;
 import com.pracainzynierska.model.dto.SaveFileResponseDTO;
 import com.pracainzynierska.model.dto.ScriptRunnerResponseDTO;
+import com.pracainzynierska.model.dto.EventHistoryResponseDTO;
+import com.pracainzynierska.model.entities.EventHistory;
 import com.pracainzynierska.model.entities.Template;
 import com.pracainzynierska.model.entities.User;
 import com.pracainzynierska.enums.NodeType;
@@ -31,19 +33,19 @@ public class MainController {
     private TemplateService templateService;
     private UserService userService;
     private TemplateListGenerator templateListGenerator;
-    private JsonBuilderService jsonBuilderService;
+    private ResponseBuilderService responseBuilderService;
     private FileService fileService;
     private ArgumentParserService parserService;
     private AccountingService accountingService;
 
     @Autowired
     public MainController(ShellRunnerService shellRunnerService, UserService userService,
-                          TemplateListGenerator templateListGenerator, JsonBuilderService jsonBuilderService,
+                          TemplateListGenerator templateListGenerator, ResponseBuilderService responseBuilderService,
                           TemplateService templateService, FileService fileService, ArgumentParserService parserService, AccountingService accountingService) {
         this.shellRunnerService = shellRunnerService;
         this.userService = userService;
         this.templateListGenerator = templateListGenerator;
-        this.jsonBuilderService = jsonBuilderService;
+        this.responseBuilderService = responseBuilderService;
         this.templateService = templateService;
         this.fileService = fileService;
         this.parserService = parserService;
@@ -63,7 +65,7 @@ public class MainController {
 
             String scriptResult = shellRunnerService.runScript(command);
             scriptRunnerResponse.setExecutionSuccess(true);
-            accountingService.logEvent(template,command);
+            accountingService.logEvent(template, command);
             LOG.info("Executing command " + command + ". Result is: " + scriptResult);
         } catch (IOException e) {
             scriptRunnerResponse.setExecutionSuccess(false);
@@ -86,28 +88,28 @@ public class MainController {
             Template template = templateService.getTemplateByIdAndName(templateId, templateName);
             String parsedContent = parserService.parseArguments(template.getContent(), template);
             result = fileService.getFileContent(parsedContent);
-            accountingService.logEvent(template,parsedContent);
+            accountingService.logEvent(template, parsedContent);
         } catch (IOException e) {
             LOG.error("Error reading file from path: ");
             e.printStackTrace();
         } catch (EnvVariableExctractionException e) {
             e.printStackTrace();
         }
-        return jsonBuilderService.buildFileResponse(result);
+        return responseBuilderService.buildFileResponse(result);
     }
 
-    @RequestMapping(value = "/saveFile", method = RequestMethod.POST,produces = "application/json")
+    @RequestMapping(value = "/saveFile", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
     public SaveFileResponseDTO saveFile(@RequestParam("templateId") Integer templateId,
                                         @RequestParam("templateName") String templateName,
-                                        @RequestBody FileDTO file){
+                                        @RequestBody FileDTO file) {
         SaveFileResponseDTO saveFileResponse = new SaveFileResponseDTO();
         Template template = templateService.getTemplateByIdAndName(templateId, templateName);
         try {
             String parsedContent = parserService.parseArguments(template.getContent(), template);
-            fileService.writeToFile(parsedContent,file.getFileContent());
+            fileService.writeToFile(parsedContent, file.getFileContent());
             saveFileResponse.setWritingSuccess(true);
-            accountingService.logEvent(template,parsedContent);
+            accountingService.logEvent(template, parsedContent);
         } catch (IOException e) {
             saveFileResponse.setWritingSuccess(false);
         } catch (EnvVariableExctractionException e) {
@@ -119,16 +121,24 @@ public class MainController {
     @RequestMapping(value = "/getUrl", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public String getUrl(@RequestParam("templateId") Integer templateId,
-                         @RequestParam("templateName") String templateName){
+                         @RequestParam("templateName") String templateName) {
         Template template = templateService.getTemplateByIdAndName(templateId, templateName);
         String parsedContent = null;
         try {
             parsedContent = parserService.parseArguments(template.getContent(), template);
-            accountingService.logEvent(template,parsedContent);
+            accountingService.logEvent(template, parsedContent);
         } catch (EnvVariableExctractionException e) {
             e.printStackTrace();
         }
-        return jsonBuilderService.buildUrlResponse(parsedContent);
+        return responseBuilderService.buildUrlResponse(parsedContent);
+    }
+
+    @RequestMapping(value = "/loadTemplateHistory", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public EventHistoryResponseDTO getTemplateHistory(@RequestParam("templateId") Integer templateId,
+                                                      @RequestParam("templateName") String templateName) {
+        Template template = templateService.getTemplateByIdAndName(templateId, templateName);
+        return responseBuilderService.buildEventHistoryResponse(template,template.getEventHistoryList());
     }
 
     @RequestMapping(value = "/userDetails", method = RequestMethod.GET, produces = "application/json")
@@ -145,7 +155,7 @@ public class MainController {
     public String getCurrentUserRelations(Principal principal) {
         String username = userService.getCurrentUserUsername(principal);
         User user = userService.getUserByLogin(username);
-        return jsonBuilderService.buildUserRelationsResponse(user);
+        return responseBuilderService.buildUserRelationsResponse(user);
     }
 
     @RequestMapping(value = "/treeNodeTemplates", method = RequestMethod.GET, produces = "application/json")
@@ -156,8 +166,8 @@ public class MainController {
 
         Pair<String, List<Template>> templateGeneratorResult =
                 templateListGenerator.generateTemplateList(NodeType.valueOf(nodeType.toUpperCase(Locale.ENGLISH)), user);
-        return jsonBuilderService.buildTemplateListResponse(templateGeneratorResult.getKey(),
-                        templateGeneratorResult.getValue());
+        return responseBuilderService.buildTemplateListResponse(templateGeneratorResult.getKey(),
+                templateGeneratorResult.getValue());
     }
 
 

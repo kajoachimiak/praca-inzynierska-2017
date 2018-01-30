@@ -12,7 +12,7 @@ public class EventHistory {
     private Integer id;
     private Date executionTime;
     private Template template;
-    private String command;
+    private String content;
     private String result;
 
     @Id
@@ -47,13 +47,13 @@ public class EventHistory {
     }
 
     @Basic
-    @Column(name = "command")
-    public String getCommand() {
-        return command;
+    @Column(name = "content")
+    public String getContent() {
+        return content;
     }
 
-    public void setCommand(String command) {
-        this.command = command;
+    public void setContent(String command) {
+        this.content = command;
     }
 
     @Basic

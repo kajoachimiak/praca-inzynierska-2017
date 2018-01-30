@@ -5,11 +5,14 @@ import com.google.gson.JsonObject;
 import com.pracainzynierska.controller.helper.jsonObjects.templateList.TemplateJson;
 import com.pracainzynierska.controller.helper.jsonObjects.templateList.TemplateJsonRoot;
 import com.pracainzynierska.controller.helper.jsonObjects.treeData.*;
-import com.pracainzynierska.controller.service.JsonBuilderService;
-import com.pracainzynierska.model.entities.*;
+import com.pracainzynierska.controller.service.ResponseBuilderService;
 import com.pracainzynierska.enums.NodeType;
+import com.pracainzynierska.model.dto.EventHistoryResponseDTO;
+import com.pracainzynierska.model.dto.EventHistoryResponseElementDTO;
+import com.pracainzynierska.model.entities.*;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +20,8 @@ import java.util.List;
  * Created by karol on 24.01.18.
  */
 @Service
-public class JsonBuilderServiceImpl implements JsonBuilderService{
+public class ResponseBuilderServiceImpl implements ResponseBuilderService {
+    private static final String HISTORY_DATE_FORMAT = "yyyy-MM-dd HH:mm:ss.SSS";
     public String buildUserRelationsResponse(User user){
         Group group = user.getGroup();
         Edition edition = group.getEdition();
@@ -58,6 +62,31 @@ public class JsonBuilderServiceImpl implements JsonBuilderService{
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("url", url);
         return new Gson().toJson(jsonObject);
+    }
+
+    @Override
+    public EventHistoryResponseDTO buildEventHistoryResponse(Template template, List<EventHistory> eventHistories) {
+        EventHistoryResponseDTO eventHistoryResponse = new EventHistoryResponseDTO();
+        eventHistoryResponse.setTemplateId(template.getId());
+        eventHistoryResponse.setTemplateName(template.getName());
+        eventHistoryResponse.setTemplateHistory(new ArrayList<>());
+        String courseName = null != template.getCourse() ? template.getCourse().getName() : "";
+        String editionName = null != template.getEdition() ? template.getEdition().getName() : "";
+        String groupName = null != template.getGroup() ? template.getGroup().getName() : "";
+        String userName = null != template.getUser() ? template.getUser().getLogin() : "";
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat(HISTORY_DATE_FORMAT);
+        eventHistories.forEach(eventHistory -> {
+            EventHistoryResponseElementDTO eventHistoryResponseElement = new EventHistoryResponseElementDTO();
+            eventHistoryResponseElement.setExecutionTime(dateFormat.format(eventHistory.getExecutionTime()));
+            eventHistoryResponseElement.setContent(eventHistory.getContent());
+            eventHistoryResponseElement.setCourse(courseName);
+            eventHistoryResponseElement.setEdition(editionName);
+            eventHistoryResponseElement.setGroup(groupName);
+            eventHistoryResponseElement.setUser(userName);
+            eventHistoryResponse.getTemplateHistory().add(eventHistoryResponseElement);
+        });
+        return eventHistoryResponse;
     }
 
 }

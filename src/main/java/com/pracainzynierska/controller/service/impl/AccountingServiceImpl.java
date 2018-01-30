@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
-import java.util.List;
 
 /**
  * Created by karol on 30.01.18.
@@ -22,7 +21,7 @@ public class AccountingServiceImpl implements AccountingService {
     public void logEvent(Template template, String command, String result) {
         EventHistory eventHistory = new EventHistory();
         eventHistory.setTemplate(template);
-        eventHistory.setCommand(command);
+        eventHistory.setContent(command);
         eventHistory.setResult(result);
         eventHistory.setExecutionTime(new Date());
         eventHistoryDao.createEvent(eventHistory);
@@ -32,13 +31,8 @@ public class AccountingServiceImpl implements AccountingService {
     public void logEvent(Template template, String command) {
         EventHistory eventHistory = new EventHistory();
         eventHistory.setTemplate(template);
-        eventHistory.setCommand(command);
+        eventHistory.setContent(command);
         eventHistory.setExecutionTime(new Date());
         eventHistoryDao.createEvent(eventHistory);
-    }
-
-    @Override
-    public List<EventHistory> getEventHistoryByTemplate(Template template) {
-        return null;
     }
 }

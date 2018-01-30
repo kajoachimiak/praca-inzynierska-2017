@@ -7,7 +7,6 @@ app.controller('loginController', function ($scope, $http, $location, sessionSer
     };
 
     $scope.credentials = {};
-    $scope.errorMessages = [];
 
     $scope.showLogInError = false;
 
@@ -35,7 +34,6 @@ app.controller('loginController', function ($scope, $http, $location, sessionSer
             console.log(response);
             console.log('log in error');
             $scope.showLogInError = true;
-            $scope.errorMessages.push({logInErrorDesc: 'Nieprawidłowy login lub hasło!'});
         });
     };
 });

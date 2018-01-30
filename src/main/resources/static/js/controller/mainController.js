@@ -69,9 +69,11 @@ app.controller('mainController', function ($scope, $location, sessionService, $h
 
 
             //Script template logic begin
-            $scope.resetAlertFlags = function () {
+            $scope.resetFlags = function () {
+                $scope.showLoadHistoryError = false;
                 $scope.showScriptError = false;
                 $scope.showScriptSuccess = false;
+                $scope.showHistoryTable = false;
             };
 
             $scope.runScript = function (templateId, templateName) {
@@ -185,6 +187,7 @@ app.controller('mainController', function ($scope, $location, sessionService, $h
             };
             //File template logic end
 
+            //URL template logic begin
             $scope.loadUrl = function (templateId, templateName) {
                 $scope.showLoadUrlError = false;
                 $http({
@@ -203,13 +206,37 @@ app.controller('mainController', function ($scope, $location, sessionService, $h
                 });
             };
 
-            //URL template logic begin
             $scope.redirectToUrl = function(url){
                 console.log("Redirecting to url : " + url);
                 $window.open(url, '_blank');
             };
             //URL template logic end
 
+
+            //template history logic begin
+            $scope.loadTemplateHistory = function (templateId, templateName) {
+                $scope.showLoadHistoryError = false;
+                $scope.showHistoryTable = false;
+                $http({
+                    method: 'GET',
+                    url: '/loadTemplateHistory',
+                    params: {templateId: templateId, templateName:templateName}
+                }).then(function successCallback(response) {
+                    console.log("Loading template history success");
+                    console.log(response);
+                    $scope.templateHistory = response.data.templateHistory;
+                    $scope.showHistoryTable = true;
+                    $scope.showLoadHistoryError = false;
+                    console.log("Loaded template history: " + $scope.templateHistory);
+                }, function errorCallback(response) {
+                    console.log("Loading template history error");
+                    console.log(response);
+                    $scope.showLoadHistoryError = true;
+                    $scope.showHistoryTable = false;
+                });
+
+            };
+            //template history logic end
 
             $scope.showLogoutError = false;
             //Logout logic
