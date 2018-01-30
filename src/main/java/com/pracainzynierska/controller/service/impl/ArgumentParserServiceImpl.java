@@ -23,7 +23,8 @@ public class ArgumentParserServiceImpl implements ArgumentParserService {
     private static final String PERCENT_PATTERN = "%{2}";
 
     @Override
-    public String parseArguments(String contentToParse, Template template) throws IndexOutOfBoundsException, SecurityException, IllegalStateException, EnvVariableExctractionException {
+    public String parseArguments(String contentToParse, Template template) throws IndexOutOfBoundsException,
+            SecurityException, IllegalStateException, EnvVariableExctractionException {
         Pattern pattern = Pattern.compile(PATTERN, Pattern.DOTALL);
         Matcher matcher = pattern.matcher(contentToParse);
         while (matcher.find()) {

@@ -4,6 +4,7 @@ import com.pracainzynierska.enums.TemplateType;
 import com.pracainzynierska.model.util.TemplateTypeConverter;
 
 import javax.persistence.*;
+import java.util.List;
 
 /**
  * Created by karol on 06.12.17.
@@ -32,6 +33,7 @@ public class Template {
     private String content;
     private String description;
     private TemplateType type;
+    private List<EventHistory> eventHistoryList;
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -123,6 +125,17 @@ public class Template {
 
     public void setDescription(String opis) {
         this.description = opis;
+    }
+
+
+
+    @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, mappedBy = "template", fetch = FetchType.LAZY)
+    public List<EventHistory> getEventHistoryList() {
+        return eventHistoryList;
+    }
+
+    public void setEventHistoryList(List<EventHistory> eventHistoryList) {
+        this.eventHistoryList = eventHistoryList;
     }
 
     public Template() {

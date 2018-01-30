@@ -34,11 +34,12 @@ public class MainController {
     private JsonBuilderService jsonBuilderService;
     private FileService fileService;
     private ArgumentParserService parserService;
+    private AccountingService accountingService;
 
     @Autowired
     public MainController(ShellRunnerService shellRunnerService, UserService userService,
                           TemplateListGenerator templateListGenerator, JsonBuilderService jsonBuilderService,
-                          TemplateService templateService, FileService fileService, ArgumentParserService parserService) {
+                          TemplateService templateService, FileService fileService, ArgumentParserService parserService, AccountingService accountingService) {
         this.shellRunnerService = shellRunnerService;
         this.userService = userService;
         this.templateListGenerator = templateListGenerator;
@@ -46,6 +47,7 @@ public class MainController {
         this.templateService = templateService;
         this.fileService = fileService;
         this.parserService = parserService;
+        this.accountingService = accountingService;
     }
 
     @RequestMapping(value = "/runScript", method = RequestMethod.GET)
@@ -61,6 +63,7 @@ public class MainController {
 
             String scriptResult = shellRunnerService.runScript(command);
             scriptRunnerResponse.setExecutionSuccess(true);
+            accountingService.logEvent(template,command);
             LOG.info("Executing command " + command + ". Result is: " + scriptResult);
         } catch (IOException e) {
             scriptRunnerResponse.setExecutionSuccess(false);
@@ -83,6 +86,7 @@ public class MainController {
             Template template = templateService.getTemplateByIdAndName(templateId, templateName);
             String parsedContent = parserService.parseArguments(template.getContent(), template);
             result = fileService.getFileContent(parsedContent);
+            accountingService.logEvent(template,parsedContent);
         } catch (IOException e) {
             LOG.error("Error reading file from path: ");
             e.printStackTrace();
@@ -103,6 +107,7 @@ public class MainController {
             String parsedContent = parserService.parseArguments(template.getContent(), template);
             fileService.writeToFile(parsedContent,file.getFileContent());
             saveFileResponse.setWritingSuccess(true);
+            accountingService.logEvent(template,parsedContent);
         } catch (IOException e) {
             saveFileResponse.setWritingSuccess(false);
         } catch (EnvVariableExctractionException e) {
@@ -119,6 +124,7 @@ public class MainController {
         String parsedContent = null;
         try {
             parsedContent = parserService.parseArguments(template.getContent(), template);
+            accountingService.logEvent(template,parsedContent);
         } catch (EnvVariableExctractionException e) {
             e.printStackTrace();
         }
