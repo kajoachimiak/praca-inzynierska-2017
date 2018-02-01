@@ -10,6 +10,7 @@ import com.pracainzynierska.enums.NodeType;
 import com.pracainzynierska.model.dto.EventHistoryResponseDTO;
 import com.pracainzynierska.model.dto.EventHistoryResponseElementDTO;
 import com.pracainzynierska.model.entities.*;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
@@ -51,8 +52,9 @@ public class ResponseBuilderServiceImpl implements ResponseBuilderService {
     }
 
     @Override
-    public String buildFileResponse(String fileContent) {
+    public String buildFileResponse(String fileContent, Boolean status) {
         JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("status", status);
         jsonObject.addProperty("fileContent", fileContent);
         return new Gson().toJson(jsonObject);
     }

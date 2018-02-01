@@ -4,6 +4,7 @@ import com.pracainzynierska.controller.service.ArgumentParserService;
 import com.pracainzynierska.exceptions.EnvVariableExctractionException;
 import com.pracainzynierska.model.entities.Template;
 import com.pracainzynierska.enums.Tag;
+import com.pracainzynierska.model.entities.User;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
@@ -23,27 +24,28 @@ public class ArgumentParserServiceImpl implements ArgumentParserService {
     private static final String PERCENT_PATTERN = "%{2}";
 
     @Override
-    public String parseArguments(String contentToParse, Template template) throws IndexOutOfBoundsException,
+    public String parseArguments(String contentToParse, Template template, User user) throws IndexOutOfBoundsException,
             SecurityException, IllegalStateException, EnvVariableExctractionException {
         Pattern pattern = Pattern.compile(PATTERN, Pattern.DOTALL);
         Matcher matcher = pattern.matcher(contentToParse);
+        //TODO do poprawy pobieranie wartości znacznika; nie z template ale z principal
         while (matcher.find()) {
             String match = matcher.group();
             if (Tag.USER.getCode().equals(match)) {
                 contentToParse = contentToParse.replaceAll(Tag.USER.getCode(),
-                        template.getUser().getLogin());
+                        user.getLogin());
                 matcher = pattern.matcher(contentToParse);
             }else if(Tag.EDITION.getCode().equals(match)){
                 contentToParse = contentToParse.replaceAll(Tag.EDITION.getCode(),
-                        template.getEdition().getName());
+                        user.getGroup().getEdition().getName());
                 matcher = pattern.matcher(contentToParse);
             }else if(Tag.GROUP.getCode().equals(match)){
                 contentToParse = contentToParse.replaceAll(Tag.GROUP.getCode(),
-                        template.getGroup().getName());
+                        user.getGroup().getName());
                 matcher = pattern.matcher(contentToParse);
             }else if(Tag.COURSE.getCode().equals(match)){
                 contentToParse = contentToParse.replaceAll(Tag.COURSE.getCode(),
-                        template.getCourse().getName());
+                        user.getGroup().getEdition().getCourse().getName());
                 matcher = pattern.matcher(contentToParse);
             }else if(match.matches(Tag.ENV.getCode())){
                 Pattern patternEnv = Pattern.compile(BRACKET_PATTERN, Pattern.DOTALL);

@@ -60,6 +60,11 @@
                     <div translate>SAVE_CHANGES_ERROR</div>
                 </div>
             </div>
+            <div class="alert alert-danger" ng-show="showLoadFileError" ng-cloak>
+                <div class="messages-group">
+                    <div translate>LOAD_FILE_ERROR</div>
+                </div>
+            </div>
             <div class="panel panel-default">
                 {{template.description}}
             </div>
@@ -72,12 +77,15 @@
             <br/>
             <div class="panel panel-default">
                 <div class="pull-left">
-                    <button class="btn btn-info" ng-click="downloadFile(fileContent)" translate>
+                    <button class="btn btn-info" ng-disabled="showLoadFileError"
+                            ng-class="{'active': !showLoadFileError,'disabled': showLoadFileError}"
+                            ng-click="downloadFile(fileContent)" translate>
                         TEMPLATE_LIST_GENERATE_FILE
                     </button>
                 </div>
                 <div class="pull-right">
-                    <button class="btn btn-info"
+                    <button class="btn btn-info"  ng-disabled="showLoadFileError"
+                            ng-class="{'active': !showLoadFileError,'disabled': showLoadFileError}"
                             ng-click="saveFileOnServer(template.id, template.name, fileContent)" translate>
                         TEMPLATE_LIST_SAVE_CHANGES
                     </button>

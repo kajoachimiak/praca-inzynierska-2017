@@ -62,7 +62,7 @@ public class MainController {
         User user = loadUser(principal);
 
         try {
-            command = parserService.parseArguments(template.getContent(), template);
+            command = parserService.parseArguments(template.getContent(), template, user);
 
             String scriptResult = shellRunnerService.runScript(command);
             scriptRunnerResponse.setExecutionSuccess(true);
@@ -75,6 +75,7 @@ public class MainController {
             scriptRunnerResponse.setExecutionSuccess(false);
             LOG.error("Command: " + command + " execution interrupted with exception: ", e);
         } catch (EnvVariableExctractionException e) {
+            scriptRunnerResponse.setExecutionSuccess(false);
             LOG.error("Command: " + command + " execution failed with exception: ", e);
         }
         return scriptRunnerResponse;
@@ -86,19 +87,22 @@ public class MainController {
                                  @RequestParam("templateName") String templateName,
                                  Principal principal) {
         String result = "";
+        Boolean status = false;
         User user = loadUser(principal);
         try {
             Template template = templateService.getTemplateByIdAndName(templateId, templateName);
-            String parsedContent = parserService.parseArguments(template.getContent(), template);
+            String parsedContent = parserService.parseArguments(template.getContent(), template, user);
             result = fileService.getFileContent(parsedContent);
+            status = true;
             accountingService.logEvent(user, template, parsedContent);
         } catch (IOException e) {
-            LOG.error("Error reading file from path: ");
-            e.printStackTrace();
+            LOG.error("Error reading file from path: ", e);
+            status = false;
         } catch (EnvVariableExctractionException e) {
             e.printStackTrace();
+            status = false;
         }
-        return responseBuilderService.buildFileResponse(result);
+        return responseBuilderService.buildFileResponse(result, status);
     }
 
     @RequestMapping(value = "/saveFile", method = RequestMethod.POST, produces = "application/json")
@@ -111,7 +115,7 @@ public class MainController {
         Template template = templateService.getTemplateByIdAndName(templateId, templateName);
         User user = loadUser(principal);
         try {
-            String parsedContent = parserService.parseArguments(template.getContent(), template);
+            String parsedContent = parserService.parseArguments(template.getContent(), template, user);
             fileService.writeToFile(parsedContent, file.getFileContent());
             saveFileResponse.setWritingSuccess(true);
             accountingService.logEvent(user, template, parsedContent);
@@ -133,7 +137,7 @@ public class MainController {
         User user = loadUser(principal);
 
         try {
-            parsedContent = parserService.parseArguments(template.getContent(), template);
+            parsedContent = parserService.parseArguments(template.getContent(), template, user);
             accountingService.logEvent(user, template, parsedContent);
         } catch (EnvVariableExctractionException e) {
             e.printStackTrace();

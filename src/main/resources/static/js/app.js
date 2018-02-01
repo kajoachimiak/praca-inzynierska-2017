@@ -41,7 +41,8 @@ var translationsPL = {
     SAVE_CHANGES_SUCCESS:'Pomyślnie zapisano zmiany!',
     SAVE_CHANGES_ERROR:'Zapisanie zmian nie powiodło się! Skontaktuj się z administratorem.',
     LOAD_URL_ERROR:'Pobranie adresu strony nie powiodło się! Skontaktuj się z administratorem.',
-    LOAD_HISTORY_ERROR:'Pobranie historii szablonu nie powiodło się! Skontaktuj się z administratorem.'
+    LOAD_HISTORY_ERROR:'Pobranie historii szablonu nie powiodło się! Skontaktuj się z administratorem.',
+    LOAD_FILE_ERROR:'Załadowanie pliku nie powiodło się. Skontaktuj się z administratorem.'
 };
 
 var translationsEN = {
@@ -88,7 +89,9 @@ var translationsEN = {
     SAVE_CHANGES_SUCCESS:'Changes saved!',
     SAVE_CHANGES_ERROR:'Saving changes failed! Please, contact administrator.',
     LOAD_URL_ERROR:'Loading url failed! Please, contact administrator.',
-    LOAD_HISTORY_ERROR:'Loading template history failed! Please, contact administrator.'
+    LOAD_HISTORY_ERROR:'Loading template history failed! Please, contact administrator.',
+    LOAD_FILE_ERROR:'Loading file content failed. Please, contact administrator.'
+
 };
 
 var app = angular.module('app', ['ngRoute', 'ngCookies', 'ngResource','ngAnimate','ngTouch', 'ui.bootstrap',

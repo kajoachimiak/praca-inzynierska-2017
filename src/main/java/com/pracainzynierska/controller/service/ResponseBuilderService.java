@@ -13,7 +13,7 @@ import java.util.List;
 public interface ResponseBuilderService {
     String buildUserRelationsResponse(User user);
     String buildTemplateListResponse(String ownerName, List<Template> templateList);
-    String buildFileResponse(String fileContent);
+    String buildFileResponse(String fileContent, Boolean status);
     String buildUrlResponse(String url);
     EventHistoryResponseDTO buildEventHistoryResponse(Template template, List<EventHistory> eventHistories);
 }
