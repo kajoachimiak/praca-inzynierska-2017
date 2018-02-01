@@ -109,6 +109,7 @@ app.controller('mainController', function ($scope, $location, sessionService, $h
                 $scope.showDownloadLink = false;
                 $scope.showFileSaveSuccess = false;
                 $scope.showFileSaveError = false;
+                $scope.showLoadFileError = false;
                 $scope.fileContent = '';
                 $scope.fileName = 'log';
                 $http({
@@ -120,10 +121,13 @@ app.controller('mainController', function ($scope, $location, sessionService, $h
                     console.log("Loading file content success");
                     console.log(response);
                     $scope.fileContent = response.data.fileContent;
+                    $scope.status = response.data.status;
                     console.log($scope.fileContent);
+                    $scope.showLoadFileError = !$scope.status;
                 }, function errorCallback(response) {
                     console.log("Loading file content error");
                     console.log(response);
+                    $scope.showLoadFileError = true;
                 });
             };
             $scope.autoExpand = function (e) {
