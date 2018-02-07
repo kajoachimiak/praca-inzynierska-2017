@@ -96,6 +96,7 @@ body {
 }
 .panel-default{
   min-width: fit-content;
+  min-width: -moz-fit-content;
 }
 
 
