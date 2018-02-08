@@ -6,6 +6,7 @@ import com.pracainzynierska.controller.service.*;
 import com.pracainzynierska.controller.service.impl.TemplateService;
 import com.pracainzynierska.controller.service.impl.UserService;
 import com.pracainzynierska.exceptions.EnvVariableExctractionException;
+import com.pracainzynierska.exceptions.ForbiddenException;
 import com.pracainzynierska.model.dto.FileDTO;
 import com.pracainzynierska.model.dto.SaveFileResponseDTO;
 import com.pracainzynierska.model.dto.ScriptRunnerResponseDTO;
@@ -16,6 +17,7 @@ import com.pracainzynierska.enums.NodeType;
 import javafx.util.Pair;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -57,13 +59,16 @@ public class MainController {
                                              @RequestParam("templateName") String templateName,
                                              Principal principal) {
         Template template = templateService.getTemplateByIdAndName(templateId, templateName);
+        User user = loadUser(principal);
+        if (!templateService.isUserAuthorizedToUseTemplate(user, template)){
+            LOG.error("User: " + user.getLogin() + " is not authorized to use template with id: "+ templateId);
+            throw new ForbiddenException();
+        }
         String command = "";
         ScriptRunnerResponseDTO scriptRunnerResponse = new ScriptRunnerResponseDTO();
-        User user = loadUser(principal);
 
         try {
             command = parserService.parseArguments(template.getContent(), template, user);
-
             String scriptResult = shellRunnerService.runScript(command);
             scriptRunnerResponse.setExecutionSuccess(true);
             accountingService.logEvent(user,template, command);
@@ -87,10 +92,14 @@ public class MainController {
                                  @RequestParam("templateName") String templateName,
                                  Principal principal) {
         String result = "";
-        Boolean status = false;
         User user = loadUser(principal);
+        Template template = templateService.getTemplateByIdAndName(templateId, templateName);
+        if (!templateService.isUserAuthorizedToUseTemplate(user, template)){
+            LOG.error("User: " + user.getLogin() + " is not authorized to use template with id: "+ templateId);
+            throw new ForbiddenException();
+        }
+        Boolean status = false;
         try {
-            Template template = templateService.getTemplateByIdAndName(templateId, templateName);
             String parsedContent = parserService.parseArguments(template.getContent(), template, user);
             result = fileService.getFileContent(parsedContent);
             status = true;
@@ -114,6 +123,10 @@ public class MainController {
         SaveFileResponseDTO saveFileResponse = new SaveFileResponseDTO();
         Template template = templateService.getTemplateByIdAndName(templateId, templateName);
         User user = loadUser(principal);
+        if (!templateService.isUserAuthorizedToUseTemplate(user, template)){
+            LOG.error("User: " + user.getLogin() + " is not authorized to use template with id: "+ templateId);
+            throw new ForbiddenException();
+        }
         try {
             String parsedContent = parserService.parseArguments(template.getContent(), template, user);
             fileService.writeToFile(parsedContent, file.getFileContent());
@@ -135,6 +148,10 @@ public class MainController {
         Template template = templateService.getTemplateByIdAndName(templateId, templateName);
         String parsedContent = null;
         User user = loadUser(principal);
+        if (!templateService.isUserAuthorizedToUseTemplate(user, template)){
+            LOG.error("User: " + user.getLogin() + " is not authorized to use template with id: "+ templateId);
+            throw new ForbiddenException();
+        }
 
         try {
             parsedContent = parserService.parseArguments(template.getContent(), template, user);

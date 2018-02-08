@@ -47,6 +47,7 @@ app.controller('mainController', function ($scope, $location, sessionService, $h
             $scope.templateData = [];
 
             $scope.loadTemplatesForNode = function (nodeType) {
+                $scope.statusOpen = false;
                 $http({
                     method: "GET",
                     url: '/treeNodeTemplates',

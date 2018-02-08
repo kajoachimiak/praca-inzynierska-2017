@@ -19,16 +19,6 @@ public class AccountingServiceImpl implements AccountingService {
     private EventHistoryDao eventHistoryDao;
 
     @Override
-    public void logEvent(Template template, String command, String result) {
-        EventHistory eventHistory = new EventHistory();
-        eventHistory.setTemplate(template);
-        eventHistory.setContent(command);
-        eventHistory.setResult(result);
-        eventHistory.setExecutionTime(new Date());
-        eventHistoryDao.createEvent(eventHistory);
-    }
-
-    @Override
     public void logEvent(User user, Template template, String command) {
         String userName = user.getLogin();
         String groupName = "";

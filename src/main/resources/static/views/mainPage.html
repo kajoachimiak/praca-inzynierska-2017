@@ -24,7 +24,7 @@
 
     <!--Script template begin-->
     <script type="text/ng-template" id="accordion-content-script.html">
-        <div ng-if="status.open" ng-init="resetFlags()">
+        <div ng-if="statusOpen" ng-init="resetFlags()">
             <div class="alert alert-success" ng-show="showScriptSuccess" ng-cloak>
                 <div class="messages-group">
                     <div translate>EXECUTE_COMMAND_SUCCESS</div>
@@ -49,7 +49,7 @@
 
     <!--File template begin-->
     <script type="text/ng-template" id="accordion-content-file.html">
-        <div ng-if="status.open" ng-init="loadFileContent(template.id, template.name)">
+        <div ng-if="statusOpen" ng-init="loadFileContent(template.id, template.name)">
             <div class="alert alert-success" ng-show="showFileSaveSuccess" ng-cloak>
                 <div class="messages-group">
                     <div translate>SAVE_CHANGES_SUCCESS</div>
@@ -104,7 +104,7 @@
 
     <!--Url template begin-->
     <script type="text/ng-template" id="accordion-content-url.html">
-        <div ng-if="status.open" ng-init="loadUrl(template.id, template.name)">
+        <div ng-if="statusOpen" ng-init="loadUrl(template.id, template.name)">
             <div class="alert alert-danger" ng-show="showLoadUrlError" ng-cloak>
                 <div class="messages-group">
                     <div translate>LOAD_URL_ERROR</div>
@@ -123,10 +123,10 @@
 
     <!--Generic template begin-->
     <script type="text/ng-template" id="accordion-panel.html">
-        <uib-accordion-group is-open="status.open">
+        <uib-accordion-group is-open="statusOpen">
             <uib-accordion-heading>
                <span class="pull-left glyphicon" ng-class="
-                        {'glyphicon-chevron-right': status.open,'glyphicon-chevron-down': !status.open}"></span>
+                        {'glyphicon-chevron-right': statusOpen,'glyphicon-chevron-down': !statusOpen}"></span>
                 {{template.name}}
             </uib-accordion-heading>
             <div ng-switch="template.type">
@@ -141,7 +141,7 @@
                 </div>
             </div>
             <br/>
-            <div ng-if="status.open" ng-init="resetFlags()">
+            <div ng-if="statusOpen" ng-init="resetFlags()">
                 <div class="alert alert-danger" ng-show="showLoadHistoryError" ng-cloak>
                     <div class="messages-group">
                         <div translate>LOAD_HISTORY_ERROR</div>

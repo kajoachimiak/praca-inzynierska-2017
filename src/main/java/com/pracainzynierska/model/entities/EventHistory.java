@@ -7,13 +7,12 @@ import java.util.Date;
  * Created by karol on 30.01.18.
  */
 @Entity
-@Table(name = "event_history", schema = "GLASSFISH_MANAGER", catalog = "")
+@Table(name = "event_history")
 public class EventHistory {
     private Integer id;
     private Date executionTime;
     private Template template;
     private String content;
-    private String result;
     private String userContext;
     private String groupContext;
     private String editionContext;
@@ -58,16 +57,6 @@ public class EventHistory {
 
     public void setContent(String command) {
         this.content = command;
-    }
-
-    @Basic
-    @Column(name = "result")
-    public String getResult() {
-        return result;
-    }
-
-    public void setResult(String result) {
-        this.result = result;
     }
 
     @Basic
@@ -121,7 +110,6 @@ public class EventHistory {
         if (!executionTime.equals(that.executionTime)) return false;
         if (!template.equals(that.template)) return false;
         if (!content.equals(that.content)) return false;
-        if (result != null ? !result.equals(that.result) : that.result != null) return false;
         if (userContext != null ? !userContext.equals(that.userContext) : that.userContext != null) return false;
         if (groupContext != null ? !groupContext.equals(that.groupContext) : that.groupContext != null) return false;
         if (editionContext != null ? !editionContext.equals(that.editionContext) : that.editionContext != null)
@@ -135,7 +123,6 @@ public class EventHistory {
         result1 = 31 * result1 + executionTime.hashCode();
         result1 = 31 * result1 + template.hashCode();
         result1 = 31 * result1 + content.hashCode();
-        result1 = 31 * result1 + (result != null ? result.hashCode() : 0);
         result1 = 31 * result1 + (userContext != null ? userContext.hashCode() : 0);
         result1 = 31 * result1 + (groupContext != null ? groupContext.hashCode() : 0);
         result1 = 31 * result1 + (editionContext != null ? editionContext.hashCode() : 0);
