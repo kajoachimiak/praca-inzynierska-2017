@@ -16,8 +16,9 @@ body {
 }
 
 .sidebar {
+  min-width: fit-content;
 }
-@media (min-width: 715px) {
+@media (min-width: 768px) {
   .sidebar {
     position: fixed;
     top: 51px;
@@ -95,6 +96,7 @@ body {
 }
 .panel-default{
   min-width: fit-content;
+  min-width: -moz-fit-content;
 }
 
 
