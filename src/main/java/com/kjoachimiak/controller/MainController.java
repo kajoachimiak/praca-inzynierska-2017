@@ -68,10 +68,10 @@ public class MainController {
 
         try {
             command = parserService.parseArguments(template.getContent(), template, user);
-            String scriptResult = shellRunnerService.runScript(command);
+            shellRunnerService.runScript(command);
             scriptRunnerResponse.setExecutionSuccess(true);
             accountingService.logEvent(user,template, command);
-            LOG.info("Executing command " + command + ". Result is: " + scriptResult);
+            LOG.info("Executing command " + command);
         } catch (IOException e) {
             scriptRunnerResponse.setExecutionSuccess(false);
             LOG.error("Command: " + command + " execution failed with exception:", e);

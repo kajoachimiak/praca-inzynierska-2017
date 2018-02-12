@@ -1,5 +1,6 @@
 package com.kjoachimiak.service.impl;
 
+import com.kjoachimiak.exceptions.ForbiddenException;
 import com.kjoachimiak.model.dao.UserDAO;
 import com.kjoachimiak.model.entities.User;
 import org.apache.log4j.Logger;
@@ -31,8 +32,8 @@ public class UserService {
         try {
             username = principal.getName();
         }catch (NullPointerException e){
-            username = null;
-            LOG.error("Requested principal does not exist. UserJson not authorized.", e);
+            LOG.error("Requested principal does not exist. User not authorized.", e);
+            throw new ForbiddenException();
         }
         return username;
     }

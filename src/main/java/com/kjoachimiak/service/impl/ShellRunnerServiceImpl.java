@@ -16,18 +16,8 @@ public class ShellRunnerServiceImpl implements ShellRunnerService {
     private static final Logger LOG = Logger.getLogger(ShellRunnerServiceImpl.class);
 
     @Override
-    public String runScript(String script) throws IOException, InterruptedException {
-        StringBuffer output = new StringBuffer();
-        Process p;
-
-        p = Runtime.getRuntime().exec(script);
+    public void runScript(String script) throws IOException, InterruptedException {
+        Process p = Runtime.getRuntime().exec(script);
         p.waitFor();
-        BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
-        String line = "";
-        while ((line = reader.readLine()) != null) {
-            output.append(line).append("\n");
-        }
-
-        return output.toString();
     }
 }
