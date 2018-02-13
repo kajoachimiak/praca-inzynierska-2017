@@ -2,6 +2,7 @@ package com.kjoachimiak.controller;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.kjoachimiak.helpers.enums.HttpCodes;
 import com.kjoachimiak.service.*;
 import com.kjoachimiak.service.impl.TemplateService;
 import com.kjoachimiak.service.impl.UserService;
@@ -20,10 +21,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.security.Principal;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 
 @Controller
@@ -56,7 +61,7 @@ public class MainController {
     @ResponseBody
     public ScriptRunnerResponseDTO runScript(@RequestParam("templateId") Integer templateId,
                                              @RequestParam("templateName") String templateName,
-                                             Principal principal) {
+                                             Principal principal, HttpSession session) {
         Template template = templateService.getTemplateByIdAndName(templateId, templateName);
         User user = loadUser(principal);
         if (!templateService.isUserAuthorizedToUseTemplate(user, template)){
@@ -68,9 +73,14 @@ public class MainController {
 
         try {
             command = parserService.parseArguments(template.getContent(), template, user);
-            shellRunnerService.runScript(command);
-            scriptRunnerResponse.setExecutionSuccess(true);
+            Future<Long> processStatus = shellRunnerService.runScript(command);
+            String processId = new Date().toString();
+            session.setAttribute(processId,processStatus);
             accountingService.logEvent(user,template, command);
+
+            scriptRunnerResponse.setExecutionSuccess(true);
+            scriptRunnerResponse.setMessage(processId);
+
             LOG.info("Executing command " + command);
         } catch (IOException e) {
             scriptRunnerResponse.setExecutionSuccess(false);
@@ -83,6 +93,26 @@ public class MainController {
             LOG.error("Command: " + command + " execution failed with exception: ", e);
         }
         return scriptRunnerResponse;
+    }
+
+    @RequestMapping(value = "/processStatus", method = RequestMethod.GET)
+    @ResponseBody
+    public HttpCodes getProcessStatus(@RequestParam("processId") String processId, HttpSession session) {
+        Future<Long> process = (Future<Long>) session.getAttribute(processId);
+        if (process.isDone()) {
+            try {
+                if (process.get() == 0){
+                    return HttpCodes.HTTP_SUCCESS;
+                }else {
+                    return HttpCodes.HTTP_FAILED;
+                }
+            } catch (InterruptedException | ExecutionException e) {
+                e.printStackTrace();
+                return HttpCodes.HTTP_FAILED;
+            }
+        }else {
+            return HttpCodes.HTTP_PROCESSING;
+        }
     }
 
     @RequestMapping(value = "/getFileContent", method = RequestMethod.GET, produces = "application/json")

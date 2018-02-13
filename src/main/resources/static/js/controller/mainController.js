@@ -1,4 +1,4 @@
-app.controller('mainController', function ($scope, $location, sessionService, $http, $window, $translate) {
+app.controller('mainController', function ($scope, $location, sessionService, $http, $window, $translate, $timeout) {
     console.log('Starting mainController');
     sessionService.deleteUserDetails();
     sessionService.isUserAuthorized().then(
@@ -42,7 +42,6 @@ app.controller('mainController', function ($scope, $location, sessionService, $h
             //Tree logic end
 
 
-
             //Template list logic begin
             $scope.templateData = [];
 
@@ -75,24 +74,55 @@ app.controller('mainController', function ($scope, $location, sessionService, $h
                 $scope.showScriptError = false;
                 $scope.showScriptSuccess = false;
                 $scope.showHistoryTable = false;
+                $scope.showLoadingIcon = false;
+            };
+
+            $scope.checkProcessStatus = function (processId) {
+                $scope.processStatus = 'HTTP_PROCESSING';
+                do {
+                    $scope.showLoadingIcon = true;
+                    $timeout(function () {
+                        $http({
+                            method: 'GET',
+                            url: '/processStatus',
+                            params: {processId: processId}
+                        }).then(function successCallback(response) {
+                            console.log("Checking process status");
+                            console.log(response);
+
+                            $scope.processStatus = response.data;
+                            $scope.showLoadingIcon = false;
+                            if (angular.equals($scope.processStatus,'HTTP_SUCCESS')) {
+                                $scope.showScriptSuccess = true;
+                                $scope.showScriptError = false;
+                            }
+                            if(angular.equals($scope.processStatus,'HTTP_FAILED')) {
+                                $scope.showScriptSuccess = false;
+                                $scope.showScriptError = true;
+                            }
+                            console.log($scope.processStatus);
+                        }, function errorCallback(response) {
+                            console.log("Checking process status error");
+                            console.log(response);
+                            $scope.showScriptSuccess = false;
+                            $scope.showScriptError = true;
+                        });
+                    }, 5000);
+                } while (angular.isDefined($scope.processStatus)
+                        && $scope.processStatus
+                        && !angular.equals($scope.processStatus,'HTTP_PROCESSING'));
             };
 
             $scope.runScript = function (templateId, templateName) {
                 $http({
                     method: 'GET',
                     url: '/runScript',
-                    params: {templateId: templateId, templateName:templateName}
+                    params: {templateId: templateId, templateName: templateName}
                 }).then(function successCallback(response) {
-                    console.log("Run script success");
                     console.log(response);
                     $scope.scriptResult = response.data.executionSuccess;
-                    if($scope.scriptResult === true){
-                        $scope.showScriptSuccess = true;
-                        $scope.showScriptError = false;
-                    }else {
-                        $scope.showScriptSuccess = false;
-                        $scope.showScriptError = true;
-                    }
+                    $scope.processId = response.data.message;
+                    $scope.checkProcessStatus($scope.processId);
                 }, function errorCallback(response) {
                     console.log("Run script error");
                     console.log(response);
@@ -116,7 +146,7 @@ app.controller('mainController', function ($scope, $location, sessionService, $h
                 $http({
                     method: 'GET',
                     url: '/getFileContent',
-                    params: {templateId: templateId, templateName:templateName},
+                    params: {templateId: templateId, templateName: templateName},
                     responseType: 'text'
                 }).then(function successCallback(response) {
                     console.log("Loading file content success");
@@ -140,7 +170,7 @@ app.controller('mainController', function ($scope, $location, sessionService, $h
 
             var textFile = null;
             var makeTextFile = function (text) {
-                console.log("File content:" +text );
+                console.log("File content:" + text);
                 var data = new Blob([text], {type: 'text/plain'});
                 if (textFile !== null) {
                     window.URL.revokeObjectURL(textFile);
@@ -160,7 +190,7 @@ app.controller('mainController', function ($scope, $location, sessionService, $h
             };
 
             $scope.saveFileOnServer = function (templateId, templateName, fileContent) {
-                console.log("File content:" + fileContent );
+                console.log("File content:" + fileContent);
                 var postData = {
                     fileContent: fileContent
                 };
@@ -170,16 +200,16 @@ app.controller('mainController', function ($scope, $location, sessionService, $h
                     headers: {
                         'Content-Type': 'application/json; charset=utf-8'
                     },
-                    params: {templateId: templateId, templateName:templateName},
+                    params: {templateId: templateId, templateName: templateName},
                     data: postData
                 }).then(function successCallback(response) {
                     console.log("Saving file content success");
                     console.log(response);
                     $scope.saveFileSuccess = response.data.writingSuccess;
-                    if($scope.saveFileSuccess === true) {
+                    if ($scope.saveFileSuccess === true) {
                         $scope.showFileSaveSuccess = true;
                         $scope.showFileSaveError = false;
-                    }else {
+                    } else {
                         $scope.showFileSaveSuccess = false;
                         $scope.showFileSaveError = true;
                     }
@@ -198,7 +228,7 @@ app.controller('mainController', function ($scope, $location, sessionService, $h
                 $http({
                     method: 'GET',
                     url: '/getUrl',
-                    params: {templateId: templateId, templateName:templateName}
+                    params: {templateId: templateId, templateName: templateName}
                 }).then(function successCallback(response) {
                     console.log("Loading url success");
                     console.log(response);
@@ -211,7 +241,7 @@ app.controller('mainController', function ($scope, $location, sessionService, $h
                 });
             };
 
-            $scope.redirectToUrl = function(url){
+            $scope.redirectToUrl = function (url) {
                 console.log("Redirecting to url : " + url);
                 $window.open(url, '_blank');
             };
@@ -225,7 +255,7 @@ app.controller('mainController', function ($scope, $location, sessionService, $h
                 $http({
                     method: 'GET',
                     url: '/loadTemplateHistory',
-                    params: {templateId: templateId, templateName:templateName}
+                    params: {templateId: templateId, templateName: templateName}
                 }).then(function successCallback(response) {
                     console.log("Loading template history success");
                     console.log(response);
