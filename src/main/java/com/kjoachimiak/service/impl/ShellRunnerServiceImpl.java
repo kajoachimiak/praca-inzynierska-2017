@@ -3,7 +3,6 @@ package com.kjoachimiak.service.impl;
 import com.kjoachimiak.helpers.ProcessExecutor;
 import com.kjoachimiak.service.ShellRunnerService;
 import org.apache.commons.exec.CommandLine;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 

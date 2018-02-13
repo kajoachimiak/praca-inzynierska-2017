@@ -107,7 +107,7 @@ app.controller('mainController', function ($scope, $location, sessionService, $h
                             $scope.showScriptSuccess = false;
                             $scope.showScriptError = true;
                         });
-                    }, 5000);
+                    }, 3000);
                 } while (angular.isDefined($scope.processStatus)
                         && $scope.processStatus
                         && !angular.equals($scope.processStatus,'PROCESSING'));
