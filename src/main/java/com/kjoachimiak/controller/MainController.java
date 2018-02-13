@@ -2,7 +2,7 @@ package com.kjoachimiak.controller;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import com.kjoachimiak.helpers.enums.HttpCodes;
+import com.kjoachimiak.helpers.enums.ProcessStatus;
 import com.kjoachimiak.service.*;
 import com.kjoachimiak.service.impl.TemplateService;
 import com.kjoachimiak.service.impl.UserService;
@@ -97,21 +97,21 @@ public class MainController {
 
     @RequestMapping(value = "/processStatus", method = RequestMethod.GET)
     @ResponseBody
-    public HttpCodes getProcessStatus(@RequestParam("processId") String processId, HttpSession session) {
+    public ProcessStatus getProcessStatus(@RequestParam("processId") String processId, HttpSession session) {
         Future<Long> process = (Future<Long>) session.getAttribute(processId);
         if (process.isDone()) {
             try {
                 if (process.get() == 0){
-                    return HttpCodes.HTTP_SUCCESS;
-                }else {
-                    return HttpCodes.HTTP_FAILED;
+                    return ProcessStatus.SUCCESS;
+                } else {
+                    return ProcessStatus.FAILED;
                 }
             } catch (InterruptedException | ExecutionException e) {
                 e.printStackTrace();
-                return HttpCodes.HTTP_FAILED;
+                return ProcessStatus.FAILED;
             }
-        }else {
-            return HttpCodes.HTTP_PROCESSING;
+        } else {
+            return ProcessStatus.PROCESSING;
         }
     }
 

@@ -45,7 +45,8 @@
                 {{template.description}}
             </div>
             <br/>
-            <button class="btn btn-info" ng-click="runScript(template.id, template.name)" translate>
+            <button class="btn btn-info" ng-click="runScript(template.id, template.name)"
+                    ng-class="{'active': !showLoadFileError,'disabled': showLoadFileError}" ng-disabled="showLoadingIcon" translate>
                 TEMPLATE_LIST_RUN_COMMAND
             </button>
         </div>
@@ -133,7 +134,7 @@
     <script type="text/ng-template" id="accordion-panel.html">
         <uib-accordion-group is-open="statusOpen">
             <uib-accordion-heading>
-               <span class="pull-left glyphicon" ng-class="
+               <span class="pull-left glyphicon janusz" ng-class="
                         {'glyphicon-chevron-right': statusOpen,'glyphicon-chevron-down': !statusOpen}"></span>
                 {{template.name}}
             </uib-accordion-heading>

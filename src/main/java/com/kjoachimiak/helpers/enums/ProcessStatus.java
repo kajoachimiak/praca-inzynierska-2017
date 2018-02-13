@@ -3,14 +3,14 @@ package com.kjoachimiak.helpers.enums;
 /**
  * Created by karol on 13.02.18.
  */
-public enum HttpCodes {
-    HTTP_PROCESSING,
-    HTTP_FAILED,
-    HTTP_SUCCESS;
+public enum ProcessStatus {
+    PROCESSING,
+    FAILED,
+    SUCCESS;
 
 //    private int code;
 //
-//    HttpCodes(int code) {
+//    ProcessStatus(int code) {
 //        this.code = code;
 //    }
 //    public int getCode() {

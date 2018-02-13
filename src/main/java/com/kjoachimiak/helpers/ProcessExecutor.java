@@ -10,7 +10,7 @@ import java.util.concurrent.*;
  * Created by karol on 13.02.18.
  */
 public class ProcessExecutor {
-    public static final Long  WATCHDOG_EXIST_VALUE = -999L;
+    public static final Long WATCHDOG_EXIST_VALUE = -999L;
     public static Future<Long> runProcess(final CommandLine commandline, final long watchdogTimeout,
                                           final File workingDirectory) throws IOException {
         ExecutorService executor = Executors.newSingleThreadExecutor();
@@ -38,8 +38,8 @@ public class ProcessExecutor {
             } catch (ExecuteException e) {
                 exitValue = (long) e.getExitValue();
             }
-            if(watchDog.killedProcess()){
-                exitValue =WATCHDOG_EXIST_VALUE;
+            if (watchDog.killedProcess()){
+                exitValue = WATCHDOG_EXIST_VALUE;
             }
             return exitValue;
         }

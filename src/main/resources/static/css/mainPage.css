@@ -91,6 +91,14 @@ body {
   margin-top: 0;
 }
 
+.glyphicon {
+  font-size: 9px;
+}
+
+.janusz {
+  padding-right: 3px;
+}
+
 .mariusz {
   text-align: center;
 }
@@ -104,7 +112,7 @@ body {
   border-radius: 50%;
   width: 100px;
   height: 100px;
-  animation: spin 2s linear infinite;
+  animation: spin 1s linear infinite;
 }
 
 @keyframes spin {

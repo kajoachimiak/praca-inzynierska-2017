@@ -78,7 +78,7 @@ app.controller('mainController', function ($scope, $location, sessionService, $h
             };
 
             $scope.checkProcessStatus = function (processId) {
-                $scope.processStatus = 'HTTP_PROCESSING';
+                $scope.processStatus = 'PROCESSING';
                 do {
                     $scope.showLoadingIcon = true;
                     $timeout(function () {
@@ -92,11 +92,11 @@ app.controller('mainController', function ($scope, $location, sessionService, $h
 
                             $scope.processStatus = response.data;
                             $scope.showLoadingIcon = false;
-                            if (angular.equals($scope.processStatus,'HTTP_SUCCESS')) {
+                            if (angular.equals($scope.processStatus,'SUCCESS')) {
                                 $scope.showScriptSuccess = true;
                                 $scope.showScriptError = false;
                             }
-                            if(angular.equals($scope.processStatus,'HTTP_FAILED')) {
+                            if(angular.equals($scope.processStatus,'FAILED')) {
                                 $scope.showScriptSuccess = false;
                                 $scope.showScriptError = true;
                             }
@@ -110,7 +110,7 @@ app.controller('mainController', function ($scope, $location, sessionService, $h
                     }, 5000);
                 } while (angular.isDefined($scope.processStatus)
                         && $scope.processStatus
-                        && !angular.equals($scope.processStatus,'HTTP_PROCESSING'));
+                        && !angular.equals($scope.processStatus,'PROCESSING'));
             };
 
             $scope.runScript = function (templateId, templateName) {
